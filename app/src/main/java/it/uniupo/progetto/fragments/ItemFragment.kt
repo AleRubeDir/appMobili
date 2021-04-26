@@ -87,9 +87,9 @@ private fun Fragment.addChildFragment(fragment: Fragment, frameId: Int) {
                     }
                 }
 
-                .addOnFailureListener {
+                .addOnFailureListener { err->
                     //  arr.add(Prodotto(2,-1,"q","q","2,00€",2))
-                    Log.d("---", "Error getting document - ALL PRODUCTS()")
+                    Log.d("---", "Error getting document - ALL PRODUCTS() $err")
                 }
     }
 

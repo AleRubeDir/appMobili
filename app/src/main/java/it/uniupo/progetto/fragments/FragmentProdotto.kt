@@ -24,9 +24,9 @@ class FragmentProdotto : Fragment() {
             var p: Prodotto
             getProdottoFromDB(bundle.getString("id")!!.toInt(), object : MyCallback {
                 override fun onCallback(value: Prodotto) {
-                    Log.d("prodotto", "value vale $value}")
+                    //Log.d("prodotto", "value vale $value}")
                     p = value
-                    Log.d("prodotto", "p vale $p}")
+                   // Log.d("prodotto", "p vale $p}")
                     val tvTitolo = view?.findViewById<TextView>(R.id.titolo)
                     tvTitolo?.text = p.titolo
                     val desc = view?.findViewById<TextView>(R.id.desc)
@@ -37,7 +37,7 @@ class FragmentProdotto : Fragment() {
                     np?.minValue = 1
                     np?.maxValue = p.qta
                     val img = view?.findViewById<ImageView>(R.id.img)
-                    Log.d("prodotto", "imageview vale $img e deve contenere ${p.img} ")
+                   // Log.d("prodotto", "imageview vale $img e deve contenere ${p.img} ")
                     //img.setImageResource(p.img)
                     val cart = view?.findViewById<ImageButton>(R.id.cart)
                     cart?.setOnClickListener {

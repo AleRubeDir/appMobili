@@ -15,7 +15,7 @@ import kotlin.math.round
 import kotlin.properties.Delegates
 
 class RiderActivity : AppCompatActivity() {
-    fun stampaArray(array : ArrayList<Prodotto>){
+   /* fun stampaArray(array : ArrayList<Prodotto>){
         Log.d("totale","HomeActivity- array -> $array")
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +84,7 @@ class RiderActivity : AppCompatActivity() {
 
 
     }
-
+*/
 
 }
 

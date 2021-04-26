@@ -14,13 +14,13 @@ class PaginaProdotto  : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pagina_prodotto)
-        val titolo = intent.getStringExtra("titolo_prodotto")!!
+        val id = intent.getStringExtra("id-prodotto")!!
         var p: Prodotto
-        getProdottoFromDB(titolo, object: MyCallback {
+        getProdottoFromDB(id.toInt(), object: MyCallback {
             override fun onCallback(value: Prodotto) {
-                Log.d("prodotto", "value vale $value}")
+               // Log.d("prodotto", "value vale $value}")
                 p = value
-                Log.d("prodotto", "p vale $p}")
+              //  Log.d("prodotto", "p vale $p}")
                 val tvTitolo = findViewById<TextView>(R.id.titolo)
                 tvTitolo.text = p.titolo
                 val desc = findViewById<TextView>(R.id.desc)
@@ -31,7 +31,7 @@ class PaginaProdotto  : AppCompatActivity() {
                 np.minValue = 1
                 np.maxValue = p.qta
                 val img = findViewById<ImageView>(R.id.img)
-                Log.d("prodotto", "imageview vale $img e deve contenere ${p.img} ")
+              //  Log.d("prodotto", "imageview vale $img e deve contenere ${p.img} ")
                 //img.setImageResource(p.img)
                 val cart = findViewById<ImageButton>(R.id.cart)
                 cart.setOnClickListener{
@@ -69,17 +69,15 @@ class PaginaProdotto  : AppCompatActivity() {
         fun onCallback(value: Prodotto)
     }
 
-    fun getProdottoFromDB(titolo: String,myCallback: MyCallback){
+    fun getProdottoFromDB(id: Int,myCallback: MyCallback){
         var p = Prodotto(-1, -1, "ERR", "ERR", "2,99€", 2)
         val db = FirebaseFirestore.getInstance()
         db.collection("products")
                 .get()
                 .addOnSuccessListener { result->
                     for (document in result) {
-                        Log.d("prodotto", "${document.get("titolo")} = $titolo")
-                        if (document.get("titolo").toString() == titolo) {
+                        if (document.get("id").toString() == id.toString()) {
                             p= Prodotto(document.getLong("id")!!.toInt(), document.getLong("img")!!.toInt(), document.get("titolo").toString(), document.get("desc").toString(), document.get("prezzo").toString(), document.getLong("qta")!!.toInt())
-                            Log.d("prodotto", "in getProdottoFromDB p vale $p")
                         }
                         myCallback.onCallback(p)
                     }

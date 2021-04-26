@@ -28,9 +28,9 @@ class MyItemRecyclerViewAdapter(private val values: ArrayList<Prodotto>) : Recyc
 
         val rel = view.findViewById<RelativeLayout>(R.id.rel)
         var id = view.findViewById<TextView>(R.id.id)
-        var fp = FragmentProdotto()
+        //var fp = FragmentProdotto()
         rel.setOnClickListener{
-            val intent = Intent(view.context, FragmentProdotto::class.java)
+            val intent = Intent(view.context, PaginaProdotto::class.java)
             intent.putExtra("id-prodotto", id.text )
             view.context.startActivity(intent)
         }
