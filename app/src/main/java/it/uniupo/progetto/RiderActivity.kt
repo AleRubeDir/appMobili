@@ -14,13 +14,13 @@ import kotlin.concurrent.thread
 import kotlin.math.round
 import kotlin.properties.Delegates
 
-class aHomeActivity : AppCompatActivity() {
+class RiderActivity : AppCompatActivity() {
     fun stampaArray(array : ArrayList<Prodotto>){
         Log.d("totale","HomeActivity- array -> $array")
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home)
+        setContentView(R.layout.activity_rider)
         val cartFragment = CartListFragment()
         val profileFragment = ProfileFragment()
         val shopFragment = ItemFragment()
@@ -71,19 +71,19 @@ class aHomeActivity : AppCompatActivity() {
         commit()
     }
 
-companion object{
+    companion object{
 
-    var array: ArrayList<Prodotto> = ArrayList()
-    var carrello: ArrayList<Prodotto> = ArrayList()
-    var tot by Delegates.observable(0.0){
-        property, oldValue, newValue ->
-        Log.d("TAG","New Value $newValue")
-        Log.d("TAG","Old Value $oldValue")
-       // HomeActivity().updateTot()
+        var array: ArrayList<Prodotto> = ArrayList()
+        var carrello: ArrayList<Prodotto> = ArrayList()
+        var tot by Delegates.observable(0.0){
+                property, oldValue, newValue ->
+            Log.d("TAG","New Value $newValue")
+            Log.d("TAG","Old Value $oldValue")
+            // HomeActivity().updateTot()
+        }
+
+
     }
-
-
-}
 
 
 }
