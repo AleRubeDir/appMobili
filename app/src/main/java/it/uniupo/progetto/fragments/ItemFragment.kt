@@ -43,18 +43,6 @@ class ItemFragment : Fragment() {
                 getAllProducts((object: MyCallback {
                     override fun onCallback(value: List<Prodotto>) {
                         adapter = MyItemRecyclerViewAdapter(array)
-                       /* val rel = view.findViewById<RelativeLayout>(R.id.rel)
-                        var id = view.findViewById<TextView>(R.id.id)
-                        var fp = FragmentProdotto()
-                        rel.setOnClickListener{
-                            val bundle = Bundle()
-                            bundle.putString("id", id.text.toString()) // Put anything what you want
-                            fp.arguments = bundle
-                            makeCurrentFragment(fp)*/
-                       // }
-                       /* val fp = FragmentProdotto()
-                        addChildFragment(fp, R.id.fl_wrapper)*/
-
                     }
                 }))
             }
@@ -69,10 +57,6 @@ private fun Fragment.addChildFragment(fragment: Fragment, frameId: Int) {
     val transaction = childFragmentManager.beginTransaction()
     transaction.replace(frameId, fragment).commit()
 }
-/*    private fun makeCurrentFragment(fragment: Fragment) = HomeActivity().supportFragmentManager.beginTransaction().apply{
-        TextUtils.replace(R.id.fl_wrapper, fragment)
-        commit()
-    }*/
 
     interface MyCallback {
         fun onCallback(value: List<Prodotto>)
