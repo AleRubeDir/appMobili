@@ -14,7 +14,7 @@ import kotlin.concurrent.thread
 import kotlin.math.round
 import kotlin.properties.Delegates
 
-class aHomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     fun stampaArray(array : ArrayList<Prodotto>){
         Log.d("totale","HomeActivity- array -> $array")
     }
