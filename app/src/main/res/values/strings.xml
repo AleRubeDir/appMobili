@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Progetto</string>
+    <string name="register">Registrati</string>
+    <string name="login">Accedi</string>
+    <string name="log_string">Hai già un account?</string>
+    <string name="reg_string">Sei nuovo? Iscriviti</string>
+    <string name="reg_title">Crea il tuo account</string>
+    <string name="nome">Nome</string>
+    <string name="cognome">Cognome</string>
+    <string name="cliente">Cliente</string>
+    <string name="rider">Rider</string>
+    <string name="gestore">Gestore</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="logo">Logo</string>
+    <string name="hintname">Mario</string>
+    <string name="hintsurname">Rossi</string>
+    <string name="hintmail">mario.rossi@gmail.com</string>
+    <string name="scelta">Scegli come accedere</string>
+    <!-- HOME -->
+    <string name="search">Cerca...</string>
+    <string name="add_cart">Aggiungi al carrello</string>
+    <string name="totale">Totale</string>
+    <string name="cash">%1$s €</string>
+
+    <!-- -->    <!-- xxx -->  <!-- -->
+    <!-- fragment_gestore -->
+    <string name="gestore_title">GESTORE</string>
+    <string name="gestore_desc">Amministra il market</string>
+    <!-- -->
+    <!-- fragment_customer -->
+    <string name="customer_title">CLIENTE</string>
+    <string name="customer_desc">Ordina quello che vuoi</string>
+    <!-- -->
+    <!-- fragment_rider -->
+    <string name="rider_title">RIDER</string>
+    <string name="rider_desc">Consegna gli ordini</string>
+    <!-- -->
+    <!-- fragment_cart -->
+    <string name="carrello">Carrello</string>
+    <!-- -->
+    <!-- SCELTA -->
+    <string name="end">FINE</string>
+    <string name="next">NEXT</string>
+    <string name="scelta_titolo">Completa il tuo account</string>
+
+
+    <!-- -->
+    <string name="title_activity_welcome">Home Screen</string>
+
+
+    <string name="slide_1_title">Dally Workout</string>
+    <string name="slide_1_desc">Set your daily workout routine by the help of trainer</string>
+    <string name="slide_2_title">Meditation Techniques </string>
+    <string name="slide_2_desc">Learn about the different meditation techniques and practice them </string>
+    <string name="slide_3_title">Diet Chart</string>
+    <string name="slide_3_desc">Make your diet chart by the help of health experts</string>
+    <string name="play_again_desc">To see the welcome slider again, goto Settings > apps > welcome slider clear data</string>
+    <string name="play_again">Play Again</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

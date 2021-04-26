@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp">
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="161dp"
+        android:layout_height="158dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/logo"
+        android:src="@mipmap/ic_launcher_foreground" />
+
+    <TableLayout
+        android:id="@+id/tab1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:stretchColumns="*"
+        >
+
+
+    </TableLayout>
+    <TextView
+        android:id="@+id/title"
+        android:layout_below="@id/tab1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reg_title"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+       >
+
+    </TextView>
+    <TableLayout
+        android:id="@+id/tab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:stretchColumns="*"
+        >
+        <TableRow>
+            <TextView
+                android:id="@+id/usr_label"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:labelFor="@+id/usr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email" />
+        </TableRow>
+
+        <TableRow>
+            <EditText
+                android:id="@+id/usr"
+                android:gravity="center"
+                android:hint="@string/hintmail"
+                android:layout_weight="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/pwd_label"
+                android:layout_weight="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/password" />
+        </TableRow>
+
+        <TableRow>
+            <EditText
+                android:id="@+id/pwd"
+                android:layout_weight="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+        </TableRow>
+
+        <TableRow>
+            <Button
+                android:layout_marginTop="10dp"
+                android:layout_weight="2"
+                android:id="@+id/signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register"
+                android:backgroundTint="@color/primary">
+
+            </Button>
+        </TableRow>
+
+    </TableLayout>
+
+
+
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/fl_wrapper"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.FragmentProdotto">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:id="@+id/img"
+            android:src="@drawable/barilla_tortiglioni"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/slide_title"
+            android:id="@+id/titolo"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="@dimen/slidedesc"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titolo"
+            android:id="@+id/desc"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="@dimen/slidedesc"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/desc"
+            android:id="@+id/prezzo"/>
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/qta"/>
+        <ImageButton
+            android:layout_gravity="right"
+            android:layout_marginRight="25dp"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bigger_cart"
+            android:id="@+id/cart"
+            android:background="@color/primary" />
+        <!--
+
+            </ScrollView>
+        -->
+
+    </LinearLayout>
+
+</FrameLayout>
