@@ -4,18 +4,17 @@
     <item
         android:id="@+id/carrello"
         android:icon="@drawable/cart"
-        android:title="Cart">
+        android:title="@string/nav_cart">
     </item>
     <item
-        android:icon="@drawable/profile"
-    android:id="@+id/profilo"
-    android:title="Profile">
-
-</item>
-    <item
-        android:icon="@drawable/ic_baseline_list_24"
         android:id="@+id/shop"
-        android:title="Shop">
+        android:icon="@drawable/ic_baseline_list_24"
+        android:title="@string/nav_shop">
     </item>
+    <item
+        android:id="@+id/profilo"
+        android:icon="@drawable/profile"
+        android:title="@string/nav_profile">
+</item>
 
 </menu>

@@ -1,16 +1,20 @@
 package it.uniupo.progetto.fragments
 
 import android.content.Intent
-import android.os.Bundle
+import android.text.TextUtils.replace
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import it.uniupo.progetto.HomeActivity
+import it.uniupo.progetto.PaginaProdotto
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
 
@@ -22,21 +26,20 @@ class MyItemRecyclerViewAdapter(private val values: ArrayList<Prodotto>) : Recyc
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_item, parent, false)
 
-        /*val rel = view.findViewById<RelativeLayout>(R.id.rel)
+        val rel = view.findViewById<RelativeLayout>(R.id.rel)
         var id = view.findViewById<TextView>(R.id.id)
         var fp = FragmentProdotto()
         rel.setOnClickListener{
-            val bundle = Bundle()
-            bundle.putString("id", id.text.toString()) // Put anything what you want
-            fp.arguments = bundle
-            makeCurrentFragment(fp)
-        }*/
+            val intent = Intent(view.context, FragmentProdotto::class.java)
+            intent.putExtra("id-prodotto", id.text )
+            view.context.startActivity(intent)
+        }
         return ViewHolder(view)
     }
-//    private fun makeCurrentFragment(fragment: Fragment) = HomeActivity().supportFragmentManager.beginTransaction().apply{
-//        replace(R.id.fl_wrapper, fragment)
-//        commit()
-//    }
+    private fun makeCurrentFragment(fragment: Fragment) = HomeActivity().supportFragmentManager.beginTransaction().apply{
+        replace(R.id.fl_wrapper,fragment)
+        commit()
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         ItemFragment.stampaArray(values)
 

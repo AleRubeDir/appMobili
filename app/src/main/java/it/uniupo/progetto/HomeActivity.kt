@@ -30,7 +30,6 @@ class HomeActivity : AppCompatActivity() {
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.carrello -> {
-
                     thread(start = true) {
                         stampaArray(carrello)
                         makeCurrentFragment(cartFragment)
@@ -79,6 +78,7 @@ companion object{
         property, oldValue, newValue ->
         Log.d("TAG","New Value $newValue")
         Log.d("TAG","Old Value $oldValue")
+        //welldone
        // HomeActivity().updateTot()
     }
 

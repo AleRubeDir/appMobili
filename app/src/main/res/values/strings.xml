@@ -31,6 +31,9 @@
     <!-- fragment_customer -->
     <string name="customer_title">CLIENTE</string>
     <string name="customer_desc">Ordina quello che vuoi</string>
+    <string name="nav_shop">Negozio</string>
+    <string name="nav_profile">Profilo</string>
+    <string name="nav_cart">Carrello</string>
     <!-- -->
     <!-- fragment_rider -->
     <string name="rider_title">RIDER</string>
