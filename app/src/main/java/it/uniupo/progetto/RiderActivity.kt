@@ -15,13 +15,13 @@ import kotlin.math.round
 import kotlin.properties.Delegates
 
 class RiderActivity : AppCompatActivity() {
-   /* fun stampaArray(array : ArrayList<Prodotto>){
+ fun stampaArray(array : ArrayList<Prodotto>){
         Log.d("totale","HomeActivity- array -> $array")
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider)
-        val cartFragment = CartListFragment()
+        /*val cartFragment = CartListFragment()
         val profileFragment = ProfileFragment()
         val shopFragment = ItemFragment()
         cart_hide()
@@ -49,7 +49,7 @@ class RiderActivity : AppCompatActivity() {
                 }
             }
             true
-        }
+        }*/
 
     }
 
@@ -84,7 +84,7 @@ class RiderActivity : AppCompatActivity() {
 
 
     }
-*/
+
 
 }
 
