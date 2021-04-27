@@ -21,5 +21,9 @@ class MainActivity : AppCompatActivity() {
         reg.setOnClickListener{
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+        val rider = findViewById<Button>(R.id.btn_rider)
+        rider.setOnClickListener{
+            startActivity(Intent(this,RiderActivity::class.java))
+        }
     }
 }

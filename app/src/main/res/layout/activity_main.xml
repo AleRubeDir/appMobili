@@ -28,6 +28,13 @@
         android:layout_marginTop="300dp"
         android:layout_centerHorizontal="true"
         />
+    <Button
+        android:id="@+id/btn_rider"
+        android:backgroundTint="@color/primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RIDER ACTIVITY"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
