@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:maxLines="1"
+        android:text="@string/email"/>
+    <TextView
+        android:id="@+id/nome"
+        android:layout_below="@id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:maxLines="1"
+        android:text="@string/nome"
+        />
+    <TextView
+        android:id="@+id/cognome"
+        android:layout_below="@id/nome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:maxLines="1"
+        android:text="@string/cognome"
+        />
+    <TextView
+        android:id="@+id/tipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cognome"
+        android:text="@string/tipo"
+        android:maxLines="1"
+        android:textSize="35sp"/>
+
+</RelativeLayout>

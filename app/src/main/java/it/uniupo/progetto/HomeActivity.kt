@@ -35,14 +35,19 @@ class HomeActivity : AppCompatActivity() {
                         makeCurrentFragment(cartFragment)
                     }
                     cart_show()
+                    prof_hide()
                     updateTot()
                     Log.d("totale","Tot in home vale $tot")
                 }
                 R.id.profilo -> {
+                    thread(start = true) {
+                        makeCurrentFragment(profileFragment)
+                    }
                     cart_hide()
-                    makeCurrentFragment(profileFragment)
+                    prof_show()
                 }
                 R.id.shop -> {
+                    prof_hide()
                     cart_hide()
                     makeCurrentFragment(shopFragment)
                 }
@@ -61,6 +66,15 @@ class HomeActivity : AppCompatActivity() {
         val tot = findViewById<RelativeLayout>(R.id.tot_layout)
         tot.visibility = View.VISIBLE
     }
+    private fun prof_show(){
+        val tot = findViewById<RelativeLayout>(R.id.layout_profilo)
+        tot.visibility = View.VISIBLE
+    }
+    private fun prof_hide(){
+        val tot = findViewById<RelativeLayout>(R.id.layout_profilo)
+        tot.visibility = View.INVISIBLE
+    }
+
     private fun cart_hide(){
         val tot = findViewById<RelativeLayout>(R.id.tot_layout)
         tot.visibility = View.INVISIBLE

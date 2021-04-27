@@ -16,6 +16,7 @@ class PaginaProdotto  : AppCompatActivity() {
         setContentView(R.layout.pagina_prodotto)
         val id = intent.getStringExtra("id-prodotto")!!
         var p: Prodotto
+
         getProdottoFromDB(id.toInt(), object: MyCallback {
             override fun onCallback(value: Prodotto) {
                // Log.d("prodotto", "value vale $value}")

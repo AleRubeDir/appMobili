@@ -53,7 +53,6 @@ class MyCartListRecyclerViewAdapter(
             CartListFragment.cartTot()
             true
         }
-
         minus.setOnClickListener {
             var id = idtv.text.toString().toInt()
             var nqta = qta.text.toString().toInt() - 1
@@ -82,7 +81,6 @@ class MyCartListRecyclerViewAdapter(
             CartListFragment.cartTot()
             true
         }
-
         return ViewHolder(view)
     }
     fun diminuisciQta(id: Int){

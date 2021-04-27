@@ -20,6 +20,7 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".RiderActivity"/>
+        <activity android:name=".DatiPersonali"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/mm">

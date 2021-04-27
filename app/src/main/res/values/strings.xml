@@ -22,7 +22,10 @@
     <string name="add_cart">Aggiungi al carrello</string>
     <string name="totale">Totale</string>
     <string name="cash">%1$s €</string>
+    <!-- profilo -->
 
+    <string name="tipo">Tipo</string>
+    <!-- -->
     <!-- -->    <!-- xxx -->  <!-- -->
     <!-- fragment_gestore -->
     <string name="gestore_title">GESTORE</string>
