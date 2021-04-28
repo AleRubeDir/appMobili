@@ -13,10 +13,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val log = findViewById<Button>(R.id.btn_log)
         val reg = findViewById<Button>(R.id.btn_reg)
-
-        log.setOnClickListener{
+        val accedi = findViewById<Button>(R.id.accedi)
+        val scelta = findViewById<Button>(R.id.scelta)
+        scelta.setOnClickListener{
+            startActivity(Intent(this, ChooseActivity::class.java))
+        }
+        accedi.setOnClickListener{
             startActivity(Intent(this, HomeActivity::class.java))
-
+        }
+        log.setOnClickListener{
+            startActivity(Intent(this, LoginActivity::class.java))
         }
         reg.setOnClickListener{
             startActivity(Intent(this, RegisterActivity::class.java))

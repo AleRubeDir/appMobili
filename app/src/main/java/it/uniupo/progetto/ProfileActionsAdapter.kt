@@ -34,7 +34,9 @@ import it.uniupo.progetto.fragments.ProfileFragment
                  view.context.startActivity(intent)
              }
              if(id.text=="1"){
-                //la mia posizione
+                 val intent = Intent(view.context, ClientMappa::class.java)
+                 /*intent.putExtra("id-prodotto", id.text )*/
+                 view.context.startActivity(intent)
              }
              if(id.text=="2"){
                 //i miei ordini

@@ -31,9 +31,26 @@
     <Button
         android:id="@+id/btn_rider"
         android:backgroundTint="@color/primary"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:text="RIDER ACTIVITY"
+        />
+    <Button
+        android:id="@+id/accedi"
+        android:layout_toRightOf="@id/btn_rider"
+        android:backgroundTint="@color/primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="accedi no login"
+        />
+    <Button
+        android:id="@+id/scelta"
+        android:layout_toRightOf="@id/accedi"
+        android:backgroundTint="@color/primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="scelta"
         />
     <TextView
         android:layout_width="wrap_content"

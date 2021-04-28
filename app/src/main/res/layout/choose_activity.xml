@@ -40,6 +40,22 @@
         android:layout_above="@+id/type_group"
         android:id="@+id/surname"
         />
+   <!-- <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/address_label"
+        android:text="@string/indirizzo"
+        android:layout_above="@+id/address"
+        android:layout_centerHorizontal="true"
+
+        android:labelFor="@+id/surname"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/type_group"
+        android:inputType="textPostalAddress"
+        android:id="@+id/address"
+        />-->
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

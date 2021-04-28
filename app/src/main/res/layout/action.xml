@@ -14,10 +14,13 @@
         android:layout_below="@id/nome"
         android:background="@color/complementary"/>
     <TextView
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:id="@+id/nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
+        android:focusable="true"
        android:text="OPERAZIONE"/>
     <TextView
         android:layout_width="wrap_content"
