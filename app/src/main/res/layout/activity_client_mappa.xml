@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.5"
+        android:layout_weight="0.8"
         android:orientation="vertical"
         >
         <RelativeLayout
@@ -28,32 +28,24 @@
                 android:layout_below="@id/insert_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="15"
+                android:ems="10"
                 android:maxLines="1"/>
-            <Button
+            <ImageButton
                 android:id="@+id/search"
                 android:backgroundTint="@color/primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="->"
-                android:layout_below="@id/insert_label"
-                android:layout_alignParentEnd="true"/>
-            <TextView
-                android:id="@+id/find_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Trova in automatico"
-                android:layout_below="@id/address"
-                android:textSize="25sp"
-                />
+                android:src="@drawable/search"
+                android:layout_toStartOf="@id/find"
+                android:layout_below="@id/insert_label" />
             <ImageButton
                 android:id="@+id/find"
                 android:backgroundTint="@color/primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/find"
+                android:layout_below="@id/insert_label"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@id/address"
                 />
         </RelativeLayout>
 
@@ -61,7 +53,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.2"
+        android:layout_weight="0.12"
         >
     <fragment
         xmlns:map="http://schemas.android.com/apk/res-auto"
