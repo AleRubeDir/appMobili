@@ -21,11 +21,10 @@ class RiderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider)
-        /*val cartFragment = CartListFragment()
+        val chatFragment = CartListFragment()
+        val deliveryFragment = Consegne_todo()
         val profileFragment = ProfileFragment()
-        val shopFragment = ItemFragment()
-        cart_hide()
-        makeCurrentFragment(shopFragment)
+        makeCurrentFragment(deliveryFragment)
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
@@ -33,39 +32,23 @@ class RiderActivity : AppCompatActivity() {
 
                     thread(start = true) {
                         stampaArray(carrello)
-                        makeCurrentFragment(cartFragment)
+                        makeCurrentFragment(chatFragment)
                     }
-                    cart_show()
-                    updateTot()
+
                     Log.d("totale","Tot in home vale $tot")
                 }
                 R.id.profilo -> {
-                    cart_hide()
-                    makeCurrentFragment(profileFragment)
+                    makeCurrentFragment(deliveryFragment)
                 }
                 R.id.shop -> {
-                    cart_hide()
-                    makeCurrentFragment(shopFragment)
+                    makeCurrentFragment(profileFragment)
                 }
             }
             true
-        }*/
+        }
 
     }
 
-    fun updateTot(){
-        val totview = findViewById<TextView>(R.id.tot)
-        var totdoub = "%.2f".format(tot)
-        totview.text = getString(R.string.cash,totdoub)
-    }
-    private fun cart_show(){
-        val tot = findViewById<RelativeLayout>(R.id.tot_layout)
-        tot.visibility = View.VISIBLE
-    }
-    private fun cart_hide(){
-        val tot = findViewById<RelativeLayout>(R.id.tot_layout)
-        tot.visibility = View.INVISIBLE
-    }
     private fun makeCurrentFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply{
         replace(R.id.fl_wrapper,fragment)
         commit()
@@ -81,10 +64,6 @@ class RiderActivity : AppCompatActivity() {
             Log.d("TAG","Old Value $oldValue")
             // HomeActivity().updateTot()
         }
-
-
     }
-
-
 }
 

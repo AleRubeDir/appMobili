@@ -11,7 +11,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -64,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -132,12 +132,25 @@ class LoginActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { result->
                     for (document in result) {
+                        Log.d("***","${document.id}=> ${document.data} ")
+                        Log.d("***","${document.get("mail").toString()} con mail ${mail} e ${document.get("type").toString()} ")
                         if(document.get("mail").toString() == mail && document.get("type").toString().isNotEmpty()){
-                            //utente ha già scelto il tipo di account
-                            startActivity(Intent(this, HomeActivity::class.java))
+                            if(document.get("type").toString()=="Cliente"){
+                                startActivity(Intent(this, HomeActivity::class.java))
+                            }
+                            if(document.get("type").toString()=="Rider"){
+                                startActivity(Intent(this, RiderActivity::class.java))
+
+                            }
+                            if(document.get("type").toString()=="Gestore"){
+//                                TODO CUSTOMER
+                                startActivity(Intent(this, HomeActivity::class.java))
+                            }
+                        }else{
+                            //utente è al primo accesso, deve scegliere il tipo di account
+                            startActivity(Intent(this, FirstTimeActivity::class.java))
                         }
                     }
-                    startActivity(Intent(this, FirstTimeActivity::class.java))
                 }
                 .addOnFailureListener{ e -> Log.d("google","$e")}
             Toast.makeText(this,"Cannot get",Toast.LENGTH_SHORT).show()
