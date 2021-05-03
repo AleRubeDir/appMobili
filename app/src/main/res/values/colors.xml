@@ -10,7 +10,7 @@
     <color name="primary">#f47c48</color>
     <color name="complementary">#48c0f4</color>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="mapCircle">#1B48C0F4</color>
+    <color name="mapCircle">#FFC107</color>
         <color name="colorPrimaryDark">#303F9F</color>
 
     <color name="colorAccent">#FF4081</color>
