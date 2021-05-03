@@ -1,6 +1,8 @@
 package it.uniupo.progetto
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Address
@@ -8,6 +10,10 @@ import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +34,7 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private val LOCATION_REQUEST_CODE = 101
-
+    private var marker : Marker? = null
     private fun requestPermission(permissionType: String, requestCode: Int) {
         ActivityCompat.requestPermissions(this, arrayOf(permissionType), requestCode
         )
@@ -96,7 +102,7 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                         .radius(10000.0)
                         .strokeColor(Color.RED)
                         .fillColor(0x000C1FFFF)
-
+                )
                 val mypos = findViewById<ImageButton>(R.id.find)
                 val search = findViewById<ImageButton>(R.id.search)
                 val address = findViewById<EditText>(R.id.address)
