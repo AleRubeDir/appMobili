@@ -132,8 +132,18 @@ class LoginActivity : AppCompatActivity() {
                         Log.d("***","${document.id}=> ${document.data} ")
                         Log.d("***","${document.get("mail").toString()} con mail ${mail} e ${document.get("type").toString()} ")
                         if(document.get("mail").toString() == mail && document.get("type").toString().isNotEmpty()){
-                            //utente ha già scelto il tipo di account
-                            startActivity(Intent(this, HomeActivity::class.java))
+                            if(document.get("type").toString()=="Cliente"){
+                                startActivity(Intent(this, HomeActivity::class.java))
+                            }
+                            if(document.get("type").toString()=="Rider"){
+                                startActivity(Intent(this, RiderActivity::class.java))
+
+                            }
+                            if(document.get("type").toString()=="Gestore"){
+//                                TODO CUSTOMER
+                                startActivity(Intent(this, HomeActivity::class.java))
+
+                            }
                         }else{
                             //utente è al primo accesso, deve scegliere il tipo di account
                             startActivity(Intent(this, FirstTimeActivity::class.java))

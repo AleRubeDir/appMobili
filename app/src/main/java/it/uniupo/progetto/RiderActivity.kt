@@ -24,7 +24,6 @@ class RiderActivity : AppCompatActivity() {
         val chatFragment = CartListFragment()
         val deliveryFragment = Consegne_todo()
         val profileFragment = ProfileFragment()
-        cart_hide()
         makeCurrentFragment(deliveryFragment)
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnNavigationItemSelectedListener {
@@ -35,16 +34,13 @@ class RiderActivity : AppCompatActivity() {
                         stampaArray(carrello)
                         makeCurrentFragment(chatFragment)
                     }
-                    cart_show()
-                    updateTot()
+
                     Log.d("totale","Tot in home vale $tot")
                 }
                 R.id.profilo -> {
-                    cart_hide()
                     makeCurrentFragment(deliveryFragment)
                 }
                 R.id.shop -> {
-                    cart_hide()
                     makeCurrentFragment(profileFragment)
                 }
             }
@@ -53,19 +49,6 @@ class RiderActivity : AppCompatActivity() {
 
     }
 
-    fun updateTot(){
-        val totview = findViewById<TextView>(R.id.tot)
-        var totdoub = "%.2f".format(tot)
-        totview.text = getString(R.string.cash,totdoub)
-    }
-    private fun cart_show(){
-        val tot = findViewById<RelativeLayout>(R.id.tot_layout)
-        tot.visibility = View.VISIBLE
-    }
-    private fun cart_hide(){
-        val tot = findViewById<RelativeLayout>(R.id.tot_layout)
-        tot.visibility = View.INVISIBLE
-    }
     private fun makeCurrentFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply{
         replace(R.id.fl_wrapper,fragment)
         commit()
@@ -81,10 +64,6 @@ class RiderActivity : AppCompatActivity() {
             Log.d("TAG","Old Value $oldValue")
             // HomeActivity().updateTot()
         }
-
-
     }
-
-
 }
 

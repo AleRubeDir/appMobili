@@ -33,6 +33,7 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
         ActivityCompat.requestPermissions(this, arrayOf(permissionType), requestCode
         )
     }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             LOCATION_REQUEST_CODE -> {
@@ -63,7 +64,6 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.uiSettings.isMyLocationButtonEnabled = false
@@ -77,23 +77,21 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     LOCATION_REQUEST_CODE)
         }
-<<<<<<< HEAD
         mMap.isMyLocationEnabled = false
 
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        lateinit var mylocation : Location
+        lateinit var mylocation: Location
         fusedLocationClient.lastLocation
-=======
 
         var geocodeMatches: List<Address>? = null
-        try{
+        try {
             geocodeMatches = Geocoder(this).getFromLocationName("San Salvatore ,AL", 1)
-        }catch (e: IOException){
+        } catch (e: IOException) {
             e.printStackTrace()
         }
         var zoomLevel = 11.0f //This goes up to 21
-        if(geocodeMatches!=null){
-            for(mat in geocodeMatches) {
+        if (geocodeMatches != null) {
+            for (mat in geocodeMatches!!) {
                 val market = LatLng(mat.latitude, mat.longitude)
                 mMap.addMarker(MarkerOptions().position(market).title("MiniMarket"))
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(market, zoomLevel))
@@ -103,65 +101,63 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                         .strokeColor(Color.RED)
                         .fillColor(0x000C1FFFF)
 
-               )
-                mypos.setOnClickListener{
-                val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-                fusedLocationClient.lastLocation
->>>>>>> 60b96fa8a3a70c01db478ad416d9b838d629ec73
-                .addOnSuccessListener { location: Location? ->
-                    // Got last known location. In some rare situations this can be null.
-                    if (location != null) {
-                        zoomLevel=16.0f
-                        val cliente = LatLng(location.latitude, location.longitude)
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
-                        Toast.makeText(this, "Lat " + location.latitude + " and long: " + location.longitude, Toast.LENGTH_LONG).show()
-<<<<<<< HEAD
-                        Log.d("maps", "mylocation vale $mylocation")
-                        // do something, save it perhaps?
-                        var geocodeMatches: List<Address>? = null
-                        try{
-                            geocodeMatches = Geocoder(this).getFromLocationName("via Circonvallazione Ovest 35 Valenza", 1)
-                        }catch (e: IOException){
-                            e.printStackTrace()
-                        }
+                )
+                mypos.setOnClickListener {
+                    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                    fusedLocationClient.lastLocation
+                            .addOnSuccessListener { location: Location? ->
+                                // Got last known location. In some rare situations this can be null.
+                                if (location != null) {
+                                    zoomLevel = 16.0f
+                                    val cliente = LatLng(location.latitude, location.longitude)
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
+                                    Toast.makeText(this, "Lat " + location.latitude + " and long: " + location.longitude, Toast.LENGTH_LONG).show()
+                                    Log.d("maps", "mylocation vale $mylocation")
+                                    // do something, save it perhaps?
+                                    var geocodeMatches: List<Address>? = null
+                                    try {
+                                        geocodeMatches = Geocoder(this).getFromLocationName("via Circonvallazione Ovest 35 Valenza", 1)
+                                    } catch (e: IOException) {
+                                        e.printStackTrace()
+                                    }
 
-                        if(geocodeMatches!=null){
-                            for(mat in geocodeMatches) {
-                                val market = LatLng(mat.latitude, mat.longitude)
+                                    if (geocodeMatches != null) {
+                                        for (mat in geocodeMatches!!) {
+                                            val market = LatLng(mat.latitude, mat.longitude)
 
-                                mMap.addMarker(MarkerOptions().position(market).title("MiniMarket"))
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(market))
-                                val circle = mMap.addCircle(CircleOptions()
-                                        .center(LatLng(mat.latitude, mat.longitude))
-                                        .radius(10000.0)
-                                        .strokeColor(Color.RED)
-                                        .fillColor(R.color.mapCircle))
-                                if(isInside(mylocation.latitude,mylocation.longitude,circle)==1){
-=======
-                                if(isInside(location.latitude, location.longitude, circle)==1){
->>>>>>> 60b96fa8a3a70c01db478ad416d9b838d629ec73
-                                    //dentro
-                                    // startActivity(Intent(this, HomeActivity::class.java))
-                                }else{
-                                    //fuori
+                                            mMap.addMarker(MarkerOptions().position(market).title("MiniMarket"))
+                                            mMap.moveCamera(CameraUpdateFactory.newLatLng(market))
+                                            val circle = mMap.addCircle(CircleOptions()
+                                                    .center(LatLng(mat.latitude, mat.longitude))
+                                                    .radius(10000.0)
+                                                    .strokeColor(Color.RED)
+                                                    .fillColor(R.color.mapCircle))
+                                            if (isInside(mylocation.latitude, mylocation.longitude, circle) == 1) {
+                                                if (isInside(location.latitude, location.longitude, circle) == 1) {
+                                                    //dentro
+                                                    // startActivity(Intent(this, HomeActivity::class.java))
+                                                } else {
+                                                    //fuori
+                                                }
+                                                Log.d("maps", "mylocation vale $location minimarket vale $market e circle vale ${circle}")
+                                            }
+                                        }
+                                    }
                                 }
-                                Log.d("maps", "mylocation vale $location minimarket vale $market e circle vale ${circle}")
                             }
-                        }
                     }
                 }
-
+            }
         }
-    }
-    private fun isInside(lat: Double, long: Double, circle: Circle):Int{
-        var distance = FloatArray(2)
-        Location.distanceBetween(lat, long, circle.center.latitude, circle.center.longitude, distance)
-        if(distance[0]>circle.radius){
-            Toast.makeText(this, "Oltre 10KM", Toast.LENGTH_SHORT).show()
-            return 1
-        }else{
-            Toast.makeText(this, "Entro i 10KM", Toast.LENGTH_SHORT).show()
-            return -1
-        }
-    }
+                private fun isInside(lat: Double, long: Double, circle: Circle): Int {
+                    var distance = FloatArray(2)
+                    Location.distanceBetween(lat, long, circle.center.latitude, circle.center.longitude, distance)
+                    if (distance[0] > circle.radius) {
+                        Toast.makeText(this, "Oltre 10KM", Toast.LENGTH_SHORT).show()
+                        return 1
+                    } else {
+                        Toast.makeText(this, "Entro i 10KM", Toast.LENGTH_SHORT).show()
+                        return -1
+                    }
+                }
 }
