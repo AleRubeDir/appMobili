@@ -21,11 +21,11 @@ class RiderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider)
-        /*val cartFragment = CartListFragment()
+        val chatFragment = CartListFragment()
+        val deliveryFragment = Consegne_todo()
         val profileFragment = ProfileFragment()
-        val shopFragment = ItemFragment()
         cart_hide()
-        makeCurrentFragment(shopFragment)
+        makeCurrentFragment(deliveryFragment)
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
@@ -33,7 +33,7 @@ class RiderActivity : AppCompatActivity() {
 
                     thread(start = true) {
                         stampaArray(carrello)
-                        makeCurrentFragment(cartFragment)
+                        makeCurrentFragment(chatFragment)
                     }
                     cart_show()
                     updateTot()
@@ -41,15 +41,15 @@ class RiderActivity : AppCompatActivity() {
                 }
                 R.id.profilo -> {
                     cart_hide()
-                    makeCurrentFragment(profileFragment)
+                    makeCurrentFragment(deliveryFragment)
                 }
                 R.id.shop -> {
                     cart_hide()
-                    makeCurrentFragment(shopFragment)
+                    makeCurrentFragment(profileFragment)
                 }
             }
             true
-        }*/
+        }
 
     }
 

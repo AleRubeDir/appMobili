@@ -77,6 +77,8 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     LOCATION_REQUEST_CODE)
         }
+        mMap.isMyLocationEnabled = false
+
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         lateinit var mylocation : Location
         fusedLocationClient.lastLocation
@@ -93,6 +95,7 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                         }catch (e: IOException){
                             e.printStackTrace()
                         }
+
                         if(geocodeMatches!=null){
                             for(mat in geocodeMatches) {
                                 val market = LatLng(mat.latitude, mat.longitude)

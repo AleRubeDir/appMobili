@@ -30,22 +30,23 @@
                 android:layout_height="wrap_content"
                 android:ems="15"
                 android:maxLines="1"/>
+
             <Button
                 android:id="@+id/search"
-                android:backgroundTint="@color/primary"
-                android:layout_width="wrap_content"
+                android:layout_width="48dp"
                 android:layout_height="wrap_content"
-                android:text="->"
                 android:layout_below="@id/insert_label"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@color/primary"
+                android:text="->" />
+
             <TextView
                 android:id="@+id/find_label"
-                android:layout_width="wrap_content"
+                android:layout_width="315dp"
                 android:layout_height="wrap_content"
-                android:text="Trova in automatico"
                 android:layout_below="@id/address"
-                android:textSize="25sp"
-                />
+                android:text="Trova in automatico"
+                android:textSize="25sp" />
             <ImageButton
                 android:id="@+id/find"
                 android:backgroundTint="@color/primary"
