@@ -2,6 +2,7 @@ package it.uniupo.progetto
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +20,7 @@ class FirstTimeActivity : AppCompatActivity() {
         val rider = Rider()
         val gestore = Gestore()
         val a = arrayOf(customer,rider,gestore)
-
+        val mail = intent.getStringExtra("mail")!!
         val next = findViewById<Button>(R.id.next)
         val end = findViewById<Button>(R.id.end)
         var i = 0;
@@ -35,7 +36,11 @@ class FirstTimeActivity : AppCompatActivity() {
             }
         }
         end.setOnClickListener {
-            startActivity(Intent(this, ChooseActivity::class.java))
+
+            Log.d("google","mail in firsttime vale $mail")
+            val intent = Intent(this, ChooseActivity::class.java)
+            intent.putExtra("mail", mail!! )
+            startActivity(intent)
         }
 
     }

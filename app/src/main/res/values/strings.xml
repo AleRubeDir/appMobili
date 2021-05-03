@@ -17,7 +17,8 @@
     <string name="hintname">Mario</string>
     <string name="hintsurname">Rossi</string>
     <string name="hintmail">mario.rossi@gmail.com</string>
-    <string name="scelta">Scegli come accedere</string>
+    <string name="scelta_login">Scegli come accedere</string>
+    <string name="scelta_reg">Scegli come registrarti</string>
     <!-- HOME -->
     <string name="search">Cerca...</string>
     <string name="add_cart">Aggiungi al carrello</string>

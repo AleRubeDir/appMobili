@@ -1,6 +1,8 @@
 package it.uniupo.progetto
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Address
@@ -8,6 +10,10 @@ import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,17 +24,17 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.Circle
-import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import java.io.IOException
 
 class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private val LOCATION_REQUEST_CODE = 101
-
+    private var marker: Marker? = null
     private fun requestPermission(permissionType: String, requestCode: Int) {
         ActivityCompat.requestPermissions(this, arrayOf(permissionType), requestCode
         )
@@ -62,12 +68,10 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
-
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.uiSettings.isMyLocationButtonEnabled = false
-        val mypos = findViewById<ImageButton>(R.id.find)
+
         val permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
         if (permission == PackageManager.PERMISSION_GRANTED) {
@@ -84,52 +88,119 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
         }catch (e: IOException){
             e.printStackTrace()
         }
-        var zoomLevel = 11.0f //This goes up to 21
-        if(geocodeMatches!=null){
-            for(mat in geocodeMatches) {
+        var zoomLevel = 11.0f
+
+            for (mat in geocodeMatches!!) {
                 val market = LatLng(mat.latitude, mat.longitude)
-                mMap.addMarker(MarkerOptions().position(market).title("MiniMarket"))
+                mMap.addMarker(MarkerOptions()
+                        .position(market).title("MiniMarket")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                )
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(market, zoomLevel))
                 val circle = mMap.addCircle(CircleOptions()
                         .center(LatLng(mat.latitude, mat.longitude))
                         .radius(10000.0)
                         .strokeColor(Color.RED)
-                        .fillColor(0x000C1FFFF)
+                        /*.fillColor(0x000C1FFFF)*/
+                )
 
-               )
+                val mypos = findViewById<ImageButton>(R.id.find)
+                val search = findViewById<ImageButton>(R.id.search)
+                val address = findViewById<EditText>(R.id.address)
+                var cliente: LatLng
+                zoomLevel=16.0f
+                search.setOnClickListener {
+                    //remove keyboard
+                    val mgr = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    mgr.hideSoftInputFromWindow(address.getWindowToken(), 0)
+                    try {
+                        geocodeMatches = Geocoder(this).getFromLocationName("${address.text}", 1)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
+                    for (mat in geocodeMatches!!) {
+                        cliente = LatLng(mat.latitude, mat.longitude)
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
+                                    if (cliente != null) {
+                                     var x = Geocoder(this).getFromLocationName(address.text.toString(),1)
+                                           for(mat in x){
+                                               val cliente = LatLng(cliente.latitude, cliente.longitude)
+
+                                               marker?.remove()
+                                               marker = mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
+                                               mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
+                                               var loc = Location(address.text.toString())
+                                               loc.latitude = cliente.latitude
+                                               loc.longitude = cliente.longitude
+                                               //Log.d("indirizzo","${Location(address.text.toString())}")
+                                               isInside(loc, circle)
+
+                                           }
+                                    }
+                                }
+                    }
                 mypos.setOnClickListener{
                 val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
                 fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     // Got last known location. In some rare situations this can be null.
                     if (location != null) {
-                        zoomLevel=16.0f
-                        val cliente = LatLng(location.latitude, location.longitude)
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
-                        Toast.makeText(this, "Lat " + location.latitude + " and long: " + location.longitude, Toast.LENGTH_LONG).show()
-                                if(isInside(location.latitude, location.longitude, circle)==1){
-                                    //dentro
-                                    // startActivity(Intent(this, HomeActivity::class.java))
-                                }else{
-                                    //fuori
-                                }
-                                Log.d("maps", "mylocation vale $location minimarket vale $market e circle vale ${circle}")
+                            val cliente = LatLng(location.latitude, location.longitude)
+                            marker?.remove()
+                            marker = mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
+                            isInside(location, circle)
                             }
                         }
                     }
                 }
-
         }
+
+    private fun setAddressFirebase(location: Location){
+        var geocodeMatches: List<Address>? = null
+        var indirizzo = ""
+            try {
+                geocodeMatches = Geocoder(this).getFromLocation(location!!.latitude, location.longitude, 1)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            if (geocodeMatches != null) {
+                indirizzo += geocodeMatches[0].getAddressLine(0) + " " + geocodeMatches[0].adminArea + " " + geocodeMatches[0].postalCode + " " + geocodeMatches[0].countryName
+            }
+
+            var currentUser = intent.getStringExtra("mail")!!
+                Log.d("google", "se aggiorno ora vale $currentUser")
+            val entry = hashMapOf<String, Any?>(
+                    "address" to indirizzo,
+            )
+            var db: FirebaseFirestore = FirebaseFirestore.getInstance()
+            db.collection("users").document(currentUser)
+                    .set(entry, SetOptions.merge())
+                    .addOnSuccessListener { documentReference ->
+                        Log.d(
+                                "indirizzo",
+                                "indirizzo : $indirizzo "
+                        )
+                    }
+                    .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
     }
-    private fun isInside(lat: Double, long: Double, circle: Circle):Int{
+    private fun isInside(location: Location?, circle: Circle) {
         var distance = FloatArray(2)
-        Location.distanceBetween(lat, long, circle.center.latitude, circle.center.longitude, distance)
-        if(distance[0]>circle.radius){
-            Toast.makeText(this, "Oltre 10KM", Toast.LENGTH_SHORT).show()
-            return 1
-        }else{
-            Toast.makeText(this, "Entro i 10KM", Toast.LENGTH_SHORT).show()
-            return -1
+        if (location != null) {
+            Location.distanceBetween(location!!.latitude, location.longitude, circle.center.latitude, circle.center.longitude, distance)
+            if (distance[0] > circle.radius) {
+                Toast.makeText(this, "Troppo distante", Toast.LENGTH_SHORT).show()
+            } else {
+
+                Toast.makeText(this, "Indirizzo valido", Toast.LENGTH_SHORT).show()
+                val go = findViewById<Button>(R.id.go)
+                go.visibility = View.VISIBLE
+                go.setOnClickListener {
+                    startActivity(Intent(this, HomeActivity::class.java))
+                }
+            }
+            setAddressFirebase(location)
         }
     }
 }

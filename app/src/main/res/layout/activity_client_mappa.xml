@@ -26,27 +26,11 @@
             <EditText
                 android:id="@+id/address"
                 android:layout_below="@id/insert_label"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:maxLines="1"/>
-            <ImageButton
-                android:id="@+id/search"
-                android:backgroundTint="@color/primary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/search"
-                android:layout_toStartOf="@id/find"
-                android:layout_below="@id/insert_label" />
-            <ImageButton
-                android:id="@+id/find"
-                android:backgroundTint="@color/primary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/find"
-                android:layout_below="@id/insert_label"
-                android:layout_alignParentEnd="true"
-                />
+
+
         </RelativeLayout>
 
     </LinearLayout>
@@ -55,6 +39,7 @@
         android:layout_height="match_parent"
         android:layout_weight="0.12"
         >
+
     <fragment
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -63,6 +48,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         map:uiZoomControls="false"
-        tools:context=".ClientMappa" />
+        tools:context=".ClientMappa" >
+        <ImageButton
+            android:id="@+id/search"
+            android:backgroundTint="@color/primary"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search" />
+        <ImageButton
+            android:id="@+id/find"
+            android:backgroundTint="@color/primary"
+            android:layout_width="wrap_content"
+            android:layout_gravity="end|top"
+            android:layout_height="wrap_content"
+            android:src="@drawable/find"
+            />
+        <Button
+            android:id="@+id/go"
+            android:backgroundTint="@color/primary"
+            android:layout_width="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="@string/end"
+            />
+    </fragment>
+
     </LinearLayout>
 </LinearLayout>

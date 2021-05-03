@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -56,13 +57,13 @@ class LoginActivity : AppCompatActivity() {
        // updateUI(currentUser)
     }
     private fun signIn() {
+        Log.d("login","sei in signIn")
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -71,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!)
+
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e)
@@ -124,24 +126,21 @@ class LoginActivity : AppCompatActivity() {
                 }
     }
     private fun selectActivity(mail:String){
+        Log.d("login","mail vale : $mail")
         val db = FirebaseFirestore.getInstance()
         db.collection("users")
                 .get()
                 .addOnSuccessListener { result->
                     for (document in result) {
-                        Log.d("***","${document.id}=> ${document.data} ")
-                        Log.d("***","${document.get("mail").toString()} con mail ${mail} e ${document.get("type").toString()} ")
                         if(document.get("mail").toString() == mail && document.get("type").toString().isNotEmpty()){
                             //utente ha già scelto il tipo di account
                             startActivity(Intent(this, HomeActivity::class.java))
-                        }else{
-                            //utente è al primo accesso, deve scegliere il tipo di account
-                            startActivity(Intent(this, FirstTimeActivity::class.java))
                         }
                     }
+                    startActivity(Intent(this, FirstTimeActivity::class.java))
                 }
-                .addOnFailureListener{ e -> Log.w("---","Error getting document",e)}
-            Toast.makeText(this,"Cannot get",Toast.LENGTH_SHORT)
+                .addOnFailureListener{ e -> Log.d("google","$e")}
+            Toast.makeText(this,"Cannot get",Toast.LENGTH_SHORT).show()
 
     }
     private fun isEmailValid(email: String): Boolean {
@@ -156,7 +155,14 @@ class LoginActivity : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
                         val user = auth.currentUser
-                      //  updateUI(user)
+                        val type = getUserType(user.email)
+                        if(type=="Cliente")
+                            startActivity(Intent(this, HomeActivity::class.java))
+                        else if(type=="Rider")
+                            startActivity(Intent(this, RiderActivity::class.java))
+                        else if(type=="Gestore")
+                            //todo gestore activity
+                            startActivity(Intent(this, HomeActivity::class.java))
                         /*
                         Se la chiamata a signInWithCredential riesce, puoi utilizzare il metodo getCurrentUser per ottenere i dati dell'account dell'utente.
                          */
@@ -167,4 +173,15 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
     }
+    private fun getUserType(user : String) : String{
+        Log.d("login","User in getusertype $user")
+        val db = FirebaseFirestore.getInstance()
+        var t = ""
+                db.collection("users").document(user.toString())
+                .get()
+                .addOnSuccessListener { result ->
+                    t = result.getString("type")!!
+                    }
+        return t
+                }
 }
