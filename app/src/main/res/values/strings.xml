@@ -14,6 +14,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="logo">Logo</string>
+    <string name="compra">Compra!</string>
     <string name="hintname">Mario</string>
     <string name="hintsurname">Rossi</string>
     <string name="hintmail">mario.rossi@gmail.com</string>
@@ -62,18 +63,10 @@
     <!-- -->
     <string name="title_activity_welcome">Home Screen</string>
 
-
-    <string name="slide_1_title">Dally Workout</string>
-    <string name="slide_1_desc">Set your daily workout routine by the help of trainer</string>
-    <string name="slide_2_title">Meditation Techniques </string>
-    <string name="slide_2_desc">Learn about the different meditation techniques and practice them </string>
-    <string name="slide_3_title">Diet Chart</string>
-    <string name="slide_3_desc">Make your diet chart by the help of health experts</string>
-    <string name="play_again_desc">To see the welcome slider again, goto Settings > apps > welcome slider clear data</string>
-    <string name="play_again">Play Again</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_rider">RiderActivity</string>
     <string name="title_activity_client_mappa">Map</string>
+    <string name="il_mio_profilo">Il mio profilo</string>
 
 </resources>

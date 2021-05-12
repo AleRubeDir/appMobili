@@ -3,6 +3,7 @@ package it.uniupo.progetto
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
 
@@ -26,6 +27,10 @@ class HomeActivity : AppCompatActivity() {
         val shopFragment = ItemFragment()
         cart_hide()
         makeCurrentFragment(shopFragment)
+        val compra = findViewById<Button>(R.id.compra)
+        compra.setOnClickListener{
+            
+        }
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){

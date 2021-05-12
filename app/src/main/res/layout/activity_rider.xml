@@ -20,11 +20,11 @@
             app:itemBackground="@color/complementary"
             android:layout_gravity="center|top">
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:text="Disponibilità" />
 
         </RelativeLayout>
