@@ -10,6 +10,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.fragments.*
 import kotlin.concurrent.thread
 import kotlin.math.round
@@ -22,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
+        createCart()
         val cartFragment = CartListFragment()
         val profileFragment = ProfileFragment()
         val shopFragment = ItemFragment()
@@ -61,7 +65,36 @@ class HomeActivity : AppCompatActivity() {
         }
 
     }
+    private fun createCart(){
 
+        val db = FirebaseFirestore.getInstance()
+        var auth = FirebaseAuth.getInstance();
+        val user = auth.currentUser!!.email
+        Log.d("qta","Inizio nuovo carrello utente $user")
+        val entry = hashMapOf<String, Any?>(
+                "id" to "",
+                "titolo" to "",
+                "prezzo" to "",
+                "qta" to "",
+        )
+        var x = false
+        db.collection("carts").get()
+                .addOnSuccessListener { result ->
+                    for(doc in result ){
+                        Log.d("qta","${doc.id} == $user")
+
+                        if (doc.id == user){
+                            Log.d("qta","Carrello già esistente")
+                            x = true
+                        }
+                    }
+                    if(!x){
+                        Log.d("qta","Creato nuovo carrello")
+                        db.collection("carts").document(user!!).collection("products")
+                    }
+
+                }
+    }
     fun updateTot(){
         val totview = findViewById<TextView>(R.id.tot)
         var totdoub = "%.2f".format(tot)

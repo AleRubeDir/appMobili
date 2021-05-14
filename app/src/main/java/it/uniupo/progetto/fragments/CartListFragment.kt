@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.HomeActivity
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
+import java.util.HashMap
 import kotlin.concurrent.thread
 
 /**
@@ -60,11 +62,10 @@ class CartListFragment : Fragment() {
         }
     }*/
     private fun getUserCart(myCallback: ItemFragment.MyCallback) {
-        //val user = FirebaseAuth.getInstance().currentUser.toString()
-        val user = "fJB1nlkxu4GIPczWN6zH"
+        val user = FirebaseAuth.getInstance().currentUser!!.email
         HomeActivity.carrello.clear()
         val db = FirebaseFirestore.getInstance()
-        db.collection("carts").document(user).collection("products")
+        db.collection("carts").document(user!!).collection("products")
             .get()
             .addOnSuccessListener { result ->
                         for (document in result) {

@@ -12,6 +12,7 @@
     <dimen name="slidedesc">16dp</dimen>
     <dimen name="desc_padding">40dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="btn_width">300dp</dimen>
     <!--
     Because the window insets on round devices are larger than 15dp, this padding only applies
     to square screens.

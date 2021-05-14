@@ -28,6 +28,7 @@ class ProfileFragment : Fragment() {
                 array.add(Azione("Dati personali",0))
                 array.add(Azione("La mia posizione",1))
                 array.add(Azione("I miei ordini",2))
+                array.add(Azione("Logout",3))
                 adapter = ProfileActionsAdapter(array)
             }
         }

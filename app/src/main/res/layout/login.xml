@@ -2,7 +2,10 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp">
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:layout_margin="20dp"
+    android:focusable="true">
     <ImageView
         android:id="@+id/logo"
         android:layout_width="161dp"
@@ -80,6 +83,7 @@
         <EditText
 
             android:id="@+id/pwd"
+            android:imeOptions="actionDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPassword"

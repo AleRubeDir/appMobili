@@ -1,11 +1,15 @@
 package it.uniupo.progetto
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.OnFocusChangeListener
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -56,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
        // updateUI(currentUser)
     }
     private fun signIn() {
-        Log.d("login","sei in signIn")
+        Log.d("login", "sei in signIn")
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -79,16 +83,27 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-
-
-    fun logout(){
-        FirebaseAuth.getInstance().signOut();
+    fun Activity.hideSoftKeyboard() {
+        currentFocus?.let {
+            val inputMethodManager = ContextCompat.getSystemService(this, InputMethodManager::class.java)!!
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+        }
     }
-
     private fun loginUser() {
         val usr = findViewById<EditText>(R.id.usr)
+        usr.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                val inputMethodManager = ContextCompat.getSystemService(this, InputMethodManager::class.java)!!
+                inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
+            }
+        }
         val pwd = findViewById<EditText>(R.id.pwd)
-
+        /*pwd.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                val inputMethodManager = ContextCompat.getSystemService(this, InputMethodManager::class.java)!!
+                inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
+            }
+        }*/
         if (usr.text.toString().isEmpty()) {
             usr.error = "Please enter email"
             usr.requestFocus()
@@ -111,49 +126,48 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(
-                            baseContext, "User creted. Log in to enter in the restricted area.",
-                            Toast.LENGTH_SHORT
+                                baseContext, "User creted. Log in to enter in the restricted area.",
+                                Toast.LENGTH_SHORT
                         ).show()
                         selectActivity(usr.text.toString())
 
                         finish()
                     } else {
                         Toast.makeText(
-                            baseContext, "Sign Up failed. Try again after some time.",
-                            Toast.LENGTH_SHORT
+                                baseContext, "Sign Up failed. Try again after some time.",
+                                Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
     }
-    private fun selectActivity(mail:String){
-        Log.d("login","mail vale : $mail")
+    private fun selectActivity(mail: String){
+        Log.d("login", "mail vale : $mail")
         val db = FirebaseFirestore.getInstance()
         db.collection("users")
                 .get()
                 .addOnSuccessListener { result->
                     for (document in result) {
-                        Log.d("***","${document.id}=> ${document.data} ")
-                        Log.d("***","${document.get("mail").toString()} con mail ${mail} e ${document.get("type").toString()} ")
-                        if(document.get("mail").toString() == mail && document.get("type").toString().isNotEmpty()){
-                            if(document.get("type").toString()=="Cliente"){
+                        Log.d("login", "${document.get("mail").toString() == mail} , ${document.get("type").toString().isNotEmpty()} ")
+                        if(document.get("mail").toString() == mail && document.get("type").toString().isNotEmpty()) {
+                            Log.d("login", "Entro ${document.get("type").toString() == "Cliente"}")
+                            if (document.get("type").toString() == "Cliente") {
                                 startActivity(Intent(this, HomeActivity::class.java))
-                            }
-                            if(document.get("type").toString()=="Rider"){
+                            } else if (document.get("type").toString() == "Rider") {
                                 startActivity(Intent(this, RiderActivity::class.java))
-
-                            }
-                            if(document.get("type").toString()=="Gestore"){
-//                                TODO CUSTOMER
+                            } else if (document.get("type").toString() == "Gestore") {
+                                //TODO CUSTOMER
                                 startActivity(Intent(this, HomeActivity::class.java))
+                            } else {
+                                //utente è al primo accesso, deve scegliere il tipo di account
+                                val i = Intent(this, FirstTimeActivity::class.java)
+                                i.putExtra("mail", mail)
+                                startActivity(i)
                             }
-                        }else{
-                            //utente è al primo accesso, deve scegliere il tipo di account
-                            startActivity(Intent(this, FirstTimeActivity::class.java))
                         }
                     }
                 }
-                .addOnFailureListener{ e -> Log.d("google","$e")}
-            Toast.makeText(this,"Cannot get",Toast.LENGTH_SHORT).show()
+                .addOnFailureListener{ e -> Log.d("google", "$e")}
+            Toast.makeText(this, "Cannot get", Toast.LENGTH_SHORT).show()
 
     }
     private fun isEmailValid(email: String): Boolean {
@@ -165,36 +179,39 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
-                        val user = auth.currentUser
-                        val type = getUserType(user.email)
-                        if(type=="Cliente")
-                            startActivity(Intent(this, HomeActivity::class.java))
-                        else if(type=="Rider")
-                            startActivity(Intent(this, RiderActivity::class.java))
-                        else if(type=="Gestore")
-                            //todo gestore activity
-                            startActivity(Intent(this, HomeActivity::class.java))
-                        /*
-                        Se la chiamata a signInWithCredential riesce, puoi utilizzare il metodo getCurrentUser per ottenere i dati dell'account dell'utente.
-                         */
+                        val user = auth.currentUser!!
+                        getUserType(user.email, object : FirestoreCallback {
+                            override fun onCallback(type: String) {
+                                startActivityType(type)
+                            }
+                        })
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
-                      //  updateUI(null)
                     }
                 }
     }
-    private fun getUserType(user : String) : String{
-        Log.d("login","User in getusertype $user")
+    private fun getUserType(user: String?, fc: FirestoreCallback){
         val db = FirebaseFirestore.getInstance()
         var t = ""
-                db.collection("users").document(user.toString())
+        db.collection("users").document(user!!)
                 .get()
                 .addOnSuccessListener { result ->
                     t = result.getString("type")!!
-                    }
-        return t
+                    fc.onCallback(t)
                 }
+    }
+    interface FirestoreCallback{
+        fun onCallback(type: String)
+    }
+
+    private fun startActivityType(type: String){
+        when (type) {
+            "Cliente" -> startActivity(Intent(this, HomeActivity::class.java))
+            "Rider" -> startActivity(Intent(this, RiderActivity::class.java))
+            "Gestore"
+                //todo gestore activity
+            -> startActivity(Intent(this, HomeActivity::class.java))
+        }
+    }
 }

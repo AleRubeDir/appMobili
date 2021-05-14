@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,7 @@ class MyItemRecyclerViewAdapter(private val values: ArrayList<Prodotto>) : Recyc
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_item, parent, false)
 
-        val rel = view.findViewById<RelativeLayout>(R.id.rel)
+        val rel = view.findViewById<CardView>(R.id.rel)
         var id = view.findViewById<TextView>(R.id.id)
         //var fp = FragmentProdotto()
         rel.setOnClickListener{

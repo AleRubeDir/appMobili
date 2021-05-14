@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -40,6 +41,11 @@ import it.uniupo.progetto.fragments.ProfileFragment
              }
              if(id.text=="2"){
                 //i miei ordini
+             }
+             if(id.text=="3"){
+                 FirebaseAuth.getInstance().signOut()
+                 view.context.startActivity(Intent(view.context, MainActivity::class.java))
+                 Toast.makeText(view.context,"Logout effettuato", Toast.LENGTH_SHORT).show()
              }
          }
          return ViewHolder(view)

@@ -1,6 +1,7 @@
 package it.uniupo.progetto.fragments
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
 
@@ -16,6 +18,7 @@ import it.uniupo.progetto.R
 class MyCartListRecyclerViewAdapter(
         private val values: ArrayList<Prodotto>
 ) : RecyclerView.Adapter<MyCartListRecyclerViewAdapter.ViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -29,9 +32,11 @@ class MyCartListRecyclerViewAdapter(
             var id = idtv.text.toString().toInt()
             var n = qta.text.toString().toInt() + 1
             var p = Prodotto.getProdotto(id)
+            Log.d("qta","prodotto $p vecchia qta ${qta.text} nuova qta $n")
             if (p != null) {
-                if (p.qta<n) {
-                    qta.text = p.qta.toString()
+                if (p.qta>=n) {
+                    qta.text = n.toString()
+                    salvaQta(p,n)
                 }else{
                     Toast.makeText(parent.context, "Qta max", Toast.LENGTH_SHORT).show()
                 }
@@ -44,9 +49,10 @@ class MyCartListRecyclerViewAdapter(
             if (p != null) {
                 if (p.qta>n) {
                     qta.text = n.toString()
-
+                    salvaQta(p,n)
                 }else{
                     qta.text = p.qta.toString()
+                    salvaQta(p,p.qta)
                     Toast.makeText(parent.context, "Qta max", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -56,12 +62,14 @@ class MyCartListRecyclerViewAdapter(
         minus.setOnClickListener {
             var id = idtv.text.toString().toInt()
             var nqta = qta.text.toString().toInt() - 1
+            var p = Prodotto.getProdotto(id)
             if (nqta <= 0) {
                 rimuoviProdotto(id)
                 notifyDataSetChanged()
                 Toast.makeText(parent.context, "Prodotto rimosso ", Toast.LENGTH_SHORT).show()
             } else {
                 diminuisciQta(id)
+                salvaQta(p!!,nqta)
                 qta.text = nqta.toString()
             }
             CartListFragment.cartTot()
@@ -70,12 +78,14 @@ class MyCartListRecyclerViewAdapter(
         minus.setOnLongClickListener {
             var id = idtv.text.toString().toInt()
             var nqta = qta.text.toString().toInt() - 10
+            var p = Prodotto.getProdotto(id)
             if (qta.text.toString().toInt() < 10) {
                 rimuoviProdotto(id)
                 notifyDataSetChanged()
                 Toast.makeText(parent.context, "Prodotto rimosso ", Toast.LENGTH_SHORT).show()
             } else {
                 diminuisciVeloceQta(id)
+                salvaQta(p!!,nqta)
                 qta.text = nqta.toString()
             }
             CartListFragment.cartTot()
@@ -83,19 +93,33 @@ class MyCartListRecyclerViewAdapter(
         }
         return ViewHolder(view)
     }
-    fun diminuisciQta(id: Int){
+    private fun diminuisciQta(id: Int){
         for(p in values){
             if(p.id==id)
                 p.qta--
         }
     }
-    fun diminuisciVeloceQta(id: Int){
+    private fun diminuisciVeloceQta(id: Int){
         for(p in values){
             if(p.id==id)
                 p.qta = p.qta-10
         }
     }
-    fun rimuoviProdotto(id: Int){
+    private fun salvaQta(p : Prodotto, qta : Int){
+        //val user = FirebaseAuth.getInstance().currentUser.toString() da rimettere quando faccio login
+        val user = "fJB1nlkxu4GIPczWN6zH"
+        val db = FirebaseFirestore.getInstance()
+        val entry = hashMapOf<String, Any?>(
+                "qta" to qta,
+        )
+        db.collection("carts").document(user).collection("products").document(p.id.toString())
+                .set(entry, SetOptions.merge())
+                .addOnSuccessListener { documentReference ->
+                    Log.d("qta", "Aggiornata qta carrello del prodotto ${p.id} : $qta ")
+                }
+                .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
+    }
+    private fun rimuoviProdotto(id: Int){
         var el : Prodotto = values[0]
         for(p in values){
             if(p.id==id)
@@ -107,17 +131,6 @@ class MyCartListRecyclerViewAdapter(
         val db = FirebaseFirestore.getInstance()
         db.collection("carts").document(user).collection("products").document(id.toString())
                 .delete()
-      /*  val updates = hashMapOf<String,Any>(
-                        "id" to FieldValue.delete()
-                        "prezzo" to FieldValue.delete()
-                )*/
-             /*   .addOnSuccessListener {
-                    Log.d("+++", "Prodotto rimosso - rimuoviProdotto()")
-                }
-                .addOnFailureListener {
-                    //  arr.add(Prodotto(2,-1,"q","q","2,00€",2))
-                    Log.d("---", "Error getting document - ALL PRODUCTS()")
-                }*/
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
