@@ -68,5 +68,6 @@
     <string name="title_activity_rider">RiderActivity</string>
     <string name="title_activity_client_mappa">Map</string>
     <string name="il_mio_profilo">Il mio profilo</string>
+    <string name="salva_modifiche">Salva modifiche</string>
 
 </resources>

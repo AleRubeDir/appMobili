@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import it.uniupo.progetto.R
-import it.uniupo.progetto.fragments.dummy.DummyContent
 
 /**
  * A fragment representing a list of Items.
@@ -39,7 +38,7 @@ class Consegne_todo : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter2(DummyContent.ITEMS)
+               // adapter = MyItemRecyclerViewAdapter2(DummyContent.ITEMS)
             }
         }
         return view

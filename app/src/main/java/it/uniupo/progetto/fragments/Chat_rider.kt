@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import it.uniupo.progetto.R
-import it.uniupo.progetto.fragments.dummy.DummyContent
+
 
 /**
  * A fragment representing a list of Items.
@@ -39,7 +39,7 @@ class Chat_rider : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter3(DummyContent.ITEMS)
+               // adapter = MyItemRecyclerViewAdapter3(DummyContent.ITEMS)
             }
         }
         return view

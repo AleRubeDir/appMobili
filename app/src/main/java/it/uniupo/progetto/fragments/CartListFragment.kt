@@ -36,7 +36,7 @@ class CartListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                getUserCart((object: ItemFragment.MyCallback {
+                getUserCart((object: ItemFragment.Companion.MyCallback {
                     override fun onCallback(value: List<Prodotto>) {
                         cartTot()
                         //Log.d("totale","Totale in callback vale ${HomeActivity.tot}")
@@ -61,7 +61,7 @@ class CartListFragment : Fragment() {
             Log.d("totale", "Temp vale $temp Totale in cartTot vale ${HomeActivity.tot}")
         }
     }*/
-    private fun getUserCart(myCallback: ItemFragment.MyCallback) {
+    private fun getUserCart(myCallback: ItemFragment.Companion.MyCallback) {
         val user = FirebaseAuth.getInstance().currentUser!!.email
         HomeActivity.carrello.clear()
         val db = FirebaseFirestore.getInstance()

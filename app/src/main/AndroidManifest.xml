@@ -33,6 +33,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".GestoreProdotto" />
+        <activity android:name=".GestoreActivity" />
         <activity android:name=".ClientMappa" />
         <activity android:name=".PaginaProdotto" />
         <activity android:name=".ChooseActivity" />

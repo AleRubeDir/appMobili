@@ -20,29 +20,24 @@ class GestoreActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_rider)
-        val chatFragment = CartListFragment()
-        val deliveryFragment = Consegne_todo()
+        setContentView(R.layout.activity_gestore)
+        val orderFragment = OrderFragment()
+        val shopFragment = ShopFragment()
         val profileFragment = ProfileFragment()
-        makeCurrentFragment(deliveryFragment)
+        makeCurrentFragment(shopFragment)
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.carrello -> {
-
-                    thread(start = true) {
-                        stampaArray(carrello)
-                        makeCurrentFragment(chatFragment)
-                    }
-
-                    Log.d("totale","Tot in home vale $tot")
-                }
-                R.id.profilo -> {
-                    makeCurrentFragment(deliveryFragment)
+                R.id.order -> {
+                    makeCurrentFragment(orderFragment)
                 }
                 R.id.shop -> {
+                    makeCurrentFragment(shopFragment)
+                }
+                R.id.profilo -> {
                     makeCurrentFragment(profileFragment)
                 }
+
             }
             true
         }

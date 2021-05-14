@@ -26,18 +26,14 @@ class FirstTimeActivity : AppCompatActivity() {
         var i = 0;
         makeCurrentFragment(a[i])
         next.setOnClickListener{
-            println("dentro")
             i++
             makeCurrentFragment(a[i])
             if(i==2){
-                    println("CIAO")
                     next.visibility = View.INVISIBLE
                     end.visibility = View.VISIBLE
             }
         }
         end.setOnClickListener {
-
-            Log.d("google","mail in firsttime vale $mail")
             val intent = Intent(this, ChooseActivity::class.java)
             intent.putExtra("mail", mail!! )
             startActivity(intent)

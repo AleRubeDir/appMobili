@@ -5,25 +5,38 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import it.uniupo.progetto.HomeActivity.Companion.array
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
 
 
 class ShopFragment : Fragment() {
+    private var columnCount = 1
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
-/*        val p1 = Prodotto(R.mipmap.ic_launcher,"Pasta","Pasta barilla integrale","2,99€",99)
-        val p2 = Prodotto(R.mipmap.ic_launcher,"Pasta","Pasta barilla 00","1,99€",99)
-        array = arrayOf(p1,p2)
-        val myList = view?.findViewById<ListView>(R.id.scrollView)
-        if (myList != null) {
-            myList.adapter = MyArrayAdapter(HomeActivity(), R.layout.row, array)
-            Log.d("***","adapter :   ${myList.adapter} \n myList :    $myList ")
-        }*/
+        val view = inflater.inflate(R.layout.fragment_shop_list, container, false)
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shop, container, false)
+        // Set the adapter
+        if (view is RecyclerView) {
+            with(view) {
+                layoutManager = when {
+                    columnCount <= 1 -> LinearLayoutManager(context)
+                    else -> GridLayoutManager(context, columnCount)
+                }
+
+                ItemFragment.getAllProducts((object : ItemFragment.Companion.MyCallback {
+                    override fun onCallback(value: List<Prodotto>) {
+                        adapter = MyShopRecycleViewAdapter(array)
+                    }
+                }))
+            }
+        }
+        return view
     }
+
 }

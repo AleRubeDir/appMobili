@@ -155,8 +155,7 @@ class LoginActivity : AppCompatActivity() {
                             } else if (document.get("type").toString() == "Rider") {
                                 startActivity(Intent(this, RiderActivity::class.java))
                             } else if (document.get("type").toString() == "Gestore") {
-                                //TODO CUSTOMER
-                                startActivity(Intent(this, HomeActivity::class.java))
+                                startActivity(Intent(this, GestoreActivity::class.java))
                             } else {
                                 //utente è al primo accesso, deve scegliere il tipo di account
                                 val i = Intent(this, FirstTimeActivity::class.java)

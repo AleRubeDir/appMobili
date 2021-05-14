@@ -20,15 +20,18 @@
             app:itemBackground="@color/complementary"
             android:layout_gravity="center|top">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_delivery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="Disponibilità" />
-
         </RelativeLayout>
     </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/chat"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_chat"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/chat"
+        android:layout_alignParentEnd="true"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
@@ -41,5 +44,5 @@
         app:itemBackground="@color/complementary"
         app:itemIconTint="#fff"
         app:itemTextColor="#fff"
-        app:menu="@menu/rider_menu" />
+        app:menu="@menu/gestore_menu" />
 </RelativeLayout>
