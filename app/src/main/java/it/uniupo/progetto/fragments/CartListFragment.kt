@@ -1,5 +1,6 @@
 package it.uniupo.progetto.fragments
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,8 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.HomeActivity
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
-import java.util.HashMap
-import kotlin.concurrent.thread
 
 /**
  * A fragment representing a list of Items.
@@ -73,7 +72,7 @@ class CartListFragment : Fragment() {
                             val titolo = document.get("titolo").toString()
                             val prezzo = document.get("prezzo").toString()
                             val qta = document.getLong("qta")!!.toInt()
-                            val p = Prodotto(id, -1, titolo, "NULL", prezzo, qta)
+                            val p = Prodotto(id, "-1", titolo, "NULL", prezzo, qta)
                             HomeActivity.carrello.add(p)
                         }
                 stampaArray(HomeActivity.carrello)

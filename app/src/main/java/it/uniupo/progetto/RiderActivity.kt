@@ -16,7 +16,7 @@ import kotlin.properties.Delegates
 
 class RiderActivity : AppCompatActivity() {
  fun stampaArray(array : ArrayList<Prodotto>){
-        Log.d("totale","HomeActivity- array -> $array")
+        Log.d("totale","RiderActivity- array -> $array")
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -99,7 +99,7 @@ class RegisterActivity  : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("google", "signInWithCredential:success")
                         val user = auth.currentUser
-                        Log.d("google","-------- user email ${user.email}")
+                        Log.d("google","-------- user email ${user!!.email}")
                         selectActivity(user.email)
                         //  updateUI(user)
                         /*

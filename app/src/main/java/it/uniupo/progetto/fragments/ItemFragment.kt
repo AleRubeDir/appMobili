@@ -1,11 +1,11 @@
 package it.uniupo.progetto.fragments
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,13 +23,7 @@ class ItemFragment : Fragment() {
     private var columnCount = 1
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
-
-
-        Log.d("***", "Values in item $array")
-        // Set the adapter
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = when {
@@ -37,7 +31,6 @@ class ItemFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 Log.d("***", "Values in item $array")
-
                 getAllProducts((object: MyCallback {
                     override fun onCallback(value: List<Prodotto>) {
                         adapter = MyItemRecyclerViewAdapter(array)
@@ -47,22 +40,10 @@ class ItemFragment : Fragment() {
         }
         return view
     }
-    private fun makeCurrentFragment(fragment: Fragment) = HomeActivity().supportFragmentManager.beginTransaction().apply{
-        replace(R.id.fl_wrapper, fragment)
-        commit()
-    }
-private fun Fragment.addChildFragment(fragment: Fragment, frameId: Int) {
-    val transaction = childFragmentManager.beginTransaction()
-    transaction.replace(frameId, fragment).commit()
-}
-
 
     companion object {
         interface MyCallback {
             fun onCallback(value: List<Prodotto>)
-        }
-        fun stampaArray(array: ArrayList<Prodotto>) {
-            Log.d("***", "$array")
         }
         fun getAllProducts(myCallback: MyCallback) {
             val db = FirebaseFirestore.getInstance()
@@ -74,7 +55,7 @@ private fun Fragment.addChildFragment(fragment: Fragment, frameId: Int) {
                             var p: Prodotto
                             for (document in it.result!!) {
                                 val id = document.getLong("id")!!.toInt()
-                                val img = document.getLong("img")!!.toInt()
+                                val img = document.get("img")!!.toString()
                                 val titolo = document.get("titolo").toString()
                                 val desc = document.get("desc").toString()
                                 val prezzo = document.get("prezzo").toString()
@@ -89,7 +70,6 @@ private fun Fragment.addChildFragment(fragment: Fragment, frameId: Int) {
                     }
 
                     .addOnFailureListener { err->
-                        //  arr.add(Prodotto(2,-1,"q","q","2,00€",2))
                         Log.d("---", "Error getting document - ALL PRODUCTS() $err")
                     }
         }

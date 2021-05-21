@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="@string/add_cart"
         android:id="@+id/cart"
-        android:background="@color/primary" />
+        android:background="@drawable/gradient_orange" />
 <!--
 
     </ScrollView>

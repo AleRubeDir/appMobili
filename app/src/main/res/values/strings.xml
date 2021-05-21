@@ -69,5 +69,14 @@
     <string name="title_activity_client_mappa">Map</string>
     <string name="il_mio_profilo">Il mio profilo</string>
     <string name="salva_modifiche">Salva modifiche</string>
+    <string name="resta_connesso">Resta connesso</string>
+    <string name="mostra_password">Mostra password</string>
+    <string name="nascondi_password">Nascondi password</string>
+    <string name="nomeprodotto">NomeProdotto</string>
+    <string name="descrizione_prodotto">Descrizione prodotto</string>
+    <string name="prezzo">Prezzo</string>
+    <string name="quantit">Quantità</string>
+    <string name="aggiungi_prodotto">Aggiungi prodotto</string>
+    <string name="immagine_prodotto">Immagine prodotto</string>
 
 </resources>

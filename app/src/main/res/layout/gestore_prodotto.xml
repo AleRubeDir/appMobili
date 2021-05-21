@@ -3,50 +3,105 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <TextView
+        android:id="@+id/label_image"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/img"
+        android:text="@string/immagine_prodotto"
+        />
     <ImageView
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="170dp"
+        android:layout_below="@id/label_image"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/border"
         />
-    <ImageButton
+    <TextView
+        android:id="@+id/label_titolo"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/edit"/>
-
+        android:labelFor="@+id/titolo"
+        android:layout_below="@id/img"
+        android:text="@string/nomeprodotto"
+        />
     <EditText
         android:id="@+id/titolo"
+        android:layout_marginStart="15dp"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img"
-        android:textSize="@dimen/slide_title"
+        android:layout_below="@id/label_titolo"
+        android:textSize="@dimen/slidedesc"
+        android:maxLines="1"
+        />
+    <TextView
+        android:id="@+id/label_desc"
+        android:layout_marginStart="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/desc"
+        android:layout_below="@+id/titolo"
+        android:text="@string/descrizione_prodotto"
         />
     <EditText
         android:id="@+id/desc"
+        android:layout_marginStart="15dp"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:textSize="@dimen/slidedesc"
-        android:layout_below="@id/titolo"
+        android:layout_below="@id/label_desc"
+        android:maxLines="2"
+        />
+    <TextView
+        android:id="@+id/label_prezzo"
+        android:layout_marginStart="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/desc"
+        android:layout_below="@+id/desc"
+        android:text="@string/prezzo"
         />
     <EditText
         android:id="@+id/prezzo"
+        android:layout_marginStart="15dp"
         android:layout_width="350dp"
         android:textSize="@dimen/slidedesc"
         android:layout_height="wrap_content"
-        android:layout_below="@id/desc"
+        android:layout_below="@id/label_prezzo"
+        />
+    <TextView
+        android:id="@+id/label_qta"
+        android:layout_marginStart="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/desc"
+        android:layout_below="@+id/prezzo"
+        android:text="@string/quantit"
         />
     <EditText
         android:id="@+id/qta"
+        android:layout_marginStart="15dp"
         android:layout_width="350dp"
         android:textSize="@dimen/slidedesc"
         android:layout_height="wrap_content"
-        android:layout_below="@id/prezzo"
+        android:layout_below="@id/label_qta"
+        android:inputType="number"
+        android:maxLines="1"
         />
 
     <Button
-        android:id="@+id/cart"
+        android:id="@+id/save_edit"
         android:layout_gravity="end"
         android:layout_marginEnd="15dp"
+        android:layout_marginTop="50dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/qta"
         android:paddingStart="5dp"
@@ -54,7 +109,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/salva_modifiche"
-        android:background="@color/primary" />
+        android:background="@drawable/gradient_orange"/>
     <!--
 
         </ScrollView>

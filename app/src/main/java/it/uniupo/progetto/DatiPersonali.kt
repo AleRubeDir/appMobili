@@ -29,35 +29,33 @@ class DatiPersonali  : AppCompatActivity() {
                 nome.text = u.nome
                 cognome.text = u.cognome
                 tipo.text = u.tipo
-                indirizzo.text = u.indirizzo
+                if(u.indirizzo!="null")
+                    indirizzo.text = u.indirizzo
             }
         })
     }
     private fun getUserData(myCallback:MyCallback){
-        var u = Utente("err","err","err","err","err")
+        var u = Utente("err","err","err","err","null")
         val fb = FirebaseAuth.getInstance()
-        fb.signInWithEmailAndPassword("ale.rube@gmail.com", "123456") //da togliere quando tutto pronto
-                .addOnCompleteListener {
-                    val user = fb.currentUser!!
-                    Log.d("prof", "Utente $user ${user.email} ${user.displayName}  ")
-
+        val user = fb.currentUser
         val db = FirebaseFirestore.getInstance()
+
         db.collection("users")
                 .get()
                 .addOnSuccessListener { result->
                     Log.d("prof","$result")
                     for (document in result) {
-                        if(document.id == user.email!!.toString()){
+                        if(document.id == user?.email!!.toString()){
                             //utente ha già scelto il tipo di account
-                            u = Utente(document.get("email").toString(),document.get("name").toString(),document.get("surname").toString(),document.get("type").toString(),document.get("address").toString())
+                            u = Utente(document.get("mail").toString(),document.get("name").toString(),document.get("surname").toString(),document.get("type").toString(),document.get("address").toString())
                             Log.d("prof","$u")
                         }
                         myCallback.onCallback(u)
                     }
                 }
                 .addOnFailureListener{ e -> Log.w("---","Error getting user info - DatiPersonali",e)}
-                }
     }
+
 
 
     class Utente(val email : String, val nome : String, val cognome : String, val tipo : String, val indirizzo : String ){

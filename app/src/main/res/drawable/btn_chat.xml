@@ -2,7 +2,12 @@
 <selector xmlns:android = "http://schemas.android.com/apk/res/android">
     <item android:state_pressed = "false">
         <shape android:shape = "oval">
-            <solid android:color = "@color/primary"/>
+            <gradient
+                android:type="linear"
+                android:startColor="@color/grad1"
+                android:endColor="@color/primary"
+                android:angle="270"
+                />
         </shape>
     </item>
     <item android:state_pressed = "true">

@@ -44,7 +44,7 @@
         android:visibility="invisible"
         android:id="@+id/id"/>
     <Button
-        android:background="@color/primary"
+        android:background="@drawable/gradient_orange"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

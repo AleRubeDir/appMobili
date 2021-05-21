@@ -31,7 +31,6 @@ class ChooseActivity : AppCompatActivity() {
             Toast.makeText(this, "${rg.checkedRadioButtonId}", Toast.LENGTH_SHORT).show()
             if (rg.isSelected) {
                 Toast.makeText(this, "${rg.checkedRadioButtonId}", Toast.LENGTH_SHORT).show()
-                //Toast.makeText(this, "Seleziona una categoria", Toast.LENGTH_SHORT).show()
             } else {
                 //salva dati su DB
                 var n = name.text.toString()
@@ -40,25 +39,22 @@ class ChooseActivity : AppCompatActivity() {
                 addToFirestore(n, s, type, mail!!)
                 if (rg.checkedRadioButtonId == R.id.scelta_customer) {
                     val intent = Intent(this, ClientMappa::class.java)
-                    intent.putExtra("mail", mail!!)
+                    intent.putExtra("mail", mail)
                     startActivity(intent)
                 }
 
                 if (rg.checkedRadioButtonId == R.id.scelta_rider) {
-                    val intent = Intent(this, ClientMappa::class.java)
-                    intent.putExtra("mail", mail!!)
+                    val intent = Intent(this, RiderActivity::class.java)
+                    intent.putExtra("mail", mail)
                     startActivity(intent)
                 }
             }
             if (rg.checkedRadioButtonId == R.id.scelta_gestore) {
                 val intent = Intent(this, GestoreActivity::class.java)
-                intent.putExtra("mail", mail!!)
+                intent.putExtra("mail", mail)
                 startActivity(intent)
             }
         }
-
-
-        //startActivity(Intent(this, HomeActivity::class.java))
     }
 
 
@@ -79,6 +75,7 @@ class ChooseActivity : AppCompatActivity() {
                 "name" to name,
                 "surname" to surname,
                 "type" to type,
+                "mail" to mail,
         )
         Log.d("google", "mail in choose vale $mail")
         db.collection("users").document(mail!!)

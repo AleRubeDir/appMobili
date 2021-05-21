@@ -1,11 +1,11 @@
 package it.uniupo.progetto
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -30,17 +30,28 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance();
         val ggl = findViewById<ImageView>(R.id.ggl)
         val mail = findViewById<ImageView>(R.id.mail)
+        val check = findViewById<CheckBox>(R.id.mostra)
+        val pwd = findViewById<EditText>(R.id.pwd)
+        check.setOnClickListener {
+            if (!check.isChecked) {
+                check.text = getText(R.string.nascondi_password)
+                pwd.transformationMethod = PasswordTransformationMethod.getInstance()
+
+            } else {
+                check.text = getText(R.string.mostra_password)
+                pwd.transformationMethod = HideReturnsTransformationMethod.getInstance()
+
+            }
+        }
         ggl.setOnClickListener{
             findViewById<TableLayout>(R.id.selectTab).visibility = View.INVISIBLE
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
                     .requestEmail()
                     .build()
-            // Build a GoogleSignInClient with the options specified by gso.
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-            // Check for existing Google Sign In account, if the user is already signed in
-            // the GoogleSignInAccount will be non-null.
             val account = GoogleSignIn.getLastSignedInAccount(this)
+
             //updateUI(account)
             signIn()
         }
@@ -53,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
+
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -83,12 +95,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-    fun Activity.hideSoftKeyboard() {
-        currentFocus?.let {
-            val inputMethodManager = ContextCompat.getSystemService(this, InputMethodManager::class.java)!!
-            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
-        }
+    private fun isEmailValid(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
+
     private fun loginUser() {
         val usr = findViewById<EditText>(R.id.usr)
         usr.setOnFocusChangeListener { v, hasFocus ->
@@ -98,12 +108,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         val pwd = findViewById<EditText>(R.id.pwd)
-        /*pwd.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                val inputMethodManager = ContextCompat.getSystemService(this, InputMethodManager::class.java)!!
-                inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
-            }
-        }*/
         if (usr.text.toString().isEmpty()) {
             usr.error = "Please enter email"
             usr.requestFocus()
@@ -129,8 +133,12 @@ class LoginActivity : AppCompatActivity() {
                                 baseContext, "User creted. Log in to enter in the restricted area.",
                                 Toast.LENGTH_SHORT
                         ).show()
-                        selectActivity(usr.text.toString())
 
+                        getUserType(usr.text.toString(), object : FirestoreCallback {
+                            override fun onCallback(type: String) {
+                                startActivityType(usr.text.toString(),type)
+                            }
+                        })
                         finish()
                     } else {
                         Toast.makeText(
@@ -140,37 +148,18 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
     }
-    private fun selectActivity(mail: String){
-        Log.d("login", "mail vale : $mail")
-        val db = FirebaseFirestore.getInstance()
-        db.collection("users")
-                .get()
-                .addOnSuccessListener { result->
-                    for (document in result) {
-                        Log.d("login", "${document.get("mail").toString() == mail} , ${document.get("type").toString().isNotEmpty()} ")
-                        if(document.get("mail").toString() == mail && document.get("type").toString().isNotEmpty()) {
-                            Log.d("login", "Entro ${document.get("type").toString() == "Cliente"}")
-                            if (document.get("type").toString() == "Cliente") {
-                                startActivity(Intent(this, HomeActivity::class.java))
-                            } else if (document.get("type").toString() == "Rider") {
-                                startActivity(Intent(this, RiderActivity::class.java))
-                            } else if (document.get("type").toString() == "Gestore") {
-                                startActivity(Intent(this, GestoreActivity::class.java))
-                            } else {
-                                //utente è al primo accesso, deve scegliere il tipo di account
-                                val i = Intent(this, FirstTimeActivity::class.java)
-                                i.putExtra("mail", mail)
-                                startActivity(i)
-                            }
-                        }
-                    }
-                }
-                .addOnFailureListener{ e -> Log.d("google", "$e")}
-            Toast.makeText(this, "Cannot get", Toast.LENGTH_SHORT).show()
 
-    }
-    private fun isEmailValid(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+    private fun getUserType(user: String?, fc: FirestoreCallback){
+        val db = FirebaseFirestore.getInstance()
+        var t = "null"
+        db.collection("users").document(user!!)
+                .get()
+                .addOnSuccessListener { result ->
+                    if(!result.getString("type").isNullOrBlank())
+                        t = result.getString("type")!!
+                    fc.onCallback(t)
+                }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -182,7 +171,7 @@ class LoginActivity : AppCompatActivity() {
                         val user = auth.currentUser!!
                         getUserType(user.email, object : FirestoreCallback {
                             override fun onCallback(type: String) {
-                                startActivityType(type)
+                                startActivityType(user.email,type)
                             }
                         })
                     } else {
@@ -190,27 +179,27 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
     }
-    private fun getUserType(user: String?, fc: FirestoreCallback){
-        val db = FirebaseFirestore.getInstance()
-        var t = ""
-        db.collection("users").document(user!!)
-                .get()
-                .addOnSuccessListener { result ->
-                    t = result.getString("type")!!
-                    fc.onCallback(t)
-                }
+
+    private fun startActivityType(mail: String?,type: String){
+        Log.d("login", "mail vale : $type")
+        val sp = applicationContext.getSharedPreferences("login", 0)
+        val editor = sp.edit()
+        editor.putString("login", type)
+        editor.apply()
+        when (type) {
+            "Cliente" -> startActivity(Intent(this, HomeActivity::class.java))
+            "Rider" -> startActivity(Intent(this, RiderActivity::class.java))
+            "Gestore" -> startActivity(Intent(this, GestoreActivity::class.java))
+            else -> {
+                var i = Intent(this,FirstTimeActivity::class.java)
+                i.putExtra("mail",mail)
+                startActivity(i)
+            }
+        }
     }
+
     interface FirestoreCallback{
         fun onCallback(type: String)
     }
 
-    private fun startActivityType(type: String){
-        when (type) {
-            "Cliente" -> startActivity(Intent(this, HomeActivity::class.java))
-            "Rider" -> startActivity(Intent(this, RiderActivity::class.java))
-            "Gestore"
-                //todo gestore activity
-            -> startActivity(Intent(this, HomeActivity::class.java))
-        }
-    }
 }

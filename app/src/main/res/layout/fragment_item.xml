@@ -6,17 +6,16 @@
     android:layout_height="wrap_content"
     android:id="@+id/rel"
     android:layout_margin="5dp"
-    card_view:cardBackgroundColor="#94F47C48"
-    card_view:cardCornerRadius="12dp"
+    card_view:cardCornerRadius="20dp"
     card_view:cardElevation="3dp"
-    card_view:contentPadding="4dp"
     android:foreground="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_blue"
         >
 
         <ImageView
@@ -54,49 +53,3 @@
             />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
-<!--
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="350dp"
-    android:gravity="center_vertical"
-    android:id="@+id/rel"
-    android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/img"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:src="@drawable/barilla_tortiglioni"
-            android:layout_centerHorizontal="true"/>
-        <TextView
-            android:id="@+id/text"
-            android:layout_below="@+id/img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/app_name"
-            android:textSize="35dp"
-            android:maxLines="1"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/prezzo"
-            android:layout_below="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/app_name"
-            android:textSize="20dp"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            />
-    </androidx.cardview.widget.CardView>
-
-
-
-</RelativeLayout>-->

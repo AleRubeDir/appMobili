@@ -1,6 +1,7 @@
 package it.uniupo.progetto
 
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +12,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.fragments.ProfileFragment
 
  class ProfileActionsAdapter (
@@ -24,6 +29,7 @@ import it.uniupo.progetto.fragments.ProfileFragment
          val id  = view.findViewById<TextView>(R.id.id)
          val row = view.findViewById<RelativeLayout>(R.id.action_row)
          val nome  = view.findViewById<TextView>(R.id.nome)
+
 
 
          row.setOnClickListener{
@@ -43,13 +49,24 @@ import it.uniupo.progetto.fragments.ProfileFragment
                 //i miei ordini
              }
              if(id.text=="3"){
+                 parent.context.getSharedPreferences("login",0).edit().remove("login").apply()
                  FirebaseAuth.getInstance().signOut()
+                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                         .requestIdToken(view.context.getString(R.string.default_web_client_id))
+                         .requestEmail()
+                         .build()
+
+                 val googleSignInClient = GoogleSignIn.getClient(parent.context, gso)
+                 googleSignInClient.signOut()
                  view.context.startActivity(Intent(view.context, MainActivity::class.java))
                  Toast.makeText(view.context,"Logout effettuato", Toast.LENGTH_SHORT).show()
              }
          }
          return ViewHolder(view)
      }
+
+
+
     override fun getItemCount(): Int = array.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -1,8 +1,10 @@
 package it.uniupo.progetto
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 
@@ -15,9 +17,7 @@ import kotlin.math.round
 import kotlin.properties.Delegates
 
 class GestoreActivity : AppCompatActivity() {
-    fun stampaArray(array : ArrayList<Prodotto>){
-        Log.d("totale","HomeActivity- array -> $array")
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gestore)
@@ -40,6 +40,10 @@ class GestoreActivity : AppCompatActivity() {
 
             }
             true
+        }
+        val add = findViewById<ImageButton>(R.id.add)
+        add.setOnClickListener{
+            startActivity(Intent(this,AddProduct::class.java))
         }
 
     }

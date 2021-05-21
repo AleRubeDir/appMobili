@@ -25,7 +25,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
-        createCart()
+        //createCart()
         val cartFragment = CartListFragment()
         val profileFragment = ProfileFragment()
         val shopFragment = ItemFragment()

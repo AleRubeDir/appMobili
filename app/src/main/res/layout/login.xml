@@ -42,6 +42,7 @@
                 android:src="@drawable/ic_baseline_email_24">
             </ImageView>
         </TableRow>
+
     </TableLayout>
 <TableLayout
     android:id="@+id/logTab"
@@ -64,6 +65,7 @@
             android:id="@+id/usr"
             android:hint="@string/hintmail"
             android:gravity="center"
+            android:maxLines="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />
@@ -88,6 +90,15 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:maxLines="1" />
+
+
+    </TableRow>
+    <TableRow>
+        <CheckBox
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/mostra_password"
+            android:id="@+id/mostra"/>
     </TableRow>
 
     <TableRow>

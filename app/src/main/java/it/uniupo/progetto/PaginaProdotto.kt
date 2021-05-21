@@ -1,14 +1,14 @@
 package it.uniupo.progetto
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import it.uniupo.progetto.fragments.CartListFragment
-import it.uniupo.progetto.fragments.ItemFragment
-import it.uniupo.progetto.fragments.MyItemRecyclerViewAdapter
+import com.squareup.picasso.Picasso
 import java.util.HashMap
 
 class PaginaProdotto  : AppCompatActivity() {
@@ -30,17 +30,12 @@ class PaginaProdotto  : AppCompatActivity() {
                 np.minValue = 1
                 np.maxValue = p.qta
                 val img = findViewById<ImageView>(R.id.img)
-
-                img.setImageResource(p.img);
+                Picasso.get().load(p.img).into(img)
                 val cart = findViewById<Button>(R.id.cart)
                 cart.setOnClickListener{
                     Log.d("pprod","np value ${np.value}")
                     addToCart(p,np.value)
                     Toast.makeText(this@PaginaProdotto,"Aggiunto al carrello",Toast.LENGTH_SHORT).show()
-                   /* supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.fl_wrapper, CartListFragment())
-                        commit()
-                    }*/
                 }
             }
         })
@@ -83,22 +78,21 @@ class PaginaProdotto  : AppCompatActivity() {
     }
 
     fun getProdottoFromDB(id: Int,myCallback: MyCallback){
-       // var p = Prodotto(-1, -1, "ERR", "ERR", "2,99€", 2)
         val db = FirebaseFirestore.getInstance()
         db.collection("products")
-                .get()
-                .addOnSuccessListener { result->
-                    for (document in result) {
-                        Log.d("pprod", "id vale ${document.get("id").toString()} cerco $id")
-                        if (document.get("id").toString() == id.toString()) {
-                           var p= Prodotto(document.getLong("id")!!.toInt(), document.getLong("img")!!.toInt(), document.get("titolo").toString(), document.get("desc").toString(), document.get("prezzo").toString(), document.getLong("qta")!!.toInt())
-                            Log.d("pprod", "Prodotto vale $p")
-                            myCallback.onCallback(p)
-                        }
-
+            .get()
+            .addOnSuccessListener { result->
+                for (document in result) {
+                    Log.d("pprod", "id vale ${document.get("id").toString()} cerco $id")
+                    if (document.get("id").toString() == id.toString()) {
+                        var p= Prodotto(document.getLong("id")!!.toInt(), document.get("img")!!.toString(), document.get("titolo").toString(), document.get("desc").toString(), document.get("prezzo").toString(), document.getLong("qta")!!.toInt())
+                        Log.d("pprod", "Prodotto vale $p")
+                        myCallback.onCallback(p)
                     }
+
                 }
-                .addOnFailureListener{ e -> Log.w("---", "Error getting document - GET PRODOTTO FROM DB", e)}
+            }
+            .addOnFailureListener{ e -> Log.w("---", "Error getting document - GET PRODOTTO FROM DB", e)}
     }
 
 }

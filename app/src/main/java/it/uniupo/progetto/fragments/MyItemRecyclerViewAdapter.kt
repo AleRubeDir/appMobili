@@ -12,8 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import it.uniupo.progetto.HomeActivity
 import it.uniupo.progetto.PaginaProdotto
 import it.uniupo.progetto.Prodotto
@@ -23,13 +25,11 @@ import it.uniupo.progetto.R
 class MyItemRecyclerViewAdapter(private val values: ArrayList<Prodotto>) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        //Log.d("***", "Values___ in mirva $values")
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_item, parent, false)
 
         val rel = view.findViewById<CardView>(R.id.rel)
         var id = view.findViewById<TextView>(R.id.id)
-        //var fp = FragmentProdotto()
         rel.setOnClickListener{
             val intent = Intent(view.context, PaginaProdotto::class.java)
             intent.putExtra("id-prodotto", id.text )
@@ -37,24 +37,13 @@ class MyItemRecyclerViewAdapter(private val values: ArrayList<Prodotto>) : Recyc
         }
         return ViewHolder(view)
     }
-    private fun makeCurrentFragment(fragment: Fragment) = HomeActivity().supportFragmentManager.beginTransaction().apply{
-        replace(R.id.fl_wrapper,fragment)
-        commit()
-    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        ItemFragment.stampaArray(values)
-
-        val item = values[position]
-/*        Log.d("bar","${R.drawable.barilla_spaghetti} --S-- ${item.img}")
-        Log.d("bar","${R.drawable.barilla_tortiglioni} --T-- ${item.img}")*/
+         val item = values[position]
         holder.titolo.text = item.titolo
         holder.prezzo.text = item.prezzo
-        holder.img.setImageResource(item.img)
+        Log.d("my","${item.img}")
+        Picasso.get().load(item.img).into(holder.img)
         holder.id.text= item.id.toString()
-        //holder.img!!.setImageDrawable(ContextCompat.getDrawable(HomeActivity(),values[position].img))
-       // Log.d("***","Ciao ${MainActivity().getDrawable(values[position].img)}")
-       // holder.img.setImageDrawable(MainActivity().getDrawable(values[position].img))
-
     }
 
     override fun getItemCount(): Int = values.size
@@ -70,35 +59,3 @@ class MyItemRecyclerViewAdapter(private val values: ArrayList<Prodotto>) : Recyc
         }
     }
 }
-/*
-class MyArrayAdapter(private val context: Activity, layout: Int, private val array: Array<Prodotto>): ArrayAdapter<Prodotto>(context,layout,array) {
-
-    internal class ViewHolder{
-        var text: TextView? = null
-        var img: ImageView? = null
-    }
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var myView = convertView
-        if(myView==null) {
-            //inserire elementi all'interno di ogni riga
-
-            val vh = ViewHolder()
-            myView = context.layoutInflater.inflate(R.layout.row, null)
-            vh.text = myView!!.findViewById<TextView>(R.id.text)
-            vh.img = myView.findViewById<ImageView>(R.id.img)
-
-            vh.text!!.text = array[position].titolo
-            Log.d("***","MAA -----> ${vh.text!!.text}")
-            vh.img!!.setImageDrawable(context.getDrawable(array[position].img))
-
-            myView.tag = vh
-        }
-        val holder = myView.tag as ViewHolder
-        holder.text?.text = array[position].titolo
-        holder.img?.setImageDrawable(context.getDrawable(array[position].img))
-        return myView
-    }
-
-}
-* */
