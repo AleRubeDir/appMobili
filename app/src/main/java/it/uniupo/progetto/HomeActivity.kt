@@ -30,6 +30,9 @@ class HomeActivity : AppCompatActivity() {
         val profileFragment = ProfileFragment()
         val shopFragment = ItemFragment()
         cart_hide()
+        if(intent.getStringExtra("cart")=="vai"){
+            makeCurrentFragment(cartFragment)
+        }
         makeCurrentFragment(shopFragment)
         val compra = findViewById<Button>(R.id.compra)
         compra.setOnClickListener{

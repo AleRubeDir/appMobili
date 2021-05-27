@@ -1,5 +1,6 @@
 package it.uniupo.progetto
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -26,7 +27,7 @@ class PaginaProdotto  : AppCompatActivity() {
                 desc.text = p.desc
                 val prezzo = findViewById<TextView>(R.id.prezzo)
                 prezzo.text = p.prezzo
-                val np = findViewById<NumberPicker>(R.id.qta)
+                val np = findViewById<com.shawnlin.numberpicker.NumberPicker>(R.id.number_picker)
                 np.minValue = 1
                 np.maxValue = p.qta
                 val img = findViewById<ImageView>(R.id.img)
@@ -36,6 +37,9 @@ class PaginaProdotto  : AppCompatActivity() {
                     Log.d("pprod","np value ${np.value}")
                     addToCart(p,np.value)
                     Toast.makeText(this@PaginaProdotto,"Aggiunto al carrello",Toast.LENGTH_SHORT).show()
+                    val home = Intent(applicationContext,HomeActivity::class.java)
+                    home.putExtra("cart","vai")
+                    startActivity(home)
                 }
             }
         })
