@@ -29,15 +29,15 @@ class HomeActivity : AppCompatActivity() {
         val cartFragment = CartListFragment()
         val profileFragment = ProfileFragment()
         val shopFragment = ItemFragment()
-        cart_hide()
+        /*cart_hide()*/
         if(intent.getStringExtra("cart")=="vai"){
             makeCurrentFragment(cartFragment)
         }
         makeCurrentFragment(shopFragment)
-        val compra = findViewById<Button>(R.id.compra)
+       /* val compra = findViewById<Button>(R.id.compra)
         compra.setOnClickListener{
             
-        }
+        }*/
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
@@ -46,21 +46,21 @@ class HomeActivity : AppCompatActivity() {
                         stampaArray(carrello)
                         makeCurrentFragment(cartFragment)
                     }
-                    cart_show()
-                    prof_hide()
-                    updateTot()
+                  /*  cart_show()*/
+                    prof_hide()/**/
+                  /*  updateTot()*/
                     Log.d("totale","Tot in home vale $tot")
                 }
                 R.id.profilo -> {
                     thread(start = true) {
                         makeCurrentFragment(profileFragment)
                     }
-                    cart_hide()
+                    /*cart_hide()*/
                     prof_show()
                 }
                 R.id.shop -> {
                     prof_hide()
-                    cart_hide()
+                    /*cart_hide()*/
                     makeCurrentFragment(shopFragment)
                 }
             }
@@ -98,15 +98,15 @@ class HomeActivity : AppCompatActivity() {
 
                 }
     }
-    fun updateTot(){
+    /*fun updateTot(){
         val totview = findViewById<TextView>(R.id.tot)
         var totdoub = "%.2f".format(tot)
         totview.text = getString(R.string.cash,totdoub)
-    }
-    private fun cart_show(){
+    }*/
+   /* private fun cart_show(){
         val tot = findViewById<RelativeLayout>(R.id.tot_layout)
         tot.visibility = View.VISIBLE
-    }
+    }*/
     private fun prof_show(){
         val tot = findViewById<RelativeLayout>(R.id.layout_profilo)
         tot.visibility = View.VISIBLE
@@ -116,10 +116,10 @@ class HomeActivity : AppCompatActivity() {
         tot.visibility = View.INVISIBLE
     }
 
-    private fun cart_hide(){
+   /* private fun cart_hide(){
         val tot = findViewById<RelativeLayout>(R.id.tot_layout)
         tot.visibility = View.INVISIBLE
-    }
+    }*/
     private fun makeCurrentFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply{
         replace(R.id.fl_wrapper,fragment)
         commit()

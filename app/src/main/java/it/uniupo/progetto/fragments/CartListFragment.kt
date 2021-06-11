@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.HomeActivity
@@ -28,7 +29,27 @@ class CartListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_cart_list2, container, false)
 
+
         // Set the adapter
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.list)
+        val tot = view.findViewById<TextView>(R.id.tot)
+        recyclerView.layoutManager =  LinearLayoutManager(view.context)
+        getUserCart((object: ItemFragment.Companion.MyCallback {
+            override fun onCallback(value: List<Prodotto>) {
+                //cartTot()
+                //Log.d("totale","Totale in callback vale ${HomeActivity.tot}")
+                cartTot(HomeActivity.carrello)
+                var totdoub = "%.2f".format(HomeActivity.tot)
+                tot.text = getString(R.string.cash,totdoub)
+
+                recyclerView.adapter = MyCartListRecyclerViewAdapter(HomeActivity.carrello)
+            }
+        }))
+
+
+
+     /*   Log.d("myview","${view is RecyclerView}")
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = when {
@@ -43,23 +64,23 @@ class CartListFragment : Fragment() {
                     }
                 }))
             }
-        }
+        }*/
         return view
     }
-
-/*    fun cartTot(arr : ArrayList<Prodotto>) {
+  fun cartTot(arr : ArrayList<Prodotto>) {
         if(arr.isNotEmpty()) {
             var temp = 0.0
             for (p in arr) {
-                Log.d("totale", "p vale $p")
-                Log.d("totale", "valore : ${p.prezzo.toDouble() * p.qta}")
+              /*  Log.d("totale", "p vale $p")
+                Log.d("totale", "valore : ${p.prezzo.toDouble() * p.qta}")*/
                 HomeActivity.tot += (p.prezzo.toDouble() * p.qta)
-                Log.d("totale", "prezzo ${p.prezzo.toDouble() * p.qta} qta ${p.qta}Temp dentro vale $temp Totale dentro vale ${HomeActivity.tot}")
+                /*Log.d("totale", "prezzo ${p.prezzo.toDouble() * p.qta} qta ${p.qta}Temp dentro vale $temp Totale dentro vale ${HomeActivity.tot}")*/
             }
             //HomeActivity.tot = temp
-            Log.d("totale", "Temp vale $temp Totale in cartTot vale ${HomeActivity.tot}")
+   /*         Log.d("totale", "Temp vale $temp Totale in cartTot vale ${HomeActivity.tot}")*/
         }
-    }*/
+    }
+
     private fun getUserCart(myCallback: ItemFragment.Companion.MyCallback) {
         val user = FirebaseAuth.getInstance().currentUser!!.email
         HomeActivity.carrello.clear()
