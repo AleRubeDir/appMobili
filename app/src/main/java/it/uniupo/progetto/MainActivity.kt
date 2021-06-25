@@ -19,17 +19,33 @@ class MainActivity : AppCompatActivity() {
 
         val log = findViewById<Button>(R.id.btn_log)
         val reg = findViewById<Button>(R.id.btn_reg)
-        val accedi = findViewById<Button>(R.id.accedi)
-        val scelta = findViewById<Button>(R.id.scelta)
+    /*    val accedi = findViewById<Button>(R.id.accedi)
+        val scelta = findViewById<Button>(R.id.scelta)*/
         var sp = applicationContext.getSharedPreferences("login",0)
         var mail = sp.getString("login","")
         Log.d("mail","mail vale $mail")
         if(mail!="null") {
-            val db = FirebaseFirestore.getInstance()
+            Log.d("mail","Entro")
+            when {
+                mail == "Cliente" -> {
+                    Log.d("mail", "account cliente")
+                    startActivity(Intent(this, HomeActivity::class.java))
+                }
+                mail == "Rider" -> {
+                    Log.d("mail", "account rider")
+                    startActivity(Intent(this, RiderActivity::class.java))
+                }
+                mail == "Gestore" -> {
+                    Log.d("mail", "account gestore")
+                    startActivity(Intent(this, GestoreActivity::class.java))
+                }
+            }
+            /*val db = FirebaseFirestore.getInstance()
             db.collection("users")
                     .get()
                     .addOnSuccessListener { result ->
                         for (document in result) {
+                            Log.d("mail", "${document.get("type")}")
                             if (document.get("mail").toString() == mail && document.get("type").toString().isNotEmpty()) {
                                 when {
                                     document.get("type").toString() == "Cliente" -> {
@@ -47,14 +63,14 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                         }
-                    }
+                    }*/
         }
-        scelta.setOnClickListener{
+     /*   scelta.setOnClickListener{
             startActivity(Intent(this, ChooseActivity::class.java))
         }
         accedi.setOnClickListener{
             startActivity(Intent(this, HomeActivity::class.java))
-        }
+        }*/
         log.setOnClickListener{
             startActivity(Intent(this, LoginActivity::class.java))
         }

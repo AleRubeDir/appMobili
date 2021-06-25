@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+
     dependencies {
         implementation 'com.shawnlin:number-picker:2.4.12'
     }

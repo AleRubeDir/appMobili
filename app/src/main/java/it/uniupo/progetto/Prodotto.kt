@@ -6,7 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.io.Serializable
 import java.util.*
 
-class Prodotto(val id: Int, var img: String, val titolo: String, val desc: String, val prezzo: String, var qta: Int) : Serializable {
+class Prodotto(val id: Int, var img: String, var titolo: String, var desc: String, var prezzo: String, var qta: Int) : Serializable {
 
 
     override fun toString(): String {

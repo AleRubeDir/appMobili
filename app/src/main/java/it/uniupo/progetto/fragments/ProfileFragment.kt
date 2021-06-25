@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,34 +19,48 @@ import it.uniupo.progetto.*
 class ProfileFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val fb = FirebaseAuth.getInstance()
         val user = fb.currentUser?.email
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
-        Log.d("login","${activity!!.getSharedPreferences("login",0).getString("login","")}")
-        if (view is RecyclerView) {
-            with(view) {
-                var array = ArrayList<Azione>()
-                array.add(Azione("Dati personali",0))
-
-                array.add(Azione("Logout",3))
-                array.sortBy { it.id }
-                getUserType(user, object : LoginActivity.FirestoreCallback {
-                    override fun onCallback(type: String) {
-                        if(type=="Cliente") {
-                            array.add(Azione("La mia posizione", 1))
-                            array.add(Azione("I miei ordini", 2))
-                        }else if(type=="Rider"){
-                            array.add(Azione("I miei ordini", 2))
-                        }
-                    }
-                })
-                adapter = ProfileActionsAdapter(array)
-            }
+        Log.d("login", "---- ${requireActivity().getSharedPreferences("login", 0).getString("login", "")}")
+        val recyclerView = view.findViewById<RecyclerView>(R.id.profile_actions)
+        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        var array = ArrayList<Azione>()
+        val type = requireActivity().getSharedPreferences("login", 0).getString("login", "")
+        array.add(Azione("Dati personali", 0))
+        array.add(Azione("Logout", 3))
+        if (type == "Cliente") {
+            array.add(Azione("La mia posizione", 1))
+            array.add(Azione("I miei ordini", 2))
+        } else if (type == "Rider") {
+            array.add(Azione("I miei ordini", 2))
         }
+        array.sortBy { it.id }
+     /*   getUserType(user, object : LoginActivity.FirestoreCallback {
+            override fun onCallback(type: String) {
+                Log.d("login","+++++ $type")
+                if (type == "Cliente") {
+                    array.add(Azione("Dati personali", 0))
+
+                    array.add(Azione("Logout", 3))
+                    array.add(Azione("La mia posizione", 1))
+                    array.add(Azione("I miei ordini", 2))
+                } else if (type == "Rider") {
+                    array.add(Azione("I miei ordini", 2))
+                }
+
+            }
+
+        })*/
+        recyclerView.adapter = ProfileActionsAdapter(array)
+
         return view
+
+
+
     }
 
     private fun getUserType(user: String?, fc: LoginActivity.FirestoreCallback){

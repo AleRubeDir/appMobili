@@ -47,6 +47,11 @@ class GestoreProdotto  : AppCompatActivity() {
                 img.setImageURI(p.img.toUri())
                 nome = p.titolo
                 salva.setOnClickListener{
+                    if(p.titolo != tvTitolo.text.toString()) p.titolo = tvTitolo.text.toString()
+                    if(p.desc != desc.text.toString()) p.desc = desc.text.toString()
+                    if(p.prezzo != prezzo.text.toString()) p.prezzo = prezzo.text.toString()
+                    if(p.qta.toString() != qta.text.toString()) p.qta = qta.text.toString().toInt()
+                    updateProdotto(p)
                     updatePhotoDB(imgUri!!,p)
                 }
             }
@@ -131,6 +136,23 @@ class GestoreProdotto  : AppCompatActivity() {
     }
 
 
+    private fun updateProdotto(p: Prodotto){
+        val db = FirebaseFirestore.getInstance()
+        val entry = hashMapOf<String, Any?>(
+                "img" to p.img,
+                "id" to p.id,
+                "qta" to p.qta,
+                "titolo" to p.titolo,
+                "prezzo" to p.prezzo,
+                "desc" to p.desc
+        )
+        db.collection("products").document(p.id.toString())
+                .set(entry, SetOptions.merge())
+                .addOnSuccessListener { documentReference ->
+                    Log.d("qta", "Prodotto modificato correttamente ")
+                }
+                .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
     Log.d("photo", "res = $resultCode req 0 $requestCode")

@@ -92,6 +92,7 @@ class FragmentProdotto : Fragment() {
                             p= Prodotto(document.getLong("id")!!.toInt(), document.get("img")!!.toString(), document.get("titolo").toString(), document.get("desc").toString(), document.get("prezzo").toString(), document.getLong("qta")!!.toInt())
                             Log.d("prodotto", "in getProdottoFromDB p vale $p")
                         }
+
                         myCallback.onCallback(p)
                     }
                 }

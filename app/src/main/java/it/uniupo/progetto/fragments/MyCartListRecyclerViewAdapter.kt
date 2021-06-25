@@ -9,8 +9,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import it.uniupo.progetto.HomeActivity
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
 
@@ -29,10 +31,10 @@ class MyCartListRecyclerViewAdapter(
         val qta = view.findViewById<TextView>(R.id.qta)
         val idtv = view.findViewById<TextView>(R.id.id)
         plus.setOnClickListener {
-            var id = idtv.text.toString().toInt()
-            var n = qta.text.toString().toInt() + 1
-            var p = Prodotto.getProdotto(id)
-            Log.d("qta","prodotto $p vecchia qta ${qta.text} nuova qta $n")
+            val id = idtv.text.toString().toInt()
+            val n = qta.text.toString().toInt() + 1
+            val p = Prodotto.getProdotto(id)
+
             if (p != null) {
                 if (p.qta>=n) {
                     qta.text = n.toString()
@@ -43,9 +45,9 @@ class MyCartListRecyclerViewAdapter(
             }
         }
         plus.setOnLongClickListener {
-            var id = idtv.text.toString().toInt()
-            var n = qta.text.toString().toInt() + 10
-            var p = Prodotto.getProdotto(id)
+            val id = idtv.text.toString().toInt()
+            val n = qta.text.toString().toInt() + 10
+            val p = Prodotto.getProdotto(id)
             if (p != null) {
                 if (p.qta>n) {
                     qta.text = n.toString()
@@ -54,8 +56,11 @@ class MyCartListRecyclerViewAdapter(
                     qta.text = p.qta.toString()
                     salvaQta(p,p.qta)
                     Toast.makeText(parent.context, "Qta max", Toast.LENGTH_SHORT).show()
+
                 }
+
             }
+
             CartListFragment.cartTot()
             true
         }
@@ -106,8 +111,7 @@ class MyCartListRecyclerViewAdapter(
         }
     }
     private fun salvaQta(p : Prodotto, qta : Int){
-        //val user = FirebaseAuth.getInstance().currentUser.toString() da rimettere quando faccio login
-        val user = "fJB1nlkxu4GIPczWN6zH"
+        val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val db = FirebaseFirestore.getInstance()
         val entry = hashMapOf<String, Any?>(
                 "qta" to qta,
@@ -126,17 +130,22 @@ class MyCartListRecyclerViewAdapter(
                 el = p
         }
         values.remove(el)
-        //val user = FirebaseAuth.getInstance().currentUser.toString() da rimettere quando faccio login
-        val user = "fJB1nlkxu4GIPczWN6zH"
+        val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val db = FirebaseFirestore.getInstance()
         db.collection("carts").document(user).collection("products").document(id.toString())
                 .delete()
+                .addOnSuccessListener {
+                    Log.d("cart","Eliminazione di $id avvenuta con successo")
+                }
+                .addOnFailureListener{
+                    Log.d("cart","Errore eliminazione di $id ")
+                }
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
             holder.text.text = item.titolo
             holder.qta.text = item.qta.toString()
-            holder.prezzo.text = item.prezzo
+            holder.prezzo.text = holder.itemView.context.getString(R.string.cash,item.prezzo)
             holder.id.text = item.id.toString()
 
     }

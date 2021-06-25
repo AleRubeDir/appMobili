@@ -2,6 +2,7 @@ package it.uniupo.progetto.fragments
 
 import android.content.ContentResolver
 import android.content.ContentUris
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,8 +14,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -41,8 +44,10 @@ class MyShopRecycleViewAdapter(private val values: ArrayList<Prodotto>) : Recycl
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
+        if(item.qta==0) holder.color.setBackgroundResource(R.drawable.gradient_red)
+
         holder.titolo.text = item.titolo
-        holder.prezzo.text = item.prezzo
+        holder.prezzo.text = holder.itemView.context.getString(R.string.cash,item.prezzo)
         Picasso.get().load(item.img).into(holder.img)
         holder.id.text= item.id.toString()
     }
@@ -54,6 +59,7 @@ class MyShopRecycleViewAdapter(private val values: ArrayList<Prodotto>) : Recycl
         var img: ImageView = view.findViewById(R.id.img)
         var prezzo: TextView = view.findViewById(R.id.prezzo)
         var id : TextView = view.findViewById(R.id.id)
+        var color : RelativeLayout = view.findViewById(R.id.color)
     }
 
 }

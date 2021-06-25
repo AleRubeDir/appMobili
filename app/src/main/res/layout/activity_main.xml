@@ -21,7 +21,7 @@
         />
     <Button
         android:id="@+id/btn_log"
-        android:backgroundTint="@color/primary"
+        android:background="@drawable/gradient_orange"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
         android:text="@string/login"
@@ -36,7 +36,7 @@
         android:layout_alignTop="@+id/btn_reg"
         />
     <Button
-        android:backgroundTint="@color/primary"
+        android:background="@drawable/gradient_orange"
         android:id="@+id/btn_reg"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_below="@id/btn_log"
         android:layout_centerHorizontal="true"
         />
-    <Button
+  <Button
         android:id="@+id/btn_rider"
         android:backgroundTint="@color/primary"
         android:layout_width="wrap_content"
@@ -53,22 +53,22 @@
 
         android:text="RIDER ACTIVITY"
         />
-    <Button
-        android:id="@+id/accedi"
-        android:layout_toRightOf="@id/btn_rider"
-        android:backgroundTint="@color/primary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="accedi no login"
-        />
-    <Button
-        android:id="@+id/scelta"
-        android:layout_toRightOf="@id/accedi"
-        android:backgroundTint="@color/primary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="scelta"
-        />
+    <!--   <Button
+         android:id="@+id/accedi"
+         android:layout_toRightOf="@id/btn_rider"
+         android:backgroundTint="@color/primary"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="accedi no login"
+         />
+     <Button
+         android:id="@+id/scelta"
+         android:layout_toRightOf="@id/accedi"
+         android:backgroundTint="@color/primary"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="scelta"
+         />-->
 </RelativeLayout>
 <!--
 <?xml version="1.0" encoding="utf-8"?>

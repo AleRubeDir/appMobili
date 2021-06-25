@@ -39,11 +39,12 @@ class MyItemRecyclerViewAdapter(private val values: ArrayList<Prodotto>) : Recyc
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          val item = values[position]
-        holder.titolo.text = item.titolo
-        holder.prezzo.text = item.prezzo
-        Log.d("my","${item.img}")
-        Picasso.get().load(item.img).into(holder.img)
-        holder.id.text= item.id.toString()
+        if(item.qta != 0) {
+            holder.titolo.text = item.titolo
+            holder.prezzo.text = holder.itemView.context.getString(R.string.cash, item.prezzo)
+            Picasso.get().load(item.img).into(holder.img)
+            holder.id.text = item.id.toString()
+        }
     }
 
     override fun getItemCount(): Int = values.size
@@ -53,7 +54,7 @@ class MyItemRecyclerViewAdapter(private val values: ArrayList<Prodotto>) : Recyc
         var img: ImageView = view.findViewById(R.id.img)
         var prezzo: TextView = view.findViewById(R.id.prezzo)
         var id : TextView = view.findViewById(R.id.id)
-
+        var rel : CardView = view.findViewById(R.id.rel)
         override fun toString(): String {
             return super.toString() + " '" + titolo.text + "'" + prezzo.text
         }

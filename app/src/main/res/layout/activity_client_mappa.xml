@@ -23,14 +23,40 @@
                 android:text="Inserisci il tuo indirizzo"
                 android:textSize="25sp"
                 />
+            <ImageButton
+                android:id="@+id/find"
+                android:background="@drawable/gradient_orange"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end|top"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/insert_label"
+                android:padding="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:src="@drawable/find"
+                />
             <EditText
                 android:id="@+id/address"
                 android:layout_below="@id/insert_label"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:maxLines="1"/>
+                android:ems="15"
+                android:layout_toEndOf="@+id/find"
+                android:maxLines="1"
+            >
 
+            </EditText>
+            <ImageButton
+                android:id="@+id/search"
+                android:background="@drawable/gradient_orange"
+                android:layout_width="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/insert_label"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:src="@drawable/search" />
 
         </RelativeLayout>
 
@@ -50,26 +76,13 @@
         android:layout_height="match_parent"
         map:uiZoomControls="false"
         tools:context=".ClientMappa" >
-        <ImageButton
-            android:id="@+id/search"
-            android:backgroundTint="@color/primary"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center|top"
-            android:layout_height="wrap_content"
-            android:src="@drawable/search" />
-        <ImageButton
-            android:id="@+id/find"
-            android:backgroundTint="@color/primary"
-            android:layout_width="wrap_content"
-            android:layout_gravity="end|top"
-            android:layout_height="wrap_content"
-            android:src="@drawable/find"
-            />
+
+
         <Button
             android:id="@+id/go"
-            android:backgroundTint="@color/primary"
+            android:background="@drawable/gradient_orange"
             android:layout_width="wrap_content"
-            android:layout_gravity="start|top"
+            android:layout_gravity="center|top"
             android:layout_height="wrap_content"
             android:visibility="invisible"
             android:text="@string/end"

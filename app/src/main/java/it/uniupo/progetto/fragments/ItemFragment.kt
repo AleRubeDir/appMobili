@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.HomeActivity
 import it.uniupo.progetto.HomeActivity.Companion.array
+import it.uniupo.progetto.LoginActivity
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
 
@@ -45,8 +47,25 @@ class ItemFragment : Fragment() {
         interface MyCallback {
             fun onCallback(value: List<Prodotto>)
         }
+
+        private fun getUserType(user: String?, fc: LoginActivity.FirestoreCallback){
+            val db = FirebaseFirestore.getInstance()
+            var t = "null"
+            db.collection("users").document(user!!)
+                    .get()
+                    .addOnSuccessListener { result ->
+                        if(!result.getString("type").isNullOrBlank())
+                            t = result.getString("type")!!
+                        fc.onCallback(t)
+                    }
+        }
+
         fun getAllProducts(myCallback: MyCallback) {
             val db = FirebaseFirestore.getInstance()
+            val fb = FirebaseAuth.getInstance()
+            val email = fb.currentUser?.email
+            getUserType(email, object : LoginActivity.FirestoreCallback {
+                override fun onCallback(type: String) {
             array.clear()
             db.collection("products")
                     .get()
@@ -62,7 +81,8 @@ class ItemFragment : Fragment() {
                                 val qta = document.getLong("qta")!!.toInt()
                                 p = Prodotto(id, img, titolo, desc, prezzo, qta)
                                 Log.d("***", "in getAllProducts trovo : $p")
-                                array.add(p)
+                                if(p.qta>0 && type=="Cliente" || type=="Gestore")
+                                    array.add(p)
                             }
                             myCallback.onCallback(array)
 
@@ -72,6 +92,9 @@ class ItemFragment : Fragment() {
                     .addOnFailureListener { err->
                         Log.d("---", "Error getting document - ALL PRODUCTS() $err")
                     }
+                }
+            })
         }
+
     }
 }

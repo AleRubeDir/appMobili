@@ -19,13 +19,7 @@
     android:id="@+id/layout_profilo"
     android:visibility="invisible"
     tools:context=".fragments.ProfileFragment">
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="50sp"
-        android:text="@string/il_mio_profilo"
-        android:maxLines="1"/>
+
 </RelativeLayout>
   <!--  <RelativeLayout
         android:layout_width="match_parent"

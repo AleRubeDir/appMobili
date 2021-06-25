@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import java.io.IOException
 
 class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
@@ -40,6 +41,7 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
         )
     }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             LOCATION_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] !=
@@ -83,33 +85,34 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
         }
 
         var geocodeMatches: List<Address>? = null
-        try{
+        try {
             geocodeMatches = Geocoder(this).getFromLocationName("San Salvatore ,AL", 1)
-        }catch (e: IOException){
+        } catch (e: IOException) {
             e.printStackTrace()
         }
         var zoomLevel = 11.0f
 
-            for (mat in geocodeMatches!!) {
-                val market = LatLng(mat.latitude, mat.longitude)
-                mMap.addMarker(MarkerOptions()
-                        .position(market).title("MiniMarket")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                )
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(market, zoomLevel))
-                val circle = mMap.addCircle(CircleOptions()
-                        .center(LatLng(mat.latitude, mat.longitude))
-                        .radius(10000.0)
-                        .strokeColor(Color.RED)
-                        .fillColor(0x000C1FFFF)
-                )
-                val mypos = findViewById<ImageButton>(R.id.find)
-                val search = findViewById<ImageButton>(R.id.search)
-                val address = findViewById<EditText>(R.id.address)
-                var cliente: LatLng
-                zoomLevel=16.0f
-                search.setOnClickListener {
-                    //remove keyboard
+        for (mat in geocodeMatches!!) {
+            val market = LatLng(mat.latitude, mat.longitude)
+            mMap.addMarker(MarkerOptions()
+                    .position(market).title("MiniMarket")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+            )
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(market, zoomLevel))
+            val circle = mMap.addCircle(CircleOptions()
+                    .center(LatLng(mat.latitude, mat.longitude))
+                    .radius(10000.0)
+                    .strokeColor(Color.RED)
+                    .fillColor(0x000C1FFFF)
+            )
+            val mypos = findViewById<ImageButton>(R.id.find)
+            val search = findViewById<ImageButton>(R.id.search)
+            val address = findViewById<EditText>(R.id.address)
+            var cliente: LatLng
+            zoomLevel = 16.0f
+            search.setOnClickListener {
+                //remove keyboard
+                if (!address.text.isNullOrBlank()) {
                     val mgr = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     mgr.hideSoftInputFromWindow(address.getWindowToken(), 0)
                     try {
@@ -121,40 +124,41 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                     for (mat in geocodeMatches!!) {
                         cliente = LatLng(mat.latitude, mat.longitude)
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
-                                    if (cliente != null) {
-                                     var x = Geocoder(this).getFromLocationName(address.text.toString(),1)
-                                           for(mat in x){
-                                               val cliente = LatLng(cliente.latitude, cliente.longitude)
+                        if (cliente != null) {
+                            var x = Geocoder(this).getFromLocationName(address.text.toString(), 1)
+                            for (mat in x) {
+                                val cliente = LatLng(cliente.latitude, cliente.longitude)
 
-                                               marker?.remove()
-                                               marker = mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
-                                               mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
-                                               var loc = Location(address.text.toString())
-                                               loc.latitude = cliente.latitude
-                                               loc.longitude = cliente.longitude
-                                               //Log.d("indirizzo","${Location(address.text.toString())}")
-                                               isInside(loc, circle)
+                                marker?.remove()
+                                marker = mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
+                                var loc = Location(address.text.toString())
+                                loc.latitude = cliente.latitude
+                                loc.longitude = cliente.longitude
+                                //Log.d("indirizzo","${Location(address.text.toString())}")
+                                isInside(loc, circle)
 
-                                           }
-                                    }
-                                }
-                    }
-                mypos.setOnClickListener{
-                val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-                fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    // Got last known location. In some rare situations this can be null.
-                    if (location != null) {
-                            val cliente = LatLng(location.latitude, location.longitude)
-                            marker?.remove()
-                            marker = mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
-                            isInside(location, circle)
                             }
                         }
                     }
                 }
+                mypos.setOnClickListener {
+                    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                    fusedLocationClient.lastLocation
+                            .addOnSuccessListener { location: Location? ->
+                                // Got last known location. In some rare situations this can be null.
+                                if (location != null) {
+                                    val cliente = LatLng(location.latitude, location.longitude)
+                                    marker?.remove()
+                                    marker = mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
+                                    isInside(location, circle)
+                                }
+                            }
+                }
+            }
         }
+    }
 
     private fun setAddressFirebase(location: Location){
         var geocodeMatches: List<Address>? = null
@@ -167,8 +171,12 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
             if (geocodeMatches != null) {
                 indirizzo += geocodeMatches[0].getAddressLine(0) + " " + geocodeMatches[0].adminArea + " " + geocodeMatches[0].postalCode + " " + geocodeMatches[0].countryName
             }
-
-            var currentUser = intent.getStringExtra("mail")!!
+        var currentUser : String
+        if(intent.getStringExtra("mail").isNullOrBlank()) {
+            currentUser=FirebaseAuth.getInstance().currentUser!!.email!!
+        }else {
+            currentUser = intent.getStringExtra("mail")!!
+        }
                 Log.d("google", "se aggiorno ora vale $currentUser")
             val entry = hashMapOf<String, Any?>(
                     "address" to indirizzo,

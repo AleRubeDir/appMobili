@@ -25,6 +25,8 @@ class GestoreActivity : AppCompatActivity() {
         val shopFragment = ShopFragment()
         val profileFragment = ProfileFragment()
         makeCurrentFragment(shopFragment)
+
+
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
@@ -45,7 +47,10 @@ class GestoreActivity : AppCompatActivity() {
         add.setOnClickListener{
             startActivity(Intent(this,AddProduct::class.java))
         }
-
+        val chat = findViewById<ImageButton>(R.id.chat)
+        chat.setOnClickListener{
+            makeCurrentFragment(ChatGestoreFragment())
+        }
     }
 
     private fun makeCurrentFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply{

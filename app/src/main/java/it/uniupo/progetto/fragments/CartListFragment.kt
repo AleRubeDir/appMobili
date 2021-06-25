@@ -1,19 +1,22 @@
 package it.uniupo.progetto.fragments
 
-import android.net.Uri
+
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.HomeActivity
+import it.uniupo.progetto.PagamentoActivity
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
 
@@ -28,53 +31,55 @@ class CartListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_cart_list2, container, false)
-
-
-        // Set the adapter
-
         val recyclerView = view.findViewById<RecyclerView>(R.id.list)
         val tot = view.findViewById<TextView>(R.id.tot)
         recyclerView.layoutManager =  LinearLayoutManager(view.context)
         getUserCart((object: ItemFragment.Companion.MyCallback {
             override fun onCallback(value: List<Prodotto>) {
-                //cartTot()
-                //Log.d("totale","Totale in callback vale ${HomeActivity.tot}")
-                cartTot(HomeActivity.carrello)
+               cartTot(HomeActivity.carrello)
                 var totdoub = "%.2f".format(HomeActivity.tot)
-                tot.text = getString(R.string.cash,totdoub)
-
+                tot.text = activity?.getString(R.string.cash,totdoub)
                 recyclerView.adapter = MyCartListRecyclerViewAdapter(HomeActivity.carrello)
             }
         }))
-
-
-
-     /*   Log.d("myview","${view is RecyclerView}")
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                getUserCart((object: ItemFragment.Companion.MyCallback {
-                    override fun onCallback(value: List<Prodotto>) {
-                        cartTot()
-                        //Log.d("totale","Totale in callback vale ${HomeActivity.tot}")
-                        adapter = MyCartListRecyclerViewAdapter(HomeActivity.carrello)
-                    }
-                }))
-            }
-        }*/
+        val compra = view.findViewById<Button>(R.id.compra)
+        compra.setOnClickListener{
+            impostaOrdine(HomeActivity.carrello)
+            val intent = Intent(view.context, PagamentoActivity::class.java)
+            //intent.putExtra("mail", mail!! )
+            startActivity(intent)
+        }
         return view
     }
+
+    private fun impostaOrdine(carrello: ArrayList<Prodotto>) {
+        val db = FirebaseFirestore.getInstance()
+        val user = FirebaseAuth.getInstance().currentUser?.email.toString()
+        for(p in carrello) {
+            var entry = hashMapOf<String, Any?>(
+                "id" to p.id,
+                "titolo" to p.titolo,
+                "qta" to p.qta,
+                "prezzo" to p.prezzo,
+            )
+            db.collection("orders").document(user).collection(p.id.toString())
+                .add(entry)
+                .addOnSuccessListener {
+                    Log.d("carrello","Ordine piazzato con successo")
+
+                }
+                .addOnFailureListener{
+                    Log.d("carrello", "Errore ordine $it")
+                }
+        }
+
+    }
+
   fun cartTot(arr : ArrayList<Prodotto>) {
         if(arr.isNotEmpty()) {
-            var temp = 0.0
+                HomeActivity.tot = 0.0;
             for (p in arr) {
-              /*  Log.d("totale", "p vale $p")
-                Log.d("totale", "valore : ${p.prezzo.toDouble() * p.qta}")*/
                 HomeActivity.tot += (p.prezzo.toDouble() * p.qta)
-                /*Log.d("totale", "prezzo ${p.prezzo.toDouble() * p.qta} qta ${p.qta}Temp dentro vale $temp Totale dentro vale ${HomeActivity.tot}")*/
             }
             //HomeActivity.tot = temp
    /*         Log.d("totale", "Temp vale $temp Totale in cartTot vale ${HomeActivity.tot}")*/
