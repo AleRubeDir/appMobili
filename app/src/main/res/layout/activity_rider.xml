@@ -13,22 +13,7 @@
         android:layout_above="@+id/bottom_nav"
         >
 
-        <RelativeLayout
-            android:id="@+id/tot_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:itemBackground="@color/menu"
-            android:layout_gravity="center|top">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_delivery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:textColor="@color/black"
-                android:text="Disponibilità" />
-
-        </RelativeLayout>
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

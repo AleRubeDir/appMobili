@@ -14,7 +14,7 @@ import it.uniupo.progetto.R
 /**
  * A fragment representing a list of Items.
  */
-class Chat_rider : Fragment() {
+class Rider_chatFragment : Fragment() {
 
     private var columnCount = 1
 
@@ -53,7 +53,7 @@ class Chat_rider : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            Chat_rider().apply {
+            Rider_chatFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }

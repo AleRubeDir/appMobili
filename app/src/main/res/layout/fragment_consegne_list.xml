@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tot_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:itemBackground="@color/menu"
+    android:layout_gravity="center|top">
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_delivery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/black"
+        android:width="150px"
+        android:text="Disponibilità" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:name="it.uniupo.progetto.fragments.Consegne_todo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".fragments.Rider_ConsegneFragment"
+        tools:listitem="@layout/fragment_consegne"
+        android:layout_below="@id/switch_delivery"
+        />
+</RelativeLayout>
+
+
+

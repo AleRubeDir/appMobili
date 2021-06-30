@@ -2,16 +2,11 @@ package it.uniupo.progetto
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.RelativeLayout
-import android.widget.TextView
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import it.uniupo.progetto.fragments.*
-import kotlin.concurrent.thread
-import kotlin.math.round
 import kotlin.properties.Delegates
 
 class RiderActivity : AppCompatActivity() {
@@ -21,26 +16,21 @@ class RiderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider)
-        val chatFragment = CartListFragment()
-        val deliveryFragment = Consegne_todo()
+        val chatFragment = Rider_chatFragment()
+        val deliveryFragment = Rider_ConsegneFragment()
         val profileFragment = ProfileFragment()
         makeCurrentFragment(deliveryFragment)
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.carrello -> {
+                R.id.chat -> {
+                    makeCurrentFragment(chatFragment)
 
-                    thread(start = true) {
-                        stampaArray(carrello)
-                        makeCurrentFragment(chatFragment)
-                    }
-
-                    Log.d("totale","Tot in home vale $tot")
                 }
-                R.id.profilo -> {
+                R.id.consegne -> {
                     makeCurrentFragment(deliveryFragment)
                 }
-                R.id.shop -> {
+                R.id.profilo -> {
                     makeCurrentFragment(profileFragment)
                 }
             }

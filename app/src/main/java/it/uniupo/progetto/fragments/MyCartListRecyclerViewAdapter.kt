@@ -16,7 +16,6 @@ import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.HomeActivity
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
-import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 
 class MyCartListRecyclerViewAdapter(
