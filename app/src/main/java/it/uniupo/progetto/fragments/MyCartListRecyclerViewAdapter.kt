@@ -1,5 +1,6 @@
 package it.uniupo.progetto.fragments
 
+import android.graphics.Canvas
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -15,12 +16,19 @@ import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.HomeActivity
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 
 class MyCartListRecyclerViewAdapter(
         private val values: ArrayList<Prodotto>
 ) : RecyclerView.Adapter<MyCartListRecyclerViewAdapter.ViewHolder>() {
-        private var tot = MutableLiveData<Double>()
+    var mRecyclerView: RecyclerView? = null
+
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        mRecyclerView = recyclerView
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_cart2, parent, false)
@@ -39,7 +47,7 @@ class MyCartListRecyclerViewAdapter(
                 if (p.qta>=n) {
                     qta.text = n.toString()
                     Log.d("tot", "PRIMA CARRELLO VALE  ${HomeActivity.carrello}")
-                    salvaQta(p,n)
+                    salvaQta(p, n)
                 }else{
                     Toast.makeText(parent.context, "Qta max", Toast.LENGTH_SHORT).show()
                 }
@@ -53,10 +61,10 @@ class MyCartListRecyclerViewAdapter(
             if (p != null) {
                 if (p.qta>n) {
                     qta.text = n.toString()
-                    salvaQta(p,n)
+                    salvaQta(p, n)
                 }else{
                     qta.text = p.qta.toString()
-                    salvaQta(p,p.qta)
+                    salvaQta(p, p.qta)
                     Toast.makeText(parent.context, "Qta max", Toast.LENGTH_SHORT).show()
 
                 }
@@ -76,7 +84,7 @@ class MyCartListRecyclerViewAdapter(
                 Toast.makeText(parent.context, "Prodotto rimosso ", Toast.LENGTH_SHORT).show()
             } else {
                 diminuisciQta(id)
-                salvaQta(p!!,nqta)
+                salvaQta(p!!, nqta)
                 qta.text = nqta.toString()
             }
         }
@@ -91,11 +99,43 @@ class MyCartListRecyclerViewAdapter(
                 Toast.makeText(parent.context, "Prodotto rimosso ", Toast.LENGTH_SHORT).show()
             } else {
                 diminuisciVeloceQta(id)
-                salvaQta(p!!,nqta)
+                salvaQta(p!!, nqta)
                 qta.text = nqta.toString()
             }
        true
         }
+
+     /*   val mIth = ItemTouchHelper(
+                object : ItemTouchHelper.SimpleCallback(0,
+                        ItemTouchHelper.LEFT) {
+
+                    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                        return false
+                    }
+
+                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                        when (direction) {
+                            ItemTouchHelper.LEFT -> {
+                            *//*    var id = idtv.text.toString().toInt()
+                                rimuoviProdotto(id)
+                                notifyDataSetChanged()*//*
+                                Log.d("swipe","Swipe effettuato")
+                            }
+                        }
+
+                    }
+
+                    override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+                        RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                                .addBackgroundColor(R.color.menu)
+                                .addActionIcon(R.drawable.delete)
+                                .create()
+                                .decorate()
+                    }
+                })
+
+            mIth.attachToRecyclerView(mRecyclerView)*/
+
         return ViewHolder(view)
     }
 
@@ -111,7 +151,7 @@ class MyCartListRecyclerViewAdapter(
                 p.qta = p.qta-10
         }
     }
-    private fun salvaQta(p : Prodotto, qta : Int){
+    private fun salvaQta(p: Prodotto, qta: Int){
         for (x in HomeActivity.carrello){
             if(x.id == p.id)
                 x.qta = qta
@@ -128,7 +168,7 @@ class MyCartListRecyclerViewAdapter(
                 }
                 .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
     }
-    private fun rimuoviProdotto(id: Int){
+    fun rimuoviProdotto(id: Int){
         var el : Prodotto = values[0]
         for(p in values){
             if(p.id==id)
@@ -140,17 +180,18 @@ class MyCartListRecyclerViewAdapter(
         db.collection("carts").document(user).collection("products").document(id.toString())
                 .delete()
                 .addOnSuccessListener {
-                    Log.d("cart","Eliminazione di $id avvenuta con successo")
+                    Log.d("cart", "Eliminazione di $id avvenuta con successo")
                 }
                 .addOnFailureListener{
-                    Log.d("cart","Errore eliminazione di $id ")
+                    Log.d("cart", "Errore eliminazione di $id ")
                 }
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
             holder.text.text = item.titolo
             holder.qta.text = item.qta.toString()
-            holder.prezzo.text = holder.itemView.context.getString(R.string.cash,item.prezzo)
+            holder.prezzo.text = holder.itemView.context.getString(R.string.cash, item.prezzo)
             holder.id.text = item.id.toString()
 
     }

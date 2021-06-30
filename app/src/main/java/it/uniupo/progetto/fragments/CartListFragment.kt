@@ -3,30 +3,20 @@ package it.uniupo.progetto.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import androidx.fragment.app.Fragment
-
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import it.uniupo.progetto.HomeActivity
-import it.uniupo.progetto.PagamentoActivity
-import it.uniupo.progetto.Prodotto
-import it.uniupo.progetto.R
-import org.w3c.dom.Text
-import kotlin.properties.Delegates
+import it.uniupo.progetto.*
 
 /**
  * A fragment representing a list of Items.
@@ -35,30 +25,31 @@ class CartListFragment : Fragment()  {
 
     private var columnCount = 1
     lateinit var tot : TextView
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_cart_list2, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.list)
         tot = view.findViewById(R.id.tot)
 
         recyclerView.layoutManager =  LinearLayoutManager(view.context)
-        getUserCart((object: ItemFragment.Companion.MyCallback {
+        getUserCart((object : ItemFragment.Companion.MyCallback {
             override fun onCallback(value: List<Prodotto>) {
-               cartTot()
+                cartTot()
                 var totdoub = "%.2f".format(HomeActivity.tot)
-                tot.text = activity?.getString(R.string.cash,totdoub)
+                tot.text = activity?.getString(R.string.cash, totdoub)
                 recyclerView.adapter = MyCartListRecyclerViewAdapter(HomeActivity.carrello)
                 val db = FirebaseFirestore.getInstance()
                 val email = FirebaseAuth.getInstance().currentUser!!.email.toString()
                 db.collection("carts").document(email).collection("products")
-                        .addSnapshotListener{snap , e->
-                            if(e!= null) Log.d("mysnap","Errore connessione $e")
-                            if(snap!=null)
+                        .addSnapshotListener { snap, e ->
+                            if (e != null) Log.d("mysnap", "Errore connessione $e")
+                            if (snap != null)
                                 cartTot()
-                                totdoub = "%.2f".format(HomeActivity.tot)
-                                tot.text = activity?.getString(R.string.cash,totdoub)
+                            totdoub = "%.2f".format(HomeActivity.tot)
+                            tot.text = activity?.getString(R.string.cash, totdoub)
                         }
             }
         }))
@@ -68,6 +59,16 @@ class CartListFragment : Fragment()  {
             val intent = Intent(view.context, PagamentoActivity::class.java)
             startActivity(intent)
         }
+
+        val swipegesture = object: SwipeGesture(){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                MyCartListRecyclerViewAdapter(HomeActivity.carrello).rimuoviProdotto(viewHolder.absoluteAdapterPosition)
+                Log.d("swipe","Swipe effettuato ${viewHolder.adapterPosition}  ${viewHolder.absoluteAdapterPosition}")
+                //super.onSwiped(viewHolder, direction)
+            }
+        }
+        val touchelper = ItemTouchHelper(swipegesture)
+        touchelper.attachToRecyclerView(recyclerView)
         return view
     }
 
@@ -76,15 +77,15 @@ class CartListFragment : Fragment()  {
         val user = FirebaseAuth.getInstance().currentUser?.email.toString()
         for(p in carrello) {
             var entry = hashMapOf<String, Any?>(
-                "id" to p.id,
-                "titolo" to p.titolo,
-                "qta" to p.qta,
-                "prezzo" to p.prezzo,
+                    "id" to p.id,
+                    "titolo" to p.titolo,
+                    "qta" to p.qta,
+                    "prezzo" to p.prezzo,
             )
             db.collection("orders").document(user).collection(p.id.toString())
                 .add(entry)
                 .addOnSuccessListener {
-                    Log.d("carrello","Ordine piazzato con successo")
+                    Log.d("carrello", "Ordine piazzato con successo")
 
                 }
                 .addOnFailureListener{
@@ -123,8 +124,8 @@ class CartListFragment : Fragment()  {
                 Log.d("totale", "Error getting document - get user cart()")
             }
     }
-    fun stampaArray(array : ArrayList<Prodotto>){
-        Log.d("totale","clf --- $array")
+    fun stampaArray(array: ArrayList<Prodotto>){
+        Log.d("totale", "clf --- $array")
     }
 
 }

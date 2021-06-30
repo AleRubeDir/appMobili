@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -13,8 +14,12 @@
     android:foreground="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
+-->
 
     <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -85,4 +90,5 @@
 
 
 </RelativeLayout>
-</androidx.cardview.widget.CardView>
+<!--
+</androidx.cardview.widget.CardView>-->

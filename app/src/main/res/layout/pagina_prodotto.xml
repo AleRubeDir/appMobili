@@ -12,42 +12,38 @@
         />
        <TextView
             android:id="@+id/titolo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
            android:layout_marginTop="15dp"
            android:layout_below="@id/img"
            android:textColor="@color/black"
            android:textStyle="bold"
-           android:layout_marginStart="5dp"
+           android:layout_marginStart="15dp"
            android:textSize="@dimen/slide_title"
            />
         <TextView
             android:id="@+id/desc"
             android:layout_marginTop="15dp"
             android:layout_below="@id/titolo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:textSize="@dimen/slidedesc"
             android:textColor="@color/black"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="15dp"
             android:layout_height="wrap_content"
             />
         <TextView
             android:id="@+id/prezzo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:textSize="@dimen/slidedesc"
             android:text="@string/cash"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="15dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/desc"
             android:layout_marginTop="15dp"
             />
-<!--        <NumberPicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/qta"/>-->
+
 
     <com.shawnlin.numberpicker.NumberPicker
         android:layout_below="@id/prezzo"
@@ -84,9 +80,6 @@
         android:text="@string/add_cart"
         android:textColor="@color/black"
         android:background="@drawable/gradient_orange" />
-<!--
 
-    </ScrollView>
--->
 
 </RelativeLayout>
