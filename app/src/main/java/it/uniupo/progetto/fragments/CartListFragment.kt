@@ -60,10 +60,11 @@ class CartListFragment : Fragment()  {
             startActivity(intent)
         }
 
-        val swipegesture = object: SwipeGesture(){
+        val swipegesture = object: SwipeGesture(view.context){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                MyCartListRecyclerViewAdapter(HomeActivity.carrello).rimuoviProdottoSwipe(viewHolder.layoutPosition)
-                Log.d("swipe","Swipe effettuato ${viewHolder.oldPosition} ${viewHolder.layoutPosition} ${viewHolder.bindingAdapterPosition} ${viewHolder.itemId.toInt()} ${viewHolder.adapterPosition}  ${viewHolder.absoluteAdapterPosition}")
+                MyCartListRecyclerViewAdapter(HomeActivity.carrello).rimuoviProdottoSwipe(viewHolder.bindingAdapterPosition)
+                recyclerView.adapter = MyCartListRecyclerViewAdapter(HomeActivity.carrello)
+                Log.d("swipe","Swipe effettuato  ${viewHolder.bindingAdapterPosition}  ${viewHolder.adapterPosition}  ${viewHolder.absoluteAdapterPosition}")
                 //super.onSwiped(viewHolder, direction)
             }
         }

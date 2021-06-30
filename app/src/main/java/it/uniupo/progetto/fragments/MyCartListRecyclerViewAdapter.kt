@@ -104,37 +104,6 @@ class MyCartListRecyclerViewAdapter(
        true
         }
 
-     /*   val mIth = ItemTouchHelper(
-                object : ItemTouchHelper.SimpleCallback(0,
-                        ItemTouchHelper.LEFT) {
-
-                    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                        return false
-                    }
-
-                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                        when (direction) {
-                            ItemTouchHelper.LEFT -> {
-                            *//*    var id = idtv.text.toString().toInt()
-                                rimuoviProdotto(id)
-                                notifyDataSetChanged()*//*
-                                Log.d("swipe","Swipe effettuato")
-                            }
-                        }
-
-                    }
-
-                    override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-                        RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                                .addBackgroundColor(R.color.menu)
-                                .addActionIcon(R.drawable.delete)
-                                .create()
-                                .decorate()
-                    }
-                })
-
-            mIth.attachToRecyclerView(mRecyclerView)*/
-
         return ViewHolder(view)
     }
 
@@ -172,7 +141,6 @@ class MyCartListRecyclerViewAdapter(
         rimuoviProdottoFromDb(values[pos])
         values.remove(values[pos])
         notifyDataSetChanged()
-        notifyItemRemoved(pos)
 
     }
     fun rimuoviProdottoFromDb(p : Prodotto){
