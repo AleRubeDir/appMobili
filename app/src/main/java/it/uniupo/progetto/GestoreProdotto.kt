@@ -17,6 +17,7 @@ import androidx.core.net.toUri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -44,7 +45,8 @@ class GestoreProdotto  : AppCompatActivity() {
                 desc.setText(p.desc)
                 prezzo.setText(p.prezzo)
                 qta.setText(p.qta.toString())
-                img.setImageURI(p.img.toUri())
+                Picasso.get().load(p.img).into(img)
+               // img.setImageURI(p.img.toUri())
                 nome = p.titolo
                 salva.setOnClickListener{
                     if(p.titolo != tvTitolo.text.toString()) p.titolo = tvTitolo.text.toString()

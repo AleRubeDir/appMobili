@@ -17,7 +17,7 @@
             android:id="@+id/tot_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:itemBackground="@color/complementary"
+            app:itemBackground="@color/menu"
             android:layout_gravity="center|top">
 
             <androidx.appcompat.widget.SwitchCompat
@@ -25,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:textColor="@color/black"
                 android:text="Disponibilità" />
 
         </RelativeLayout>
@@ -38,7 +39,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
         android:background="?android:attr/windowBackground"
-        app:itemBackground="@color/complementary"
+        app:itemBackground="@color/menu"
         app:itemIconTint="#fff"
         app:itemTextColor="#fff"
         app:menu="@menu/rider_menu" />

@@ -16,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/color"
-        android:background="@drawable/gradient_blue"
+        android:background="@drawable/gradient_orange"
+
         >
 
         <ImageView

@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/log_string"
+        android:textColor="@color/black"
         android:layout_marginTop="-20dp"
         android:layout_centerHorizontal="true"
         android:layout_alignTop="@+id/btn_log"
@@ -25,12 +26,14 @@
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
         android:text="@string/login"
+        android:textColor="@color/black"
         android:layout_centerInParent="true"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reg_string"
+        android:textColor="@color/black"
         android:layout_marginTop="-20dp"
         android:layout_centerHorizontal="true"
         android:layout_alignTop="@+id/btn_reg"
@@ -41,16 +44,17 @@
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
         android:text="@string/register"
+        android:textColor="@color/black"
         android:layout_marginTop="30dp"
         android:layout_below="@id/btn_log"
         android:layout_centerHorizontal="true"
         />
   <Button
         android:id="@+id/btn_rider"
-        android:backgroundTint="@color/primary"
+        android:backgroundTint="@color/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+      android:textColor="@color/black"
         android:text="RIDER ACTIVITY"
         />
     <!--   <Button

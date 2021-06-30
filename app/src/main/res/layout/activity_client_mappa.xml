@@ -17,46 +17,57 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
+                android:padding="5dp"
                 android:id="@+id/insert_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Inserisci il tuo indirizzo"
+                android:text="@string/inserisci_il_tuo_indirizzo"
+                android:textColor="@color/black"
                 android:textSize="25sp"
                 />
-            <ImageButton
-                android:id="@+id/find"
-                android:background="@drawable/gradient_orange"
-                android:layout_width="wrap_content"
-                android:layout_gravity="end|top"
+            <TableLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/insert_label"
-                android:padding="5dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:src="@drawable/find"
-                />
-            <EditText
-                android:id="@+id/address"
                 android:layout_below="@id/insert_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="15"
-                android:layout_toEndOf="@+id/find"
-                android:maxLines="1"
-            >
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                >
+                <TableRow>
+                    <ImageButton
+                        android:layout_weight="0.01"
+                        android:id="@+id/find"
+                        android:background="@drawable/btn_chat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:padding="5dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:src="@drawable/find"
+                        />
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/address"
+                        android:maxWidth="300dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:maxLines="1"
+                        />
+                    <ImageButton
+                        android:layout_weight="0.01"
+                        android:id="@+id/search"
+                        android:background="@drawable/btn_chat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="5dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:src="@drawable/search" />
 
-            </EditText>
-            <ImageButton
-                android:id="@+id/search"
-                android:background="@drawable/gradient_orange"
-                android:layout_width="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@id/insert_label"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:src="@drawable/search" />
+                </TableRow>
+
+            </TableLayout>
 
         </RelativeLayout>
 
@@ -85,6 +96,7 @@
             android:layout_gravity="center|top"
             android:layout_height="wrap_content"
             android:visibility="invisible"
+            android:textColor="@color/black"
             android:text="@string/end"
             />
     </fragment>

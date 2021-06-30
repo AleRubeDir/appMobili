@@ -22,8 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/scelta_reg"
+            android:textColor="@color/black"
             android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_marginBottom="50dp">
 
         </TextView>
@@ -31,7 +32,8 @@
             <ImageView
                 android:id="@+id/ggl"
                 android:clickable="true"
-                android:src="@drawable/ic_google__g__logo">
+                android:src="@drawable/ic_google__g__logo"
+                android:focusable="true">
             </ImageView>
             <ImageView
                 android:id="@+id/mail"
@@ -53,6 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@color/black"
                 android:text="@string/email" />
         </TableRow>
 
@@ -74,6 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@color/black"
                 android:text="@string/password" />
         </TableRow>
 
@@ -94,6 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login"
+                android:textColor="@color/black"
                 android:background="@drawable/gradient_orange">
 
             </Button>

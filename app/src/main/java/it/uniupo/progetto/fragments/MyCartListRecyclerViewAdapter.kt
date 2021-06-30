@@ -1,6 +1,5 @@
 package it.uniupo.progetto.fragments
 
-
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,8 +20,7 @@ import it.uniupo.progetto.R
 class MyCartListRecyclerViewAdapter(
         private val values: ArrayList<Prodotto>
 ) : RecyclerView.Adapter<MyCartListRecyclerViewAdapter.ViewHolder>() {
-
-
+        private var tot = MutableLiveData<Double>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_cart2, parent, false)
@@ -30,6 +29,7 @@ class MyCartListRecyclerViewAdapter(
         val minus = view.findViewById<Button>(R.id.minus)
         val qta = view.findViewById<TextView>(R.id.qta)
         val idtv = view.findViewById<TextView>(R.id.id)
+
         plus.setOnClickListener {
             val id = idtv.text.toString().toInt()
             val n = qta.text.toString().toInt() + 1
@@ -38,12 +38,14 @@ class MyCartListRecyclerViewAdapter(
             if (p != null) {
                 if (p.qta>=n) {
                     qta.text = n.toString()
+                    Log.d("tot", "PRIMA CARRELLO VALE  ${HomeActivity.carrello}")
                     salvaQta(p,n)
                 }else{
                     Toast.makeText(parent.context, "Qta max", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+        //tiene premuto aggiunge 10 qta
         plus.setOnLongClickListener {
             val id = idtv.text.toString().toInt()
             val n = qta.text.toString().toInt() + 10
@@ -60,10 +62,10 @@ class MyCartListRecyclerViewAdapter(
                 }
 
             }
-
-            CartListFragment.cartTot()
             true
         }
+
+
         minus.setOnClickListener {
             var id = idtv.text.toString().toInt()
             var nqta = qta.text.toString().toInt() - 1
@@ -77,7 +79,6 @@ class MyCartListRecyclerViewAdapter(
                 salvaQta(p!!,nqta)
                 qta.text = nqta.toString()
             }
-            CartListFragment.cartTot()
         }
         //tieni premuto toglie 10 qta
         minus.setOnLongClickListener {
@@ -93,11 +94,11 @@ class MyCartListRecyclerViewAdapter(
                 salvaQta(p!!,nqta)
                 qta.text = nqta.toString()
             }
-            CartListFragment.cartTot()
-            true
+       true
         }
         return ViewHolder(view)
     }
+
     private fun diminuisciQta(id: Int){
         for(p in values){
             if(p.id==id)
@@ -111,6 +112,10 @@ class MyCartListRecyclerViewAdapter(
         }
     }
     private fun salvaQta(p : Prodotto, qta : Int){
+        for (x in HomeActivity.carrello){
+            if(x.id == p.id)
+                x.qta = qta
+        }
         val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val db = FirebaseFirestore.getInstance()
         val entry = hashMapOf<String, Any?>(
@@ -161,4 +166,5 @@ class MyCartListRecyclerViewAdapter(
             return super.toString() + " text : ${text.text} ||| qta : ${qta .text}||| prezzo : ${prezzo.text} ||| id : ${id.text}"
         }
     }
+
 }

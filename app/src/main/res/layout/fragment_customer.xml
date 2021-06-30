@@ -19,6 +19,8 @@
         android:layout_below="@id/img_customer"
         android:textSize="@dimen/slide_title"
         android:gravity="center"
+
+        android:textColor="@color/black"
         android:text="@string/customer_title" />
     <TextView
         android:id="@+id/customer_desc"

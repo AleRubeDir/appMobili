@@ -18,6 +18,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:text="@string/next"
+        android:textColor="@color/black"
+
         />
     <Button
         android:id="@+id/end"

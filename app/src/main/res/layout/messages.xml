@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ciao come stai??"
+
             android:textColor="@color/black"
             android:maxWidth="210dp"
             android:padding="5dp"
@@ -43,6 +44,7 @@
         android:layout_toEndOf="@+id/card"
         android:layout_alignBottom="@id/card"
         android:layout_marginBottom="5dp"
+             android:textColor="@color/black"
         android:text="10:30"/>
     </RelativeLayout>
 <RelativeLayout
@@ -65,6 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ciao come stai??"
+
             android:textColor="@color/black"
             android:padding="5dp"
             android:maxWidth="210dp"
@@ -79,6 +82,7 @@
         android:layout_toStartOf="@+id/cardS"
         android:layout_alignBottom="@id/cardS"
         android:layout_marginBottom="5dp"
+        android:textColor="@color/black"
         android:text="10:30"/>
     </RelativeLayout>
 </RelativeLayout>

@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="35sp"
+        android:textColor="@color/black"
         android:maxLines="1"
         android:text="@string/email"/>
     <TextView
@@ -17,6 +18,7 @@
         android:layout_height="wrap_content"
         android:textSize="35sp"
         android:maxLines="1"
+        android:textColor="@color/black"
         android:text="@string/nome"
         />
     <TextView

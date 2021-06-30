@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25dp"
+        android:textColor="@color/black"
         android:text="@string/scelta_titolo"
         />
 
@@ -19,6 +20,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/name_label"
         android:text="@string/nome"
+        android:textColor="@color/black"
         android:layout_above="@+id/name"
         android:labelFor="@+id/name"
         android:layout_centerInParent="true"/>
@@ -37,6 +39,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/surname_label"
         android:text="@string/cognome"
+        android:textColor="@color/black"
         android:layout_above="@+id/surname"
         android:layout_centerHorizontal="true"
         android:labelFor="@+id/surname"/>
@@ -64,15 +67,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/customer_title"
+            android:textColor="@color/black"
             android:id="@+id/scelta_customer"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rider_title"
+            android:textColor="@color/black"
             android:id="@+id/scelta_rider"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="@string/gestore_title"
             android:id="@+id/scelta_gestore"/>
 
@@ -81,6 +87,7 @@
         android:id="@+id/end"
         android:background="@drawable/gradient_orange"
         android:layout_width="wrap_content"
+        android:textColor="@color/black"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"

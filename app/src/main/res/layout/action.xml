@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="5px"
         android:layout_below="@id/nome"
-        android:background="@color/complementary"/>
+        android:background="@color/menu"/>
     <TextView
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
+        android:textColor="@color/black"
         android:focusable="true"
        android:text="OPERAZIONE"/>
     <TextView
@@ -31,5 +32,5 @@
         android:layout_width="match_parent"
         android:layout_height="5px"
         android:layout_below="@id/nome"
-        android:background="@color/complementary"/>
+        android:background="@color/menu"/>
 </RelativeLayout>

@@ -22,6 +22,7 @@
     android:layout_marginTop="5dp"
     android:layout_marginStart="15dp"
     android:textSize="17sp"
+    android:textColor="@color/black"
     android:text="@string/in_entrambi_i_casi_il_pagamento_avver_con_il_rider"
     />
   <RadioGroup
@@ -39,12 +40,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:textColor="@color/black"
       android:text="@string/contanti"/>
     <RadioButton
         android:id="@+id/carta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:textColor="@color/black"
         android:layout_marginStart="40dp"
       android:text="@string/carta_di_credito"/>
   </RadioGroup>
@@ -57,6 +60,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/totale"
+      android:textColor="@color/black"
       android:textSize="20sp"
       android:layout_below="@id/group"
       />
@@ -66,6 +70,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/cash"
+      android:textColor="@color/black"
       android:textSize="20sp"
       android:layout_toEndOf="@id/tot_label"
       android:layout_below="@id/group"
@@ -80,6 +85,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/indirizzo"
+      android:textColor="@color/black"
       android:textSize="20sp"
       android:layout_below="@id/tot_label"
       />
@@ -89,6 +95,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="Via rossi"
+      android:textColor="@color/black"
       android:textSize="20sp"
       android:layout_toEndOf="@id/indirizzo_label"
       android:layout_below="@id/tot"
@@ -98,6 +105,7 @@
       android:layout_height="wrap_content"
     android:id="@+id/btn"
     android:text="@string/end"
+      android:textColor="@color/black"
     android:background="@drawable/gradient_orange"
     android:layout_alignParentEnd="true"
     android:layout_alignParentBottom="true"

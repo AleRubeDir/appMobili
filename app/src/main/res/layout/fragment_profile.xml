@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:textSize="50sp"
         android:text="@string/il_mio_profilo"
+        android:textColor="@color/black"
         android:maxLines="1"/>
     <androidx.recyclerview.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"

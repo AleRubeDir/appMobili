@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/name"
         android:layout_marginStart="20dp"
+        android:textColor="@color/black"
         android:layout_marginTop="10dp"
         android:text="Ultimo messaggio chat"
         android:textSize="15sp" />
@@ -45,6 +46,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/ora"
         android:text="10:13"
+        android:textColor="@color/black"
         android:layout_alignParentEnd="true"
         android:padding="10dp"/>
     <TextView
@@ -65,5 +67,5 @@
         android:layout_height="5px"
         android:layout_marginTop="10dp"
         android:layout_below="@id/notifiche"
-        android:background="@color/complementary"/>
+        android:background="@color/menu"/>
 </RelativeLayout>

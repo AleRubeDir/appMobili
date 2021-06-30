@@ -90,5 +90,6 @@
     <string name="carta_di_credito">Carta</string>
     <string name="scegli_metodo_di_pagamento">Scegli metodo di pagamento</string>
     <string name="in_entrambi_i_casi_il_pagamento_avver_con_il_rider">In entrambi i casi il pagamento avverà con il rider</string>
+    <string name="inserisci_il_tuo_indirizzo">Inserisci il tuo indirizzo</string>
 
 </resources>

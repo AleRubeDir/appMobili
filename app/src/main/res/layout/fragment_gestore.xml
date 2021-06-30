@@ -20,6 +20,7 @@
         android:layout_below="@id/img_gestore"
         android:textSize="@dimen/slide_title"
         android:gravity="center"
+        android:textColor="@color/black"
         android:text="@string/gestore_title" />
     <TextView
         android:id="@+id/gestore_desc"
@@ -27,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/gestore_title"
         android:textSize="@dimen/slidedesc"
+        android:textColor="@color/black"
         android:gravity="center"
         android:text="@string/gestore_desc" />
 

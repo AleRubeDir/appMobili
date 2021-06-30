@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:labelFor="@+id/img"
         android:text="@string/immagine_prodotto"
+        android:textColor="@color/black"
         />
     <ImageView
         android:id="@+id/img"
@@ -32,6 +33,7 @@
         android:labelFor="@+id/titolo"
         android:layout_below="@id/img"
         android:text="@string/nomeprodotto"
+        android:textColor="@color/black"
         />
     <EditText
         android:id="@+id/titolo"
@@ -50,6 +52,7 @@
         android:labelFor="@+id/desc"
         android:layout_below="@+id/titolo"
         android:text="@string/descrizione_prodotto"
+        android:textColor="@color/black"
         />
     <EditText
         android:id="@+id/desc"
@@ -68,6 +71,7 @@
         android:labelFor="@+id/desc"
         android:layout_below="@+id/desc"
         android:text="@string/prezzo"
+        android:textColor="@color/black"
         />
     <EditText
         android:id="@+id/prezzo"
@@ -85,6 +89,7 @@
         android:labelFor="@+id/desc"
         android:layout_below="@+id/prezzo"
         android:text="@string/quantit"
+        android:textColor="@color/black"
         />
     <EditText
         android:id="@+id/qta"
@@ -109,6 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/salva_modifiche"
+        android:textColor="@color/black"
         android:background="@drawable/gradient_orange"/>
     <!--
 

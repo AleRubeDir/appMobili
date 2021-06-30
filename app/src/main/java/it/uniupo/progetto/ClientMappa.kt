@@ -142,6 +142,7 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                         }
                     }
                 }
+            }
                 mypos.setOnClickListener {
                     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
                     fusedLocationClient.lastLocation
@@ -158,7 +159,6 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
-    }
 
     private fun setAddressFirebase(location: Location){
         var geocodeMatches: List<Address>? = null

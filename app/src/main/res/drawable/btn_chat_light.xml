@@ -4,8 +4,8 @@
         <shape android:shape = "oval">
             <gradient
                 android:type="linear"
-                android:startColor="@color/menu"
-                android:endColor="@color/menu"
+                android:startColor="#c46c44"
+                android:endColor="#c46c44"
                 android:angle="270"
                 />
         </shape>
@@ -13,7 +13,7 @@
     </item>
     <item android:state_pressed = "true">
         <shape android:shape = "oval">
-            <solid android:color = "#600011"/>
+            <solid android:color = "#C15828"/>
         </shape>
     </item>
 </selector>
