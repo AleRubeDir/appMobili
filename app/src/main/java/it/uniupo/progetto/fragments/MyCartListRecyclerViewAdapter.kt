@@ -168,6 +168,26 @@ class MyCartListRecyclerViewAdapter(
                 }
                 .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
     }
+
+    fun rimuoviProdottoSwipe(pos : Int){
+        rimuoviProdottoFromDb(values[pos])
+        values.remove(values[pos])
+        notifyDataSetChanged()
+        notifyItemRemoved(pos)
+
+    }
+    fun rimuoviProdottoFromDb(p : Prodotto){
+        val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
+        val db = FirebaseFirestore.getInstance()
+        db.collection("carts").document(user).collection("products").document(p.id.toString())
+            .delete()
+            .addOnSuccessListener {
+                Log.d("cart", "Eliminazione di $p.id avvenuta con successo")
+            }
+            .addOnFailureListener{
+                Log.d("cart", "Errore eliminazione di $p.id ")
+            }
+    }
     fun rimuoviProdotto(id: Int){
         var el : Prodotto = values[0]
         for(p in values){
@@ -175,16 +195,7 @@ class MyCartListRecyclerViewAdapter(
                 el = p
         }
         values.remove(el)
-        val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
-        val db = FirebaseFirestore.getInstance()
-        db.collection("carts").document(user).collection("products").document(id.toString())
-                .delete()
-                .addOnSuccessListener {
-                    Log.d("cart", "Eliminazione di $id avvenuta con successo")
-                }
-                .addOnFailureListener{
-                    Log.d("cart", "Errore eliminazione di $id ")
-                }
+        rimuoviProdottoFromDb(el)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
