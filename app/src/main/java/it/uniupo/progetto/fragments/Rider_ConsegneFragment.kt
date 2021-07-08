@@ -35,6 +35,7 @@ class Rider_ConsegneFragment : Fragment() {
                         Log.d("RISULTATO", consegne.toString())
                     }
                 }
+
         )
 
         return view

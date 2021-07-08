@@ -1,12 +1,16 @@
 package it.uniupo.progetto.fragments
 
+import android.content.Context
+import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
-import it.uniupo.progetto.Consegna
-import it.uniupo.progetto.R
+import androidx.core.content.ContextCompat.startActivity
+import it.uniupo.progetto.*
 
 
 /**
@@ -20,6 +24,12 @@ class MyConsegneRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_consegne, parent, false)
+
+        // link all'activity rider_delivery_info
+        val info = view.findViewById<ImageButton>(R.id.info)
+        info.setOnClickListener {
+            view.context.startActivity(Intent(parent.context, Rider_delivery_info::class.java))
+        }
         return ViewHolder(view)
     }
 

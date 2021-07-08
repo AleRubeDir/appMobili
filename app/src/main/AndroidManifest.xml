@@ -3,7 +3,6 @@
     package="it.uniupo.progetto">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -23,10 +22,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Progetto">
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -55,6 +50,7 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".RiderActivity" />
         <activity android:name=".DatiPersonali" />
+        <activity android:name=".Rider_delivery_info" />
         <activity
             android:name=".MainActivity"
             android:label="@string/mm">
@@ -65,5 +61,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
