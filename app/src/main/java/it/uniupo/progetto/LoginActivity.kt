@@ -130,7 +130,7 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(
-                                baseContext, "User creted. Log in to enter in the restricted area.",
+                                baseContext, "User created. Log in to enter in the restricted area.",
                                 Toast.LENGTH_SHORT
                         ).show()
 
