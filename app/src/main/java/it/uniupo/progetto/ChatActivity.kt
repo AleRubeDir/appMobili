@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.fragments.ChatGestoreFragment
-import it.uniupo.progetto.fragments.MyMessageListRecyclerViewAdapter
+import it.uniupo.progetto.recyclerViewAdapter.*
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.SetOptions
 import java.text.SimpleDateFormat

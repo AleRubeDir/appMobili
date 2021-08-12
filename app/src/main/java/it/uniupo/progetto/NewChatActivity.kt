@@ -8,7 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import it.uniupo.progetto.DatiPersonali.Utente
-import it.uniupo.progetto.fragments.MyNewChatRecyclerViewAdapter
+import it.uniupo.progetto.recyclerViewAdapter.*
 
 class NewChatActivity : AppCompatActivity() {
 

@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.uniupo.progetto.fragments.MyOrderActionsAdapter
+import it.uniupo.progetto.recyclerViewAdapter.*
 import it.uniupo.progetto.fragments.ProfileFragment.Azione
 
 class Ordini : AppCompatActivity() {
