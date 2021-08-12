@@ -7,6 +7,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chats"
+        android:focusable="true"
+        android:clickable="true"
         android:name="it.uniupo.progetto.fragments.chat_gestore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

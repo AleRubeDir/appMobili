@@ -26,12 +26,12 @@ import java.io.File
 class AddProduct : AppCompatActivity() {
     lateinit var img : ImageView
     lateinit var imgUri : Uri
-    lateinit var nome : String
+    lateinit var codphoto : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_product)
         val tsLong = System.currentTimeMillis() / 1000
-        nome = tsLong.toString()
+        codphoto = tsLong.toString()
         img = findViewById(R.id.img)
         val add = findViewById<Button>(R.id.add_product)
 
@@ -164,7 +164,7 @@ class AddProduct : AppCompatActivity() {
                 imgUri = data.data!!
             }
             img.setImageURI(imgUri)
-            val storage = FirebaseStorage.getInstance().reference.child("products/$nome")
+            val storage = FirebaseStorage.getInstance().reference.child("products/$codphoto")
 
             storage.putFile(imgUri!!).addOnSuccessListener {
                 Toast.makeText(this, "Foto caricata correttamente", Toast.LENGTH_SHORT).show()
@@ -180,7 +180,7 @@ class AddProduct : AppCompatActivity() {
             var bundle = data!!.extras
             var imgbit = bundle!!.get("data") as Bitmap
 
-            val file = File(cacheDir, nome) //Get Access to a local file.
+            val file = File(cacheDir, codphoto) //Get Access to a local file.
             file.delete() // svuota
             file.createNewFile() //crea
             //scrive su cache
@@ -194,7 +194,7 @@ class AddProduct : AppCompatActivity() {
             byteArrayOutputStream.close()
             val URI = file.toUri()
             img.setImageBitmap(imgbit)
-            var storage = FirebaseStorage.getInstance().reference.child("products/$nome")
+            var storage = FirebaseStorage.getInstance().reference.child("products/$codphoto")
             storage.putFile(URI).addOnSuccessListener {
                 Toast.makeText(this, "Foto caricata correttamente FS", Toast.LENGTH_SHORT).show()
             }
@@ -207,7 +207,7 @@ class AddProduct : AppCompatActivity() {
     }
     private fun updatePhoto(p: Prodotto) {
         val fs = FirebaseStorage.getInstance().reference
-        val imageFileName ="products/$nome"
+        val imageFileName ="products/$codphoto"
         val downloadTask = fs.child(imageFileName).downloadUrl
         downloadTask.addOnSuccessListener {
             Log.d("add", "downloadurl $it")

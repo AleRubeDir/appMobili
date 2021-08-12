@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.*
-
+import it.uniupo.progetto.recyclerViewAdapter.*
 class ProfileFragment : Fragment() {
 
     override fun onCreateView(
@@ -31,12 +31,14 @@ class ProfileFragment : Fragment() {
         var array = ArrayList<Azione>()
         val type = requireActivity().getSharedPreferences("login", 0).getString("login", "")
         array.add(Azione("Dati personali", 0))
-        array.add(Azione("Logout", 3))
+        array.add(Azione("Logout", 4))
         if (type == "Cliente") {
             array.add(Azione("La mia posizione", 1))
             array.add(Azione("I miei ordini", 2))
         } else if (type == "Rider") {
             array.add(Azione("I miei ordini", 2))
+        } else if (type == "Gestore") {
+            array.add(Azione("Posizioni rider",3))
         }
         array.sortBy { it.id }
      /*   getUserType(user, object : LoginActivity.FirestoreCallback {

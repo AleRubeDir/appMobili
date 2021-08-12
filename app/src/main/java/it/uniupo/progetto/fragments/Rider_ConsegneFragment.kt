@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.Consegna
 import it.uniupo.progetto.R
-
+import it.uniupo.progetto.recyclerViewAdapter.*
 /**
  * A fragment representing a list of Items.
  */

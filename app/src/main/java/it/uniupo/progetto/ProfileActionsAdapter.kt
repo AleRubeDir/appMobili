@@ -16,7 +16,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.fragments.ProfileFragment
 
  class ProfileActionsAdapter (
@@ -40,15 +39,24 @@ import it.uniupo.progetto.fragments.ProfileFragment
                  /*intent.putExtra("id-prodotto", id.text )*/
                  view.context.startActivity(intent)
              }
-             if(id.text=="1"){
+             else if(id.text=="1"){
+                 //mappa
                  val intent = Intent(view.context, ClientMappa::class.java)
                  /*intent.putExtra("id-prodotto", id.text )*/
                  view.context.startActivity(intent)
              }
-             if(id.text=="2"){
+             else if(id.text=="2"){
                 //i miei ordini
+                 val intent = Intent(view.context, Ordini::class.java)
+                 /*intent.putExtra("id-prodotto", id.text )*/
+                 view.context.startActivity(intent)
              }
-             if(id.text=="3"){
+             else if(id.text=="3"){
+                 val intent = Intent(view.context, GestoreMappaRider::class.java)
+                 /*intent.putExtra("id-prodotto", id.text )*/
+                 view.context.startActivity(intent)
+             }
+             else if(id.text=="4"){
                  parent.context.getSharedPreferences("login",0).edit().remove("login").apply()
                  FirebaseAuth.getInstance().signOut()
                  val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

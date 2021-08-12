@@ -20,14 +20,19 @@
         android:text="@string/next"
         android:textColor="@color/black"
 
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
         />
     <Button
         android:id="@+id/end"
+        android:background="@drawable/gradient_orange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:text="@string/end"
         android:visibility="invisible"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
         />
 </RelativeLayout>

@@ -36,7 +36,7 @@ class PaginaProdotto  : AppCompatActivity() {
                 cart.setOnClickListener{
                     Log.d("pprod","np value ${np.value}")
                     addToCart(p,np.value)
-                    Toast.makeText(this@PaginaProdotto,"Aggiunto al carrello",Toast.LENGTH_SHORT).show()
+
                     val home = Intent(applicationContext,HomeActivity::class.java)
                     home.putExtra("cart","vai")
                     startActivity(home)
@@ -55,25 +55,39 @@ class PaginaProdotto  : AppCompatActivity() {
         prod["prezzo"] = p.prezzo
         prod["qta"] = qta
         var oldqta= 0
+        Log.d("qta","p.id = ${p.id}")
+        db.collection("products").document(p.id.toString()).get()
+                .addOnSuccessListener {
+                    Log.d("qta", "$it")
 
-        db.collection("carts").document(user!!).collection("products").document(p.id.toString())
-                .get()
-                .addOnSuccessListener { result->
-                    Log.d("qta", "${result.get("qta")} - ${result.get("qta").toString().isNullOrBlank()} / ${result.get("titolo")} / ${result.get("id")} / ${result.get("prezzo")}")
-                    if(result.get("qta")!=null) {
-                    //if(result.get("qta").toString().isNotBlank()) {
-                        oldqta = result.get("qta").toString().toInt()
-                        prod["qta"] = oldqta + qta
-                    }
-                    db.collection("carts").document(user).collection("products").document(p.id.toString())
-                            .set(prod)
-                            .addOnSuccessListener {
-                                Log.d("qta", "Aggiunto prodotto $p con qta $qta totale ${prod["qta"]}")
-                            }
-                            .addOnFailureListener { e -> Log.w("---", "Errore aggiunta prodotto", e) }
+                    var max = it.getLong("qta")!!.toInt()
+                    db.collection("carts").document(user!!).collection("products").document(p.id.toString())
+                            .get()
+                            .addOnSuccessListener { result ->
+                                Log.d("qta", "$result \n ${result.get("qta")} - ${result.get("qta").toString().isNullOrBlank()} / ${result.get("titolo")} / ${result.get("id")} / ${result.get("prezzo")}")
+                                if (result.get("qta") != null) {
+                                    oldqta = result.get("qta").toString().toInt()
+                                    if (oldqta + qta > max) {
+                                        Toast.makeText(
+                                            this@PaginaProdotto,
+                                            "Quantità massima raggiunta",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                                    else  {
+                                        prod["qta"] = oldqta + qta
+                                        db.collection("carts").document(user).collection("products").document(p.id.toString())
+                                                .set(prod)
+                                                .addOnSuccessListener {
+                                                    Toast.makeText(this@PaginaProdotto,"Aggiunto al carrello",Toast.LENGTH_SHORT).show()
+                                                    Log.d("qta", "Aggiunto prodotto $p con qta $qta totale ${prod["qta"]}")
+                                                }
+                                                .addOnFailureListener { e -> Log.w("---", "Errore aggiunta prodotto", e) }
+                                  }
+                                    }
+
                 }
-
-
 
     }
 

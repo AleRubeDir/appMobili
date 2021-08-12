@@ -1,4 +1,4 @@
-package it.uniupo.progetto.fragments
+package it.uniupo.progetto.recyclerViewAdapter
 
 import android.graphics.Canvas
 import android.util.Log

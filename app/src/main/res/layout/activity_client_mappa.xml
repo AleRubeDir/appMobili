@@ -1,4 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        map:uiZoomControls="false"
+        tools:context=".ClientMappa" >
+    </fragment>
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/research"
+        android:layout_margin="5dp"
+        card_view:cardBackgroundColor="@color/mimosa"
+        card_view:cardCornerRadius="30dp"
+        card_view:cardElevation="3dp"
+        card_view:contentPadding="4dp"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <EditText
+                android:inputType="textPostalAddress"
+                android:id="@+id/address"
+                android:layout_toEndOf="@id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                />
+            <ImageButton
+                android:layout_marginTop="10dp"
+                android:id="@+id/search"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/btn_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:src="@drawable/search" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/find"
+        android:background="@drawable/btn_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:padding="5dp"
+        android:src="@drawable/find"
+        />
+
+    <Button
+        android:id="@+id/go"
+        android:background="@drawable/gradient_orange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:textColor="@color/black"
+        android:text="@string/end"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>
+<!--
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rel"
@@ -102,4 +184,4 @@
     </fragment>
 
     </LinearLayout>
-</LinearLayout>
+</LinearLayout>-->

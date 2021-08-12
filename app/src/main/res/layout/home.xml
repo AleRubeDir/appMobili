@@ -6,12 +6,30 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     >
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notifica"
+        android:text="notifica"
+        android:background="@color/menu"/>
+
     <FrameLayout
         android:id="@+id/fl_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_nav"
         />
+<!--    <ImageButton
+        android:id="@+id/chat"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_chat"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/chat"
+        android:visibility="invisible"
+        android:layout_above="@+id/bottom_nav"/>-->
 <RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,49 +38,9 @@
     android:visibility="invisible"
     tools:context=".fragments.ProfileFragment">
 
-</RelativeLayout>
-  <!--  <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tot_layout"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_above="@id/bottom_nav"
-        app:itemBackground="@color/complementary"
 
-        android:background="@color/white"
-        >
-        <TextView
-            android:id="@+id/tot_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/totale"
-            android:textColor="@color/black"
-            android:textSize="35dp"
-            />
-        <TextView
-            android:id="@+id/tot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="@string/cash"
-            android:maxLines="1"
-            android:layout_marginStart="20dp"
-            android:layout_toEndOf="@+id/tot_label"
-            android:textSize="35sp"
-            />
-        <Button
-            android:id="@+id/compra"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/gradient_orange"
-            android:textSize="20sp"
-            android:layout_alignParentEnd="true"
-            android:paddingEnd="10dp"
-            android:layout_marginEnd="10dp"
-            android:paddingStart="10dp"
-            android:text="@string/compra"/>
-    </RelativeLayout>-->
+</RelativeLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"

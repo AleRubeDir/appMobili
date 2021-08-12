@@ -17,7 +17,7 @@ import it.uniupo.progetto.HomeActivity.Companion.array
 import it.uniupo.progetto.LoginActivity
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
-
+import it.uniupo.progetto.recyclerViewAdapter.*
 /**
  * A fragment representing a list of Items.
  */

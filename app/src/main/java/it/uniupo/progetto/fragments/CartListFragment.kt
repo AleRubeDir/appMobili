@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.*
-
+import it.uniupo.progetto.recyclerViewAdapter.*
 /**
  * A fragment representing a list of Items.
  */
@@ -87,7 +87,6 @@ class CartListFragment : Fragment()  {
                 .add(entry)
                 .addOnSuccessListener {
                     Log.d("carrello", "Ordine piazzato con successo")
-
                 }
                 .addOnFailureListener{
                     Log.d("carrello", "Errore ordine $it")

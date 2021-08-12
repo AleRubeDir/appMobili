@@ -1,4 +1,4 @@
-package it.uniupo.progetto.fragments
+package it.uniupo.progetto.recyclerViewAdapter
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package it.uniupo.progetto.fragments
+package it.uniupo.progetto.recyclerViewAdapter
 
 
 import android.content.Intent
@@ -42,9 +42,6 @@ class MyChatGestoreRecyclerViewAdapter(
         var ora : TextView = view.findViewById(R.id.ora)
         var anteprima : TextView = view.findViewById(R.id.anteprima)
         var notifiche : TextView = view.findViewById(R.id.notifiche)
-       /* override fun toString(): String {
-            return super.toString() + " text : ${text.text} ||| qta : ${qta .text}||| prezzo : ${prezzo.text} ||| id : ${id.text}"
-        }*/
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

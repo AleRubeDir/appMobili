@@ -1,11 +1,13 @@
 package it.uniupo.progetto.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
@@ -15,7 +17,7 @@ import it.uniupo.progetto.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
+import it.uniupo.progetto.recyclerViewAdapter.*
 
 class ChatGestoreFragment : Fragment() {
     var messages= ArrayList<Messaggio>()
@@ -28,6 +30,10 @@ class ChatGestoreFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.chats)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
+        val new = view.findViewById<Button>(R.id.newChat)
+        new.setOnClickListener{
+            startActivity(Intent(view.context,NewChatActivity::class.java))
+        }
         Log.d("Chats","prova")
         getUserContacts((object: MyCallbackContact{
             override fun onCallback(value: ArrayList<Contatto>) {
@@ -41,11 +47,6 @@ class ChatGestoreFragment : Fragment() {
                             messages = value
                             Log.d("Chats","---Mess copiato vale $messages")
                             chats.add(Chat(c,messages))
-                            chats.add(Chat(c,messages))
-                            chats.add(Chat(c,messages))
-                            chats.add(Chat(c,messages))
-                            chats.add(Chat(c,messages))
-
                             recyclerView.adapter = MyChatGestoreRecyclerViewAdapter(chats)
                         }
                     }),c.mail)

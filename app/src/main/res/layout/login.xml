@@ -11,10 +11,10 @@
         android:layout_width="161dp"
         android:layout_height="158dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
         android:contentDescription="@string/logo"
         android:src="@mipmap/ic_launcher_foreground" />
     <TableLayout
+        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:stretchColumns="*"
@@ -52,6 +52,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:stretchColumns="*"
+    android:layout_marginTop="20dp"
     android:layout_below="@+id/logo">
     <TableRow>
         <TextView

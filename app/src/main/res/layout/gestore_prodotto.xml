@@ -116,6 +116,19 @@
         android:text="@string/salva_modifiche"
         android:textColor="@color/black"
         android:background="@drawable/gradient_orange"/>
+    <Button
+        android:id="@+id/delete"
+        android:layout_gravity="end"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/qta"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/elimina_prodotto"
+        android:textColor="@color/black"
+        android:background="@drawable/grad_menu"/>
     <!--
 
         </ScrollView>

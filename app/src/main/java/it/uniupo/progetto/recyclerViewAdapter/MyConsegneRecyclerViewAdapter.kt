@@ -1,4 +1,4 @@
-package it.uniupo.progetto.fragments
+package it.uniupo.progetto.recyclerViewAdapter
 
 import android.content.Context
 import android.content.Intent
@@ -11,6 +11,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import it.uniupo.progetto.*
+import it.uniupo.progetto.ChooseActivity
+import it.uniupo.progetto.Consegna
+import it.uniupo.progetto.R
 
 
 /**

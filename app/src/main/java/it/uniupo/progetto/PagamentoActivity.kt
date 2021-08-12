@@ -1,5 +1,8 @@
 package it.uniupo.progetto
 
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,12 +10,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 
 class PagamentoActivity : AppCompatActivity() {
+
+    lateinit var notificationManager : NotificationManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pagamento)
@@ -26,7 +33,8 @@ class PagamentoActivity : AppCompatActivity() {
         getIndirizzo(object : MyCallback {
             override fun onCallback(ris :String) {
                 Log.d("indirizzo", ris)
-                ind.text = ris
+                var arr = ris.split(",")
+                ind.text = arr[0] + " " + arr[1] + ","+ arr[2] + " "
             }
         },(FirebaseAuth.getInstance().currentUser?.email))
         var totdoub = "%.2f".format(HomeActivity.tot)
@@ -67,8 +75,17 @@ class PagamentoActivity : AppCompatActivity() {
                     for(p in HomeActivity.carrello) diminuisciQtaDB(p)
                     svuotaCarrello()
 
-
-
+                    //??????????????????? controllare se funziona
+                    notificationManager =   getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    var pendInt = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                    var builder = NotificationCompat.Builder(this)
+                            .setContentTitle("Consegna in arrivo")
+                            .setContentText("Seleziona il rider per questa consegna")
+                            .setContentIntent(pendInt)
+                            .setSmallIcon(R.drawable.cart)
+                            .setAutoCancel(true)
+                            .build()
+                    notificationManager.notify(0, builder)
                     startActivity(Intent(this,HomeActivity::class.java))
 
                 }

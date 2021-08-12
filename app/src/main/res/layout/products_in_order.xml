@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titolo"
+        android:text="Spaghetti"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/titolo"
+        android:layout_marginStart="5dp"
+        android:id="@+id/times"
+        android:text="@string/x"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/times"
+        android:layout_marginStart="5dp"
+        android:id="@+id/qta"
+        android:text="10"
+        />
+
+</RelativeLayout>

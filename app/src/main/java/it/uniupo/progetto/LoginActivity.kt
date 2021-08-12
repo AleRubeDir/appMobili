@@ -130,7 +130,7 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(
-                                baseContext, "User created. Log in to enter in the restricted area.",
+                                baseContext, "Accesso effettuato con successo",
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -142,7 +142,7 @@ class LoginActivity : AppCompatActivity() {
                         finish()
                     } else {
                         Toast.makeText(
-                                baseContext, "Sign Up failed. Try again after some time.",
+                                baseContext, "Errore nell accesso",
                                 Toast.LENGTH_SHORT
                         ).show()
                     }
