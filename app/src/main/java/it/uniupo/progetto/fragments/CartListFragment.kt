@@ -25,7 +25,7 @@ class CartListFragment : Fragment()  {
 
     private var columnCount = 1
     lateinit var tot : TextView
-
+    lateinit var intent : Intent
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -55,9 +55,14 @@ class CartListFragment : Fragment()  {
         }))
         val compra = view.findViewById<Button>(R.id.compra)
         compra.setOnClickListener{
-            impostaOrdine(HomeActivity.carrello)
-            val intent = Intent(view.context, PagamentoActivity::class.java)
-            startActivity(intent)
+            impostaOrdine(HomeActivity.carrello, object : MyCallback{
+                override fun onCallback(ordId: String) {
+                    intent = Intent(view.context, PagamentoActivity::class.java)
+                    intent.putExtra("ord_id",ordId)
+                    startActivity(intent)
+                }
+            })
+
         }
 
         val swipegesture = object: SwipeGesture(view.context){
@@ -72,30 +77,47 @@ class CartListFragment : Fragment()  {
         touchelper.attachToRecyclerView(recyclerView)
         return view
     }
-
-    private fun impostaOrdine(carrello: ArrayList<Prodotto>) {
+    fun getRandomString() : String {
+        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+        return (1..8)
+                .map { allowedChars.random() }
+                .joinToString("")
+    }
+    private fun impostaOrdine(carrello: ArrayList<Prodotto>, mycallback : MyCallback) {
         val db = FirebaseFirestore.getInstance()
         val user = FirebaseAuth.getInstance().currentUser?.email.toString()
-        for(p in carrello) {
-            var entry = hashMapOf<String, Any?>(
-                    "id" to p.id,
-                    "titolo" to p.titolo,
-                    "qta" to p.qta,
-                    "prezzo" to p.prezzo,
-            )
-            db.collection("orders").document(user).collection(p.id.toString())
-                .add(entry)
-                .addOnSuccessListener {
-                    Log.d("carrello", "Ordine piazzato con successo")
-                }
-                .addOnFailureListener{
-                    Log.d("carrello", "Errore ordine $it")
-                }
-        }
+        val ordId = getRandomString()
+        var dummy = hashMapOf<String, Any?>(
+                " " to " "
+        )
+
+                    for (p in carrello) {
+
+                        var entry = hashMapOf<String, Any?>(
+                                "id" to p.id,
+                                "titolo" to p.titolo,
+                                "qta" to p.qta,
+                                "prezzo" to p.prezzo,
+                        )
+                        db.collection("orders").document(user).set(dummy) //se no errore scritte in corsivo in firebase
+                        db.collection("orders").document(user).collection("order").document(ordId).set(dummy) //se no errore scritte in corsivo in firebase
+                        db.collection("orders").document(user).collection("order").document(ordId).collection("products").document(p.id.toString())
+                                .set(entry)
+                                .addOnSuccessListener {
+                                    Log.d("carrello", "Ordine piazzato con successo")
+                                    mycallback.onCallback(ordId)
+                                }
+                                .addOnFailureListener {
+                                    Log.d("carrello", "Errore ordine $it")
+                                }
+                    }
 
     }
+    interface MyCallback{
+        fun onCallback(ordId : String)
+    }
 
-  fun cartTot() {
+    fun cartTot() {
       HomeActivity.tot = 0.0;
             for (p in HomeActivity.carrello) {
                 HomeActivity.tot += (p.prezzo.toDouble() * p.qta)

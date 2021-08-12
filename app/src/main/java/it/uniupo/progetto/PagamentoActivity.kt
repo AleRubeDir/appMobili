@@ -24,7 +24,7 @@ class PagamentoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pagamento)
 
-
+        var ord_id = intent.getStringExtra("ord_id")!!
         val btn = findViewById<Button>(R.id.btn)
         val rg = findViewById<RadioGroup>(R.id.group)
         val tot = findViewById<TextView>(R.id.tot)
@@ -44,7 +44,7 @@ class PagamentoActivity : AppCompatActivity() {
             else {
                 var i = 1
                 if(rg.checkedRadioButtonId==R.id.carta) i =0
-            selezionaMetodo(i)
+            selezionaMetodo(ord_id,i)
             showAlert()
             }
         }
@@ -141,7 +141,13 @@ class PagamentoActivity : AppCompatActivity() {
                 }
     }
 
-    private fun selezionaMetodo(i: Int) {
+    fun getRandomString() : String {
+        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+        return (1..8)
+                .map { allowedChars.random() }
+                .joinToString("")
+    }
+    private fun selezionaMetodo(ord_id : String, i: Int) {
         val db = FirebaseFirestore.getInstance()
         val user = FirebaseAuth.getInstance().currentUser?.email.toString()
         var tipo = ""
@@ -151,7 +157,7 @@ class PagamentoActivity : AppCompatActivity() {
             "id" to i,
             "tipo" to tipo
         )
-        db.collection("orders").document(user).set(entry)
+        db.collection("orders").document(user).collection("order").document(ord_id).collection("details").document(getRandomString()).set(entry)
             .addOnSuccessListener { document->
                 Log.d("myscelta","Selezionato metodo di pagamento")
             }
