@@ -57,6 +57,8 @@ class StoricoOrdini : AppCompatActivity() {
 
                         }
                     })
+
+
                 }
             }
         })
@@ -123,22 +125,26 @@ class StoricoOrdini : AppCompatActivity() {
                                 .addOnSuccessListener {
                                     var tipo =""
                                     var data = ""
-                                    var rating = 0
+                                    var ratingQ = -1
+                                    var ratingV = -1
+                                    var ratingC = -1
                                     var rider = ""
                                     var id = ""
                                     for(d in it){
-                                        id = d.id
+                                        id = c
                                         rider = d.getString("rider").toString()
                                         tipo = d.getString("tipo").toString()
                                         data = convertLongToTime(d.getTimestamp("data")!!.seconds)
-                                        rating = d.getLong("rating")!!.toInt()
+                                        ratingQ = d.getLong("ratingQ")!!.toInt()
+                                        ratingV = d.getLong("ratingV")!!.toInt()
+                                        ratingC = d.getLong("ratingC")!!.toInt()
 
                                     }
                                     var tot = 0.0
                                     prod.forEach{
                                       tot += ( it.qta * it.prezzo.toDouble() )
                                     }
-                                    ord = Order(id,mail, rider , tipo, prod, rating, data, tot.toString() )
+                                    ord = Order(id,mail, rider , tipo, prod, ratingQ,ratingV,ratingC, data, tot.toString() )
                                     Log.d("history","dentro ord vale $ord")
                                     mycallback.onCallback(ord)
                                 }
@@ -163,9 +169,9 @@ class StoricoOrdini : AppCompatActivity() {
     interface MyCallback3 {
         fun onCallback(tipo : String)
     }
-        class Order(var id : String?,var cliente : String, var rider : String , var tipo : String, var arr : ArrayList<Prodotto>, var rating : Int = 0, var date : String, var tot : String , var richiamato : Int = 0) {
+        class Order(var id : String?,var cliente : String, var rider : String , var tipo : String, var arr : ArrayList<Prodotto>, var ratingQ : Int = -1, var ratingV : Int = -1, var ratingC : Int = -1, var date : String, var tot : String , var richiamato : Int = 0) {
         override fun toString(): String {
-            return "Tipo : $tipo \n rating : $rating \n date : $date \n arr : $arr "
+            return "Tipo : $tipo \n ratingQ : $ratingQ \n ratingV : $ratingV \n ratingC : $ratingC \n date : $date \n arr : $arr "
         }
     }
 }

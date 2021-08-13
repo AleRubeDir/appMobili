@@ -157,7 +157,7 @@ class PagamentoActivity : AppCompatActivity() {
             "id" to i,
             "tipo" to tipo
         )
-        db.collection("orders").document(user).collection("order").document(ord_id).collection("details").document(getRandomString()).set(entry)
+        db.collection("orders").document(user).collection("order").document(ord_id).collection("details").document("dett").set(entry)
             .addOnSuccessListener { document->
                 Log.d("myscelta","Selezionato metodo di pagamento")
             }

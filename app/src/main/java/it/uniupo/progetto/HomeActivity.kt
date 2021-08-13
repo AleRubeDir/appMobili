@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.fragments.*
 
 class HomeActivity : AppCompatActivity() {
@@ -46,6 +47,31 @@ class HomeActivity : AppCompatActivity() {
             }
             true
         }
+        /* //da usare per il rider
+          val db = FirebaseFirestore.getInstance()
+          val entry = hashMapOf<String, Any?>(
+                  "hasleft" to false
+          )
+
+          db.collection("orders").document("20029064@studenti.uniupo.it").collection("order")
+                  .document("QB06dGpZ").collection("hasLeft").document("riderLeftMinimarket").set(entry, SetOptions.merge())
+
+          db.collection("orders").document("20029064@studenti.uniupo.it").collection("order").document("QB06dGpZ").collection("hasLeft").document("riderLeftMinimarket").addSnapshotListener{
+              e, snap ->
+              if(snap!=null) {
+                  notificationManager =   getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                  var pendInt = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                  var builder = NotificationCompat.Builder(this)
+                          .setContentTitle("Consegna in arrivo")
+                          .setContentText("Seleziona il rider per questa consegna")
+                          .setContentIntent(pendInt)
+                          .setSmallIcon(R.drawable.cart)
+                          .setAutoCancel(true)
+                          .build()
+                  notificationManager.notify(0, builder)
+              }
+          }*/
+
      /*   hasOrderPending(object : MyCallback {
             override fun onCallback(ris: Boolean) {
                 if(ris) {

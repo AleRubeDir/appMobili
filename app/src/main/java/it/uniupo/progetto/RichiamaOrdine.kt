@@ -1,5 +1,8 @@
 package it.uniupo.progetto
 
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,6 +21,9 @@ class RichiamaOrdine : AppCompatActivity() {
     lateinit var rider: String
     lateinit var email: String
     lateinit var recyclerView : RecyclerView
+
+    lateinit var notificationManager : NotificationManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.richiama_ordine)
@@ -41,6 +48,7 @@ class RichiamaOrdine : AppCompatActivity() {
                        val richiama = findViewById<Button>(R.id.richiama)
                        richiama.setOnClickListener{
                            richiamaOrdine(ord)
+                         // v    mandaNotifica()
                        }
                     }
 
@@ -51,9 +59,28 @@ class RichiamaOrdine : AppCompatActivity() {
 
     }
 
+/*    private fun mandaNotifica() {
+        var pendInt = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        notificationManager =   getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        var builder = NotificationCompat.Builder(this)
+                .setContentTitle("Consegna in arrivo")
+                .setContentText("Hey! Il rider è partito con la tua consegna!")
+                .setContentIntent(pendInt)
+                .setSmallIcon(R.drawable.rider)
+                .setAutoCancel(true)
+                .build()
+            notificationManager.notify(0, builder)
+
+    }*/
+
     private fun richiamaOrdine(ord : Order) {
         val db = FirebaseFirestore.getInstance()
         val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
+        for(p in ord.arr) db.collection("orders").document(mail).collection("order").document(ord.id.toString()).collection("products").document(p.id.toString()).delete()
+        db.collection("orders").document(mail).collection("order").document(ord.id.toString()).collection("details").document("dett").delete()
+
         db.collection("orders").document(mail).collection("order").document(ord.id.toString()).delete()
                 .addOnSuccessListener {
                     Toast.makeText(this,"Ordine annullato",Toast.LENGTH_SHORT).show()
@@ -114,7 +141,7 @@ class RichiamaOrdine : AppCompatActivity() {
                         var tot = 0.0
                         prod.forEach { tot += it.qta * it.prezzo.toDouble() }
                         Log.d("richiama","tot vale $tot")
-                        ordine = Order(c,email,"","",prod,0,"",tot.toString())
+                        ordine = Order(c,email,"","",prod,-1,-1,-1,"",tot.toString())
                         myCallback.onCallback(ordine)
                     }
 
