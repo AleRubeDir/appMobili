@@ -26,7 +26,7 @@ class PaginaProdotto  : AppCompatActivity() {
                 val desc = findViewById<TextView>(R.id.desc)
                 desc.text = p.desc
                 val prezzo = findViewById<TextView>(R.id.prezzo)
-                prezzo.text = p.prezzo
+                prezzo.text = getString(R.string.cash,p.prezzo)
                 val np = findViewById<com.shawnlin.numberpicker.NumberPicker>(R.id.number_picker)
                 np.minValue = 1
                 np.maxValue = p.qta

@@ -31,25 +31,28 @@ class ChatActivity : AppCompatActivity() {
         val mail = intent.getStringExtra("mail")!!.toString()
         Log.d("chats", mail)
         getMessageFromChat((object : ChatGestoreFragment.MyCallbackMessages {
-            override fun onCallback(value: ArrayList<Messaggio>) {
+            override fun onCallback(value: ArrayList<Messaggio>,notifications: Int ) {
                 Log.d("Chats", "Dentro la chat $messages")
                 val db = FirebaseFirestore.getInstance()
 
                 val user = FirebaseAuth.getInstance().currentUser!!.email
                 createChat(contatto,user,mail)
-                db.collection("chats").document(user!!).collection("contacts").document(mail).collection("messages")
+              /*  db.collection("chats").document(user!!).collection("contacts").document(mail).collection("messages")
                         .addSnapshotListener{e,snap->
                             if(snap!=null){
-                                recyclerView = findViewById<RecyclerView>(R.id.messages)
+                                recyclerView = findViewById(R.id.messages)
                                 recyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
                                 Log.d("mymess", "$messages")
-                                recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages)
+                                recyclerView.adapter = MyMessageListRecyclerViewAdapter(notifications, messages)
                             }
-                        }
-                recyclerView = findViewById<RecyclerView>(R.id.messages)
+                        }*/
+                recyclerView = findViewById(R.id.messages)
                 recyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
                 Log.d("mymess", "$messages")
-                recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages)
+
+                    recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages)
+
+
             }
         }), mail)
 
@@ -80,34 +83,41 @@ class ChatActivity : AppCompatActivity() {
         //mail è il rider
         val db = FirebaseFirestore.getInstance()
         var check = 0
+        var dummy = hashMapOf<String, Any?>(
+                " " to " "
+        )
         getUserData(mail, object: DatiPersonali.MyCallback {
             override fun onCallback(u: DatiPersonali.Utente) {
-                db.collection("chats").get()
+                db.collection("chats").document(user.toString()).collection("contacts").get()
                     .addOnSuccessListener {
                         it.forEach { doc ->
-                            if (doc.id == user) check = 1
-                        }
+                            Log.d("mymess","${doc.id} == $user???")
+                            if (doc.id == mail) check = 1
+
+                        Log.d("mymess","$check")
                         contatto.text=u.nome + " " + u.cognome
                         if (check == 0) {
+                            Log.d("mymess","check vale $check")
                             val entry = hashMapOf<String, Any?>(
                                 "name" to u.nome,
                                 "surname" to u.cognome,
-                                "mail" to user,
+                                "mail" to mail,
                                 "tipo" to u.tipo
                             )
+                            Log.d("mymess","$entry")
                             db.collection("chats").document(user!!).collection("contacts").document(mail)
                                 .set(
                                     entry,
                                     SetOptions.merge()
                                 )
                          //   db.collection("chats").document(user!!).collection("contacts").document(mail).messages()
+                            }
                         }
                     }
             }
         })
     }
     private fun getUserData(user : String ,myCallback: DatiPersonali.MyCallback){
-        var u = DatiPersonali.Utente("err", "err", "err", "err", "null")
         val db = FirebaseFirestore.getInstance()
 
         db.collection("users")
@@ -115,9 +125,10 @@ class ChatActivity : AppCompatActivity() {
             .addOnSuccessListener { result->
                 Log.d("prof","$result")
                 for (document in result) {
+                    lateinit var u : DatiPersonali.Utente
                     if(document.id == user){
                         //utente ha già scelto il tipo di account
-                        u = DatiPersonali.Utente(
+                       u = DatiPersonali.Utente(
                             document.get("mail").toString(),
                             document.get("name").toString(),
                             document.get("surname").toString(),
@@ -138,6 +149,16 @@ class ChatActivity : AppCompatActivity() {
                 "ora" to messaggio.ora,
                 "testo" to messaggio.testo
         )
+        db.collection("chats").document(me).collection("contacts").document(you).get()
+                .addOnSuccessListener {
+                   var not = it.getLong("notifications")!!.toInt()
+                    val notify = hashMapOf<String, Any>(
+                            "notifications" to not+1
+                    )
+                    Log.d("notify","$not")
+                    db.collection("chats").document(me).collection("contacts").document(you).set(notify, SetOptions.merge())
+                }
+
         db.collection("chats").document(me).collection("contacts").document(you).collection("messages")
                 .add(entry)
                 .addOnSuccessListener {
@@ -164,7 +185,7 @@ class ChatActivity : AppCompatActivity() {
                         Log.d("Chats", "mess $mess")
                         messages.add(mess)
                     }
-                    myCallback.onCallback(messages)
+                    myCallback.onCallback(messages,0)
                 }
     }
 }

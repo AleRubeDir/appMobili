@@ -45,8 +45,8 @@ class MyChatGestoreRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         val item = values[position]
+        Log.d("mymess","${item.contatto}")
 
         var ora = item.messaggio.last().ora.toDate().hours.toString()
         var minuti = item.messaggio.last().ora.toDate().minutes.toString()
@@ -58,6 +58,7 @@ class MyChatGestoreRecyclerViewAdapter(
         holder.ora.text = "$ora:$minuti"
 
         holder.anteprima.text = item.messaggio.last().testo
+        holder.notifiche.text = item.notifications.toString()
         /*if(item.notifiche=="0"){
             holder.notifiche.visibility= View.INVISIBLE
         }

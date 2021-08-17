@@ -72,7 +72,7 @@
     <string name="resta_connesso">Resta connesso</string>
     <string name="mostra_password">Mostra password</string>
     <string name="nascondi_password">Nascondi password</string>
-    <string name="nomeprodotto">NomeProdotto</string>
+    <string name="nomeprodotto">Nome prodotto</string>
     <string name="descrizione_prodotto">Descrizione prodotto</string>
     <string name="prezzo">Prezzo</string>
     <string name="quantit">Quantità</string>
@@ -108,5 +108,6 @@
 
     <string name="tot">Totale \t %1$s €</string>
     <string name="ord">Ordine \t %1$s </string>
+    <string name="km">%1$s KM </string>
 
 </resources>

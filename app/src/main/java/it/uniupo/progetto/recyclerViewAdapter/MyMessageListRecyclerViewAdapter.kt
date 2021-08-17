@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.uniupo.progetto.Messaggio
 import it.uniupo.progetto.R
-import java.lang.Long.parseLong
 import java.text.SimpleDateFormat
 import java.util.*
 

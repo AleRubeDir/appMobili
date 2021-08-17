@@ -16,7 +16,7 @@ import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.R
 import it.uniupo.progetto.StoricoOrdini.*
 
-class MyHistoryOrderAdapter(private var ord: Order) : RecyclerView.Adapter<MyHistoryOrderAdapter.ViewHolder>() {
+class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Adapter<MyHistoryOrderAdapter.ViewHolder>() {
     lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
@@ -25,25 +25,26 @@ class MyHistoryOrderAdapter(private var ord: Order) : RecyclerView.Adapter<MyHis
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        checkRatings(holder.ratingQ,ord.ratingQ,1)
-        checkRatings(holder.ratingV,ord.ratingV,2)
-        checkRatings(holder.ratingC,ord.ratingC,3)
+        val item = ord[position]
+        checkRatings(item.id!!,holder.ratingQ,item.ratingQ,1)
+        checkRatings(item.id!!,holder.ratingV,item.ratingV,2)
+        checkRatings(item.id!!,holder.ratingC,item.ratingC,3)
 
-        if(ord.tipo=="Carta"){
+        if(item.tipo=="Carta"){
             holder.card.visibility= View.VISIBLE
             holder.cash.visibility= View.INVISIBLE
         }
         Log.d("history","tot vale ${holder.tot.text.toString().toDouble()}")
        // holder.tot.text = (holder.tot.text.toString().toDouble() + item.prezzo.toDouble()*item.qta).toString()
-        holder.tot.text = ord.tot
-        holder.date.text = ord.date
-        holder.cliente.text = ord.cliente
-        holder.rider.text = ord.rider
+        holder.tot.text = item.tot
+        holder.date.text = item.date
+        holder.cliente.text = item.cliente
+        holder.rider.text = item.rider
 
 
     }
 
-    private fun checkRatings(holder: RatingBar, rating: Int, type : Int) {
+    private fun checkRatings(id : String, holder: RatingBar, rating: Int, type : Int) {
         if(rating==-1)
         {
             holder.setIsIndicator(false)
@@ -57,10 +58,10 @@ class MyHistoryOrderAdapter(private var ord: Order) : RecyclerView.Adapter<MyHis
                             val entry = hashMapOf<String, Any?>(
                                     newrat to ratingBar.progress,
                             )
-                            Log.d("rating","id vale ${ord.id} \n entry vale $entry")
+
                             val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
                             val db = FirebaseFirestore.getInstance()
-                            db.collection("orders_history").document(mail).collection("orders").document(ord.id!!).collection("others").document("info")
+                            db.collection("orders_history").document(mail).collection("orders").document(id).collection("others").document("info")
                                     .set(entry, SetOptions.merge())
                             holder.setIsIndicator(true)
                         }

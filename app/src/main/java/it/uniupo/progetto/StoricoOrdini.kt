@@ -31,8 +31,8 @@ class StoricoOrdini : AppCompatActivity() {
                                     override fun onCallback(cods: ArrayList<String>) {
                                         Log.d("history","$cods")
                                         getOrdersByUser(u,object : MyCallback {
-                                            override fun onCallback(ord: Order) {
-                                                Log.d("history", "Ord vale ${ord.arr}")
+                                            override fun onCallback(ord : ArrayList<Order>){
+                                                Log.d("history", "Ord vale ${ord}")
                                                 recyclerView.adapter = MyHistoryOrderAdapter(ord)
                                             }
                                         }, cods)
@@ -49,8 +49,8 @@ class StoricoOrdini : AppCompatActivity() {
                         override fun onCallback(cods: ArrayList<String>) {
                             Log.d("history","cods vale : ${cods}")
                             getOrdersByUser(mail,object : MyCallback{
-                                override fun onCallback(ord : Order){
-                                    Log.d("history","Ord vale ${ord.arr}")
+                                override fun onCallback(ord : ArrayList<Order>){
+                                   // Log.d("history","Ord vale ${ord.arr}")
                                     recyclerView.adapter = MyHistoryOrderAdapter(ord)
                                 }
                             },cods)
@@ -111,45 +111,51 @@ class StoricoOrdini : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         var prod = arrayListOf<Prodotto>()
         var ord : Order
+        val ords = arrayListOf<Order>()
         for(c in cods)
         {
+            Log.d("history","c vale $c")
             db.collection("orders_history").document(mail).collection("orders").document(c).collection("products").get()
                     .addOnSuccessListener {
+                        Log.d("history", "dentro listener")
                         for (document in it) {
+                            Log.d("history", "dentro for")
                             var item = Prodotto(document.getLong("id")!!.toInt(), "img", document.get("titolo").toString(), "desc", document.get("prezzo").toString(), document.getLong("qta")!!.toInt())
-                           Log.d("history","item vale $item")
+                            Log.d("history", "item vale $item")
                             prod.add(item)
+                        }
+                    }
+            db.collection("orders_history").document(mail).collection("orders").document(c).collection("others").get()
+                    .addOnSuccessListener {
+                        Log.d("history","dentro secondo listener")
+                        var tipo =""
+                        var data = ""
+                        var ratingQ = -1
+                        var ratingV = -1
+                        var ratingC = -1
+                        var rider = ""
+                        var id = ""
+                        for(d in it){
+                            id = c
+                            rider = d.getString("rider").toString()
+                            tipo = d.getString("tipo").toString()
+                            data = convertLongToTime(d.getTimestamp("data")!!.seconds)
+                            ratingQ = d.getLong("ratingQ")!!.toInt()
+                            ratingV = d.getLong("ratingV")!!.toInt()
+                            ratingC = d.getLong("ratingC")!!.toInt()
 
                         }
-                        db.collection("orders_history").document(mail).collection("orders").document(c).collection("others").get()
-                                .addOnSuccessListener {
-                                    var tipo =""
-                                    var data = ""
-                                    var ratingQ = -1
-                                    var ratingV = -1
-                                    var ratingC = -1
-                                    var rider = ""
-                                    var id = ""
-                                    for(d in it){
-                                        id = c
-                                        rider = d.getString("rider").toString()
-                                        tipo = d.getString("tipo").toString()
-                                        data = convertLongToTime(d.getTimestamp("data")!!.seconds)
-                                        ratingQ = d.getLong("ratingQ")!!.toInt()
-                                        ratingV = d.getLong("ratingV")!!.toInt()
-                                        ratingC = d.getLong("ratingC")!!.toInt()
-
-                                    }
-                                    var tot = 0.0
-                                    prod.forEach{
-                                      tot += ( it.qta * it.prezzo.toDouble() )
-                                    }
-                                    ord = Order(id,mail, rider , tipo, prod, ratingQ,ratingV,ratingC, data, tot.toString() )
-                                    Log.d("history","dentro ord vale $ord")
-                                    mycallback.onCallback(ord)
-                                }
+                        var tot = 0.0
+                        prod.forEach{
+                            tot += ( it.qta * it.prezzo.toDouble() )
+                        }
+                        ord = Order(id,mail, rider , tipo, prod, ratingQ,ratingV,ratingC, data, tot.toString() )
+                        Log.d("history","dentro ord vale $ord")
+                        ords.add(ord)
 
                     }
+            mycallback.onCallback(ords)
+
         }
 
     }
@@ -160,7 +166,7 @@ class StoricoOrdini : AppCompatActivity() {
         return format.format(date)
     }
     interface MyCallback {
-        fun onCallback(ord: Order)
+        fun onCallback(ord: ArrayList<Order>)
     }
 
     interface MyCallback2 {

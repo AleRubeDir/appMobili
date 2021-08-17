@@ -45,6 +45,7 @@ class GestoreMappaRider  : AppCompatActivity(), OnMapReadyCallback {
                             .position(rider).title(it.key)
                             .icon(bitMapFromVector(R.drawable.rider))
                     )
+
                 }
 
 
@@ -67,7 +68,7 @@ class GestoreMappaRider  : AppCompatActivity(), OnMapReadyCallback {
     db.collection("riders").get()
             .addOnSuccessListener {
                 for(doc in it){
-                    positions.put(doc.id,LatLng(doc.getLong("lat")!!.toDouble(),doc.getLong("lon")!!.toDouble()))
+                    positions.put(doc.id,LatLng(doc.getDouble("lat")!!,doc.getDouble("lon")!!))
                 }
                 mycallback.onCallback(positions)
             }
@@ -80,38 +81,6 @@ class GestoreMappaRider  : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap) {
         mMap = p0
         mMap.uiSettings.isMyLocationButtonEnabled = false
-        /* var geocodeMatches: List<Address>? = null
-
-         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-             return
-         }
-         fusedLocationClient.lastLocation
-                 .addOnSuccessListener { location: Location? ->
-                     // Got last known location. In some rare situations this can be null.
-                     if (location != null) {
-                         val cliente = LatLng(location.latitude, location.longitude)
-                         mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
-                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
-                     }
-                 }
-         val db = FirebaseFirestore.getInstance()
-
-         db.collection("delivery").document(rider).collection("client").document(email).collection("position").document("pos").get()
-                 .addOnSuccessListener{ doc ->
-
-                     if (doc.getLong("lon")!=null && doc.getLong("lat")!=null) {
-                         Log.d("rider_pos", "rider -> ${Double.parseDouble(doc.get("lon").toString())}, ${doc.getLong("lat")!!.toFloat()}")
-                         val riderPos = LatLng(Double.parseDouble(doc.get("lat").toString()), Double.parseDouble(doc.get("lon").toString()))
-                         mMap.addMarker(MarkerOptions()
-                                 .position(riderPos)
-                                 .title("Rider")
-                                 .icon(bitMapFromVector(R.drawable.rider))
-                         )
-                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(riderPos, zoomLevel))
-                     }
-
-                 }*/
     }
 
     private fun bitMapFromVector(vectorResID: Int): BitmapDescriptor {

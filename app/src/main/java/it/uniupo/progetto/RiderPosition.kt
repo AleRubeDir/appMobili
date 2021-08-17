@@ -71,7 +71,7 @@ class RiderPosition : AppCompatActivity(), OnMapReadyCallback {
         db.collection("riders").get()
                 .addOnSuccessListener {
                     for(doc in it){
-                        positions.put(doc.id,LatLng(doc.getLong("lat")!!.toDouble(),doc.getLong("lon")!!.toDouble()))
+                        positions.put(doc.id,LatLng(doc.getDouble("lat")!!,doc.getDouble("lon")!!))
                     }
                     mycallback.onCallback(positions)
                 }
@@ -110,9 +110,9 @@ class RiderPosition : AppCompatActivity(), OnMapReadyCallback {
         db.collection("delivery").document(rider).collection("client").document(email).collection("position").document("pos").get()
                 .addOnSuccessListener{ doc ->
 
-                    if (doc.getLong("lon")!=null && doc.getLong("lat")!=null) {
-                        Log.d("rider_pos", "rider -> ${parseDouble(doc.get("lon").toString())}, ${doc.getLong("lat")!!.toFloat()}")
-                        val riderPos = LatLng(parseDouble(doc.get("lat").toString()), parseDouble(doc.get("lon").toString()))
+                    if (doc.getDouble("lon")!=null && doc.getDouble("lat")!=null) {
+                        Log.d("rider_pos", "rider -> ${doc.getDouble("lat")}, ${doc.getDouble("lon")}")
+                        val riderPos = LatLng(doc.getDouble("lat")!!, doc.getDouble("lon")!!)
                         mMap.addMarker(MarkerOptions()
                                 .position(riderPos)
                                 .title("Rider")

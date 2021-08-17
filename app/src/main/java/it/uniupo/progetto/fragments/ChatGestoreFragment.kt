@@ -42,11 +42,11 @@ class ChatGestoreFragment : Fragment() {
 
                 for (c in contacts) {
                     getMessageFromChat((object: MyCallbackMessages{
-                        override fun onCallback(value: ArrayList<Messaggio>) {
+                        override fun onCallback(value: ArrayList<Messaggio>,notifications: Int) {
                             Log.d("Chats","---Value vale $value")
                             messages = value
                             Log.d("Chats","---Mess copiato vale $messages")
-                            chats.add(Chat(c,messages))
+                            chats.add(Chat(c,messages,notifications))
                             recyclerView.adapter = MyChatGestoreRecyclerViewAdapter(chats)
                         }
                     }),c.mail)
@@ -73,7 +73,11 @@ class ChatGestoreFragment : Fragment() {
                         Log.d("Chats","mess $mess")
                         messages.add(mess)
                     }
-                    myCallback.onCallback(messages)
+                    var notifications = 0
+                    FirebaseFirestore.getInstance().collection("chats").document(user.toString()).collection("contacts").document(you).get().addOnSuccessListener {
+                        notifications = it.getLong("notifications")!!.toInt()
+                        myCallback.onCallback(messages, notifications)
+                    }
                 }
     }
     private fun getUserContacts(myCallback: MyCallbackContact) {
@@ -119,6 +123,6 @@ class ChatGestoreFragment : Fragment() {
         fun onCallback(value: ArrayList<Contatto>)
     }
     interface MyCallbackMessages{
-        fun onCallback(value: ArrayList<Messaggio>)
+        fun onCallback(value: ArrayList<Messaggio>, notifications: Int)
     }
 }
