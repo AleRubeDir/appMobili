@@ -22,6 +22,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chats"
+        android:focusable="true"
+        android:clickable="true"
         android:layout_below="@id/newChat"
         android:name="it.uniupo.progetto.fragments.ChatGestoreFragment"
         android:layout_width="match_parent"

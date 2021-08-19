@@ -1,4 +1,4 @@
-package it.uniupo.progetto.fragments
+package it.uniupo.progetto.recyclerViewAdapter
 
 import android.graphics.Canvas
 import android.util.Log
@@ -104,37 +104,6 @@ class MyCartListRecyclerViewAdapter(
        true
         }
 
-     /*   val mIth = ItemTouchHelper(
-                object : ItemTouchHelper.SimpleCallback(0,
-                        ItemTouchHelper.LEFT) {
-
-                    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                        return false
-                    }
-
-                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                        when (direction) {
-                            ItemTouchHelper.LEFT -> {
-                            *//*    var id = idtv.text.toString().toInt()
-                                rimuoviProdotto(id)
-                                notifyDataSetChanged()*//*
-                                Log.d("swipe","Swipe effettuato")
-                            }
-                        }
-
-                    }
-
-                    override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-                        RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                                .addBackgroundColor(R.color.menu)
-                                .addActionIcon(R.drawable.delete)
-                                .create()
-                                .decorate()
-                    }
-                })
-
-            mIth.attachToRecyclerView(mRecyclerView)*/
-
         return ViewHolder(view)
     }
 
@@ -167,6 +136,25 @@ class MyCartListRecyclerViewAdapter(
                 }
                 .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
     }
+
+    fun rimuoviProdottoSwipe(pos : Int){
+        rimuoviProdottoFromDb(values[pos])
+        values.remove(values[pos])
+        notifyDataSetChanged()
+
+    }
+    fun rimuoviProdottoFromDb(p : Prodotto){
+        val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
+        val db = FirebaseFirestore.getInstance()
+        db.collection("carts").document(user).collection("products").document(p.id.toString())
+            .delete()
+            .addOnSuccessListener {
+                Log.d("cart", "Eliminazione di $p.id avvenuta con successo")
+            }
+            .addOnFailureListener{
+                Log.d("cart", "Errore eliminazione di $p.id ")
+            }
+    }
     fun rimuoviProdotto(id: Int){
         var el : Prodotto = values[0]
         for(p in values){
@@ -174,16 +162,7 @@ class MyCartListRecyclerViewAdapter(
                 el = p
         }
         values.remove(el)
-        val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
-        val db = FirebaseFirestore.getInstance()
-        db.collection("carts").document(user).collection("products").document(id.toString())
-                .delete()
-                .addOnSuccessListener {
-                    Log.d("cart", "Eliminazione di $id avvenuta con successo")
-                }
-                .addOnFailureListener{
-                    Log.d("cart", "Errore eliminazione di $id ")
-                }
+        rimuoviProdottoFromDb(el)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

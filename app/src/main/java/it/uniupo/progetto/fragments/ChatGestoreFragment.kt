@@ -1,11 +1,13 @@
 package it.uniupo.progetto.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
@@ -15,7 +17,7 @@ import it.uniupo.progetto.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
+import it.uniupo.progetto.recyclerViewAdapter.*
 
 class ChatGestoreFragment : Fragment() {
     var messages= ArrayList<Messaggio>()
@@ -28,6 +30,10 @@ class ChatGestoreFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.chats)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
+        val new = view.findViewById<Button>(R.id.newChat)
+        new.setOnClickListener{
+            startActivity(Intent(view.context,NewChatActivity::class.java))
+        }
         Log.d("Chats","prova")
         getUserContacts((object: MyCallbackContact{
             override fun onCallback(value: ArrayList<Contatto>) {
@@ -36,16 +42,11 @@ class ChatGestoreFragment : Fragment() {
 
                 for (c in contacts) {
                     getMessageFromChat((object: MyCallbackMessages{
-                        override fun onCallback(value: ArrayList<Messaggio>) {
+                        override fun onCallback(value: ArrayList<Messaggio>,notifications: Int) {
                             Log.d("Chats","---Value vale $value")
                             messages = value
                             Log.d("Chats","---Mess copiato vale $messages")
-                            chats.add(Chat(c,messages))
-                            chats.add(Chat(c,messages))
-                            chats.add(Chat(c,messages))
-                            chats.add(Chat(c,messages))
-                            chats.add(Chat(c,messages))
-
+                            chats.add(Chat(c,messages,notifications))
                             recyclerView.adapter = MyChatGestoreRecyclerViewAdapter(chats)
                         }
                     }),c.mail)
@@ -72,7 +73,11 @@ class ChatGestoreFragment : Fragment() {
                         Log.d("Chats","mess $mess")
                         messages.add(mess)
                     }
-                    myCallback.onCallback(messages)
+                    var notifications = 0
+                    FirebaseFirestore.getInstance().collection("chats").document(user.toString()).collection("contacts").document(you).get().addOnSuccessListener {
+                        notifications = it.getLong("notifications")!!.toInt()
+                        myCallback.onCallback(messages, notifications)
+                    }
                 }
     }
     private fun getUserContacts(myCallback: MyCallbackContact) {
@@ -118,6 +123,6 @@ class ChatGestoreFragment : Fragment() {
         fun onCallback(value: ArrayList<Contatto>)
     }
     interface MyCallbackMessages{
-        fun onCallback(value: ArrayList<Messaggio>)
+        fun onCallback(value: ArrayList<Messaggio>, notifications: Int)
     }
 }

@@ -8,11 +8,11 @@
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="28sp"
+    android:textSize="26sp"
     android:textColor="@color/black"
     android:textStyle="bold"
     android:id="@+id/titolo"
-    android:layout_margin="15dp"
+    android:layout_margin="10dp"
     android:text="@string/scegli_metodo_di_pagamento"/>
 <TextView
     android:id="@+id/label"
@@ -72,7 +72,8 @@
       android:text="@string/cash"
       android:textColor="@color/black"
       android:textSize="20sp"
-      android:layout_toEndOf="@id/tot_label"
+      android:layout_marginEnd="80dp"
+      android:layout_alignParentEnd="true"
       android:layout_below="@id/group"
       />
 
@@ -91,14 +92,14 @@
       />
   <TextView
       android:id="@+id/indirizzo"
-      android:layout_marginTop="30dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginStart="20dp"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="Via rossi"
       android:textColor="@color/black"
-      android:textSize="20sp"
-      android:layout_toEndOf="@id/indirizzo_label"
-      android:layout_below="@id/tot"
+      android:textSize="18sp"
+      android:layout_below="@id/indirizzo_label"
       />
   <Button
       android:layout_width="wrap_content"

@@ -1,5 +1,8 @@
 package it.uniupo.progetto
 
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,17 +10,21 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 
 class PagamentoActivity : AppCompatActivity() {
+
+    lateinit var notificationManager : NotificationManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pagamento)
 
-
+        var ord_id = intent.getStringExtra("ord_id")!!
         val btn = findViewById<Button>(R.id.btn)
         val rg = findViewById<RadioGroup>(R.id.group)
         val tot = findViewById<TextView>(R.id.tot)
@@ -26,7 +33,8 @@ class PagamentoActivity : AppCompatActivity() {
         getIndirizzo(object : MyCallback {
             override fun onCallback(ris :String) {
                 Log.d("indirizzo", ris)
-                ind.text = ris
+                var arr = ris.split(",")
+                ind.text = arr[0] + " " + arr[1] + ","+ arr[2] + " "
             }
         },(FirebaseAuth.getInstance().currentUser?.email))
         var totdoub = "%.2f".format(HomeActivity.tot)
@@ -36,7 +44,7 @@ class PagamentoActivity : AppCompatActivity() {
             else {
                 var i = 1
                 if(rg.checkedRadioButtonId==R.id.carta) i =0
-            selezionaMetodo(i)
+            selezionaMetodo(ord_id,i)
             showAlert()
             }
         }
@@ -67,8 +75,17 @@ class PagamentoActivity : AppCompatActivity() {
                     for(p in HomeActivity.carrello) diminuisciQtaDB(p)
                     svuotaCarrello()
 
-
-
+                    //??????????????????? controllare se funziona
+                    notificationManager =   getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    var pendInt = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                    var builder = NotificationCompat.Builder(this)
+                            .setContentTitle("Consegna in arrivo")
+                            .setContentText("Seleziona il rider per questa consegna")
+                            .setContentIntent(pendInt)
+                            .setSmallIcon(R.drawable.cart)
+                            .setAutoCancel(true)
+                            .build()
+                    notificationManager.notify(0, builder)
                     startActivity(Intent(this,HomeActivity::class.java))
 
                 }
@@ -124,7 +141,13 @@ class PagamentoActivity : AppCompatActivity() {
                 }
     }
 
-    private fun selezionaMetodo(i: Int) {
+    fun getRandomString() : String {
+        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+        return (1..8)
+                .map { allowedChars.random() }
+                .joinToString("")
+    }
+    private fun selezionaMetodo(ord_id : String, i: Int) {
         val db = FirebaseFirestore.getInstance()
         val user = FirebaseAuth.getInstance().currentUser?.email.toString()
         var tipo = ""
@@ -134,7 +157,7 @@ class PagamentoActivity : AppCompatActivity() {
             "id" to i,
             "tipo" to tipo
         )
-        db.collection("orders").document(user).set(entry)
+        db.collection("orders").document(user).collection("order").document(ord_id).collection("details").document("dett").set(entry)
             .addOnSuccessListener { document->
                 Log.d("myscelta","Selezionato metodo di pagamento")
             }

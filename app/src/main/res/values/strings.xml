@@ -54,7 +54,7 @@
     <!-- -->
     <!-- SCELTA -->
     <string name="end">FINE</string>
-    <string name="next">NEXT</string>
+    <string name="next">AVANTI</string>
     <string name="scelta_titolo">Completa il tuo account</string>
 
     <!-- -->
@@ -72,7 +72,7 @@
     <string name="resta_connesso">Resta connesso</string>
     <string name="mostra_password">Mostra password</string>
     <string name="nascondi_password">Nascondi password</string>
-    <string name="nomeprodotto">NomeProdotto</string>
+    <string name="nomeprodotto">Nome prodotto</string>
     <string name="descrizione_prodotto">Descrizione prodotto</string>
     <string name="prezzo">Prezzo</string>
     <string name="quantit">Quantità</string>
@@ -80,10 +80,7 @@
     <string name="immagine_prodotto">Immagine prodotto</string>
     <string name="inizia_una_nuova_chat">Inizia una nuova chat</string>
     <string name="title_activity_pagamento">PagamentoActivity</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
+
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="contanti">Contanti</string>
@@ -92,14 +89,25 @@
     <string name="in_entrambi_i_casi_il_pagamento_avver_con_il_rider">In entrambi i casi il pagamento avverà con il rider</string>
     <string name="inserisci_il_tuo_indirizzo">Inserisci il tuo indirizzo</string>
     <string name="distanza">Distanza</string>
-    <string name="tipo_pagamento">tipo Pagamento</string>
     <string name="title_activity_rider_delivery_info">rider_delivery_info</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="previous">Previous</string>
+    <string name="tipo_pagamento">tipo Pagamento</string>
+    <string name="segui_il_tuo_ordine">Segui il tuo ordine</string>
+    <string name="traccia_il_tuo_ordine">Traccia il tuo ordine</string>
+    <string name="chat_w_rider">Chat con rider</string>
+    <string name="richiama_ordine">Richiama ordine</string>
+    <string name="storico_degli_ordini">Storico degli ordini</string>
+    <string name="i_miei_ordini">I miei ordini</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="scegli_il_rider_con_cui_iniziare_una_chat">Scegli il rider con cui iniziare una chat</string>
+    <string name="elimina_prodotto">Elimina prodotto</string>
+    <string name="annulla_un_ordine_senza_pagare_niente">Annulla un ordine senza pagare niente</string>
+    <string name="richiama_il_tuo_ordine">Richiama il tuo ordine</string>
+    <string name="ordine_n">Ordine n°</string>
+    <string name="prodotti">Prodotti</string>
+    <string name="richiama">Richiama</string>
+
+    <string name="tot">Totale \t %1$s €</string>
+    <string name="ord">Ordine \t %1$s </string>
+    <string name="km">%1$s KM </string>
 
 </resources>

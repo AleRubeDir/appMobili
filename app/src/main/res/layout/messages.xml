@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingStart="10dp"
-    android:paddingTop="10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingEnd="10dp"
     >
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/date"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        >
+        <TextView
+            android:id="@+id/date_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="20 Luglio 2021"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date"
         android:id="@+id/rcvd">
-            <androidx.cardview.widget.CardView
+        <androidx.cardview.widget.CardView
         android:id="@+id/card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,6 +68,7 @@
         android:text="10:30"/>
     </RelativeLayout>
 <RelativeLayout
+    android:layout_below="@id/date"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/send">
@@ -67,7 +88,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ciao come stai??"
-
             android:textColor="@color/black"
             android:padding="5dp"
             android:maxWidth="210dp"
@@ -86,5 +106,6 @@
         android:text="10:30"/>
     </RelativeLayout>
 </RelativeLayout>
+
 
 

@@ -9,6 +9,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-
+    android:focusable="true"
+    android:clickable="true"
     tools:context=".fragments.ItemFragment"
     tools:listitem="@layout/fragment_shop" />

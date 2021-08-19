@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+        android:paddingStart="15dp"
+        android:paddingTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bigger_rider"
+        android:id="@+id/icon"/>
+    <TextView
+        android:layout_toEndOf="@id/icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/rider"
+        android:textSize="35sp"
+        android:paddingStart="15dp"
+        android:paddingTop="15dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:id="@+id/titolo"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scegli_il_rider_con_cui_iniziare_una_chat"
+        android:textSize="18sp"
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/black"
+        android:layout_below="@id/titolo"
+        android:id="@+id/sottotitolo"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contacts"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_below="@id/sottotitolo"
+        android:name="it.uniupo.progetto.fragments.ChatGestoreFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".fragments.ChatGestoreFragment"
+        tools:listitem="@layout/contact_row" />
+
+
+
+</RelativeLayout>

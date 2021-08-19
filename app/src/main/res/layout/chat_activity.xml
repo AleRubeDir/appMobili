@@ -14,10 +14,9 @@
         android:layout_toEndOf="@id/tipo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Alessandro Ruberto"
         android:id="@+id/contatto"
         android:textColor="@color/black"
-        android:textSize="30dp"
+        android:textSize="30sp"
         />
     <View
         android:layout_width="match_parent"
@@ -27,6 +26,8 @@
         android:layout_below="@id/contatto"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@id/contatto"
+        android:focusable="true"
+        android:clickable="true"
         android:id="@+id/messages"
         android:name="it.uniupo.progetto.fragments.ChatGestoreFragment"
         android:layout_width="match_parent"

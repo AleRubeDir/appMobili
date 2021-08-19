@@ -65,7 +65,7 @@
         app:np_textSize="15sp"
         android:layout_marginStart="15dp"
         app:np_typeface="san-serif-light"
-        app:np_value="3"
+        app:np_value="1"
         app:np_orientation="horizontal"
         />
     <Button
