@@ -66,6 +66,9 @@ import it.uniupo.progetto.fragments.ProfileFragment
 
                  val googleSignInClient = GoogleSignIn.getClient(parent.context, gso)
                  googleSignInClient.signOut()
+
+                 view.context.stopService(Intent(view.context,NotificationService::class.java))
+
                  view.context.startActivity(Intent(view.context, MainActivity::class.java))
                  Toast.makeText(view.context,"Logout effettuato", Toast.LENGTH_SHORT).show()
              }

@@ -14,14 +14,13 @@ import it.uniupo.progetto.fragments.ChatGestoreFragment
 import it.uniupo.progetto.recyclerViewAdapter.*
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.SetOptions
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class ChatActivity : AppCompatActivity() {
     private var messages = ArrayList<Messaggio>()
     lateinit var recyclerView : RecyclerView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chat_activity)
@@ -41,6 +40,7 @@ class ChatActivity : AppCompatActivity() {
                 recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages)
             }
         }), mail)
+
 
         var user = FirebaseAuth.getInstance().currentUser!!.email
 
@@ -147,6 +147,8 @@ class ChatActivity : AppCompatActivity() {
                     Log.d("Chat", "Errore invio messaggio $e")
                 }
     }
+
+
     private fun getMessageFromChat(myCallback: ChatGestoreFragment.MyCallbackMessages, you: String){
         val user = FirebaseAuth.getInstance().currentUser!!.email
 

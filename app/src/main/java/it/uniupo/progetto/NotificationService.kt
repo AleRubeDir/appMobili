@@ -1,5 +1,5 @@
 package it.uniupo.progetto
-import android.R
+import it.uniupo.progetto.R
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -12,10 +12,13 @@ import android.os.IBinder
 
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 class NotificationService : Service() {
-    var TAG = "Timers"
+    var TAG = "notifications"
+    lateinit var mail : String
     override fun onBind(arg0: Intent): IBinder? {
         return null
     }
@@ -23,36 +26,62 @@ class NotificationService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand")
         super.onStartCommand(intent, flags, startId)
+        mail = intent.getStringExtra("mail").toString()
         return START_STICKY
     }
 
     override fun onCreate() {
         Log.e(TAG, "onCreate")
-        createNotification()
-    }
+        //tipo utente attivo
 
+        val usr = FirebaseAuth.getInstance().currentUser!!.email
+        getUserType(usr, object : LoginActivity.FirestoreCallback {
+            override fun onCallback(type: String) {
+                createNotification(type)
+            }
+        })
+
+    }
+    private fun getUserType(user: String?, fc: LoginActivity.FirestoreCallback){
+        val db = FirebaseFirestore.getInstance()
+        var t = "null"
+        db.collection("users").document(user!!)
+            .get()
+            .addOnSuccessListener { result ->
+                if(!result.getString("type").isNullOrBlank())
+                    t = result.getString("type")!!
+                fc.onCallback(t)
+            }
+    }
     override fun onDestroy() {
         Log.e(TAG, "onDestroy")
         super.onDestroy()
     }
 
-    private fun createNotification() {
-        val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        val mBuilder =  NotificationCompat.Builder(applicationContext)
-        .setContentTitle("Consegna in arrivo")
-        .setContentText("Seleziona il rider per questa consegna")
-        mBuilder.setTicker("Notification Listener Service Example")
-        mBuilder.setSmallIcon(R.mipmap.sym_def_app_icon)
-        mBuilder.setAutoCancel(true)
-    /*    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance)
-            mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID)
-            mNotificationManager.createNotificationChannel(notificationChannel)
-        }*/
-        mNotificationManager.notify(0, mBuilder.build())
+    private fun createNotification(tipo : String) {
 
 
+        val db = FirebaseFirestore.getInstance()
+
+        if(tipo=="Gestore") {
+
+            db.collection("orders").document(mail).addSnapshotListener { e, snap ->
+                if (snap != null) {
+                    val mNotificationManager =
+                        getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                    val mBuilder = NotificationCompat.Builder(applicationContext)
+                        .setContentTitle("Consegna in arrivo")
+                        .setContentText("Seleziona il rider per questa consegna")
+                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                    mBuilder.setAutoCancel(true)
+                    mNotificationManager.notify(0, mBuilder.build())
+                }
+            }
+        }else if(tipo=="Cliente"){
+            TODO()
+        }else if(tipo=="Rider"){
+            TODO()
+        }
     }
 
     companion object {

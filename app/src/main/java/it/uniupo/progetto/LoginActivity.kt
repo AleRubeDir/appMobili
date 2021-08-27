@@ -136,6 +136,7 @@ class LoginActivity : AppCompatActivity() {
 
                         getUserType(usr.text.toString(), object : FirestoreCallback {
                             override fun onCallback(type: String) {
+
                                 startActivityType(usr.text.toString(),type)
                             }
                         })
@@ -186,6 +187,7 @@ class LoginActivity : AppCompatActivity() {
         val editor = sp.edit()
         editor.putString("login", type)
         editor.apply()
+        startService(Intent(this,NotificationService::class.java))
         when (type) {
             "Cliente" -> startActivity(Intent(this, HomeActivity::class.java))
             "Rider" -> startActivity(Intent(this, RiderActivity::class.java))

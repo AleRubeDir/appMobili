@@ -53,11 +53,6 @@ class GestoreActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        startService(Intent(this,NotificationService::class.java))
-    }
-
     private fun makeCurrentFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply{
         replace(R.id.fl_wrapper,fragment)
         commit()

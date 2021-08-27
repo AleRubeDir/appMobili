@@ -45,6 +45,7 @@ class PagamentoActivity : AppCompatActivity() {
                 var i = 1
                 if(rg.checkedRadioButtonId==R.id.carta) i =0
             selezionaMetodo(ord_id,i)
+
             showAlert()
             }
         }
@@ -75,9 +76,9 @@ class PagamentoActivity : AppCompatActivity() {
                     for(p in HomeActivity.carrello) diminuisciQtaDB(p)
                     svuotaCarrello()
 
-                    startService(Intent(this,NotificationService::class.java))
 
-                   /* //??????????????????? controllare se funziona
+
+                    //??????????????????? controllare se funziona
                     notificationManager =   getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                     var pendInt = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
                     var builder = NotificationCompat.Builder(this)
@@ -87,7 +88,7 @@ class PagamentoActivity : AppCompatActivity() {
                             .setSmallIcon(R.drawable.cart)
                             .setAutoCancel(true)
                             .build()
-                    notificationManager.notify(0, builder)*/
+                    notificationManager.notify(0, builder)
                     startActivity(Intent(this,HomeActivity::class.java))
 
                 }
