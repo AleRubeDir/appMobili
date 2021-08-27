@@ -75,7 +75,9 @@ class PagamentoActivity : AppCompatActivity() {
                     for(p in HomeActivity.carrello) diminuisciQtaDB(p)
                     svuotaCarrello()
 
-                    //??????????????????? controllare se funziona
+                    startService(Intent(this,NotificationService::class.java))
+
+                   /* //??????????????????? controllare se funziona
                     notificationManager =   getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                     var pendInt = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
                     var builder = NotificationCompat.Builder(this)
@@ -85,7 +87,7 @@ class PagamentoActivity : AppCompatActivity() {
                             .setSmallIcon(R.drawable.cart)
                             .setAutoCancel(true)
                             .build()
-                    notificationManager.notify(0, builder)
+                    notificationManager.notify(0, builder)*/
                     startActivity(Intent(this,HomeActivity::class.java))
 
                 }
