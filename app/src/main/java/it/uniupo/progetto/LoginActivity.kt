@@ -133,7 +133,7 @@ class LoginActivity : AppCompatActivity() {
                                 baseContext, "Accesso effettuato con successo",
                                 Toast.LENGTH_SHORT
                         ).show()
-
+                        startService(Intent(this,NotificationService::class.java))
                         getUserType(usr.text.toString(), object : FirestoreCallback {
                             override fun onCallback(type: String) {
 
@@ -170,8 +170,10 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         Log.d(TAG, "signInWithCredential:success")
                         val user = auth.currentUser!!
+                        startService(Intent(this,NotificationService::class.java))
                         getUserType(user.email, object : FirestoreCallback {
                             override fun onCallback(type: String) {
+
                                 startActivityType(user.email,type)
                             }
                         })
@@ -187,7 +189,7 @@ class LoginActivity : AppCompatActivity() {
         val editor = sp.edit()
         editor.putString("login", type)
         editor.apply()
-        startService(Intent(this,NotificationService::class.java))
+
         when (type) {
             "Cliente" -> startActivity(Intent(this, HomeActivity::class.java))
             "Rider" -> startActivity(Intent(this, RiderActivity::class.java))

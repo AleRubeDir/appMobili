@@ -21,6 +21,7 @@ class GestoreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gestore)
+        startService(Intent(this,NotificationService::class.java))
         val orderFragment = OrderFragment()
         val shopFragment = ShopFragment()
         val profileFragment = ProfileFragment()

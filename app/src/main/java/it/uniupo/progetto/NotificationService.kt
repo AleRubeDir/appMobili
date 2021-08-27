@@ -18,6 +18,7 @@ import java.util.*
 
 class NotificationService : Service() {
     var TAG = "notifications"
+    lateinit var notificationManager : NotificationManager
     override fun onBind(arg0: Intent): IBinder? {
         return null
     }
@@ -25,19 +26,35 @@ class NotificationService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand")
         super.onStartCommand(intent, flags, startId)
+        Log.d(TAG,"onStart")
         return START_STICKY
     }
 
     override fun onCreate() {
-        Log.e(TAG, "onCreate")
+        Log.d(TAG, "onCreate")
         //tipo utente attivo
 
         val usr = FirebaseAuth.getInstance().currentUser!!.email
-        getUserType(usr, object : LoginActivity.FirestoreCallback {
-            override fun onCallback(type: String) {
-                createNotification(type)
+        val db = FirebaseFirestore.getInstance()
+        db.collection("orders").document("cliente@gmail.com").collection("order").addSnapshotListener { e, snap ->
+            if (snap != null) {
+                Log.d(TAG, "dentro createNotification")
+                val mNotificationManager =
+                    getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                val mBuilder = NotificationCompat.Builder(applicationContext)
+                    .setContentTitle("Consegna in arrivo")
+                    .setContentText("Seleziona il rider per questa consegna")
+                mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                mBuilder.setAutoCancel(true)
+                mNotificationManager.notify(0, mBuilder.build())
             }
-        })
+        }
+                //createNotification("Gestore")
+    /*    getUserType(usr, object : LoginActivity.FirestoreCallback {
+            override fun onCallback(type: String) {
+
+            }
+        })*/
 
     }
     private fun getUserType(user: String?, fc: LoginActivity.FirestoreCallback){
@@ -57,14 +74,12 @@ class NotificationService : Service() {
     }
 
     private fun createNotification(tipo : String) {
-
-
         val db = FirebaseFirestore.getInstance()
-
         if(tipo=="Gestore") {
-
-            db.collection("orders").addSnapshotListener { e, snap ->
+            Log.d(TAG,"fuori createNotification")
+            db.collection("orders").document("cliente@gmail.com").collection("order").addSnapshotListener { e, snap ->
                 if (snap != null) {
+                    Log.d(TAG,"dentro createNotification")
                     val mNotificationManager =
                         getSystemService(NOTIFICATION_SERVICE) as NotificationManager
                     val mBuilder = NotificationCompat.Builder(applicationContext)
@@ -73,6 +88,15 @@ class NotificationService : Service() {
                     mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                     mBuilder.setAutoCancel(true)
                     mNotificationManager.notify(0, mBuilder.build())
+
+                  /*  var builder = NotificationCompat.Builder(this)
+                        .setContentTitle("Consegna in arrivo")
+                        .setContentText("Seleziona il rider per questa consegna")
+                        .setSmallIcon(R.drawable.cart)
+                        .setAutoCancel(true)
+                        .build()
+                    notificationManager.notify(0, builder)
+*/
                 }
             }
         }else if(tipo=="Cliente"){
