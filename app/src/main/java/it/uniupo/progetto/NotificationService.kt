@@ -18,7 +18,6 @@ import java.util.*
 
 class NotificationService : Service() {
     var TAG = "notifications"
-    lateinit var mail : String
     override fun onBind(arg0: Intent): IBinder? {
         return null
     }
@@ -26,7 +25,6 @@ class NotificationService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand")
         super.onStartCommand(intent, flags, startId)
-        mail = intent.getStringExtra("mail").toString()
         return START_STICKY
     }
 
@@ -65,7 +63,7 @@ class NotificationService : Service() {
 
         if(tipo=="Gestore") {
 
-            db.collection("orders").document(mail).addSnapshotListener { e, snap ->
+            db.collection("orders").addSnapshotListener { e, snap ->
                 if (snap != null) {
                     val mNotificationManager =
                         getSystemService(NOTIFICATION_SERVICE) as NotificationManager
