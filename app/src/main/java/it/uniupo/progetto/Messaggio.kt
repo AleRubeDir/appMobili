@@ -6,8 +6,10 @@ import java.util.*
 
 class Messaggio(val inviato: Int, val ora: Timestamp, val testo: String) : Comparable<Any> {
     override fun toString(): String {
-        return "$inviato - $ora -$testo"
+        //return "$inviato - $ora -$testo"
+        return "$testo"
     }
+
 
     override fun compareTo(other: Any): Int {
         other as Messaggio

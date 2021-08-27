@@ -17,6 +17,7 @@
         android:layout_alignParentEnd="true"
         android:textColor="@color/black"
         android:width="150px"
+
         android:text="Disponibilità" />
 
 

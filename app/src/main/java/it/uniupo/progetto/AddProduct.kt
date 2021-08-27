@@ -196,10 +196,10 @@ class AddProduct : AppCompatActivity() {
             img.setImageBitmap(imgbit)
             var storage = FirebaseStorage.getInstance().reference.child("products/$codphoto")
             storage.putFile(URI).addOnSuccessListener {
-                Toast.makeText(this, "Foto caricata correttamente FS", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Foto caricata correttamente", Toast.LENGTH_SHORT).show()
             }
                     .addOnFailureListener { e ->
-                        Toast.makeText(this, "Errore caricamento foto FS", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Errore caricamento foto", Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
                     }
 
@@ -218,10 +218,10 @@ class AddProduct : AppCompatActivity() {
              var fb = FirebaseFirestore.getInstance()
              fb.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
                  .addOnSuccessListener {
-                     Toast.makeText(this, "Foto caricata correttamente FD", Toast.LENGTH_SHORT).show()
+                     Toast.makeText(this, "Foto caricata correttamente", Toast.LENGTH_SHORT).show()
                  }
                  .addOnFailureListener{ e->
-                     Toast.makeText(this, "Errore caricamento foto FD", Toast.LENGTH_SHORT).show()
+                     Toast.makeText(this, "Errore caricamento foto", Toast.LENGTH_SHORT).show()
                      e.printStackTrace()
                  }
         }
@@ -229,14 +229,15 @@ class AddProduct : AppCompatActivity() {
 
     }
     private fun getLastID(myCallback: MyCallback){
-        var list = mutableListOf<Int>()
         var fb = FirebaseFirestore.getInstance()
+        var max = -1
         fb.collection("products").get()
                 .addOnSuccessListener { result ->
                     for (doc in result) {
-                        list.add(doc.id.toInt())
+                        if(max<doc.id.toInt()) max = doc.id.toInt()
+                        Log.d("myadd","LastID = $max")
                     }
-                myCallback.onCallback(list[list.size - 1])
+                myCallback.onCallback(max)
                 }
     }
     interface MyCallback{

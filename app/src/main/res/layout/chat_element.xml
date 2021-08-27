@@ -46,9 +46,18 @@
         android:layout_height="wrap_content"
         android:id="@+id/ora"
         android:text="10:13"
+        android:layout_below="@id/data"
         android:textColor="@color/black"
         android:layout_alignParentEnd="true"
-        android:padding="10dp"/>
+        android:padding="5dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/data"
+        android:text="10 Ago 2021"
+        android:textColor="@color/black"
+        android:layout_alignParentEnd="true"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

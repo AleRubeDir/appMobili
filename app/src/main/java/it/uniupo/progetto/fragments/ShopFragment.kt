@@ -31,6 +31,7 @@ class ShopFragment : Fragment() {
 
                 ItemFragment.getAllProducts((object : ItemFragment.Companion.MyCallback {
                     override fun onCallback(value: List<Prodotto>) {
+                        array.sortBy{it.id}
                         adapter = MyShopRecycleViewAdapter(array)
                     }
                 }))

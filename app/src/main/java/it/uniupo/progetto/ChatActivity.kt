@@ -33,26 +33,12 @@ class ChatActivity : AppCompatActivity() {
         getMessageFromChat((object : ChatGestoreFragment.MyCallbackMessages {
             override fun onCallback(value: ArrayList<Messaggio>,notifications: Int ) {
                 Log.d("Chats", "Dentro la chat $messages")
-                val db = FirebaseFirestore.getInstance()
-
                 val user = FirebaseAuth.getInstance().currentUser!!.email
                 createChat(contatto,user,mail)
-              /*  db.collection("chats").document(user!!).collection("contacts").document(mail).collection("messages")
-                        .addSnapshotListener{e,snap->
-                            if(snap!=null){
-                                recyclerView = findViewById(R.id.messages)
-                                recyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
-                                Log.d("mymess", "$messages")
-                                recyclerView.adapter = MyMessageListRecyclerViewAdapter(notifications, messages)
-                            }
-                        }*/
                 recyclerView = findViewById(R.id.messages)
                 recyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
                 Log.d("mymess", "$messages")
-
-                    recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages)
-
-
+                recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages)
             }
         }), mail)
 
@@ -62,11 +48,7 @@ class ChatActivity : AppCompatActivity() {
         val mess = findViewById<EditText>(R.id.write_message)
         send.setOnClickListener{
             if(!mess.text.toString().isNullOrBlank()){
-                val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
                 var ora  = Timestamp(Date())
-               /* var ora = Calendar.getInstance().time
-                ora = sdf.parse(ora.toString())*/
-             //   if(minuto.length==1) minuto = "0"+minuto
                 val messaggio = Messaggio(1, ora, mess.text.toString())
                 if (user != null) {
                     sendMessage(messaggio, mail, user)
@@ -83,10 +65,7 @@ class ChatActivity : AppCompatActivity() {
         //mail è il rider
         val db = FirebaseFirestore.getInstance()
         var check = 0
-        var dummy = hashMapOf<String, Any?>(
-                " " to " "
-        )
-        getUserData(mail, object: DatiPersonali.MyCallback {
+               getUserData(mail, object: DatiPersonali.MyCallback {
             override fun onCallback(u: DatiPersonali.Utente) {
                 db.collection("chats").document(user.toString()).collection("contacts").get()
                     .addOnSuccessListener {
@@ -110,7 +89,6 @@ class ChatActivity : AppCompatActivity() {
                                     entry,
                                     SetOptions.merge()
                                 )
-                         //   db.collection("chats").document(user!!).collection("contacts").document(mail).messages()
                             }
                         }
                     }
@@ -136,8 +114,9 @@ class ChatActivity : AppCompatActivity() {
                             document.get("address").toString()
                         )
                         Log.d("prof","$u")
+                        myCallback.onCallback(u)
                     }
-                    myCallback.onCallback(u)
+
                 }
             }
             .addOnFailureListener{ e -> Log.w("---","Error getting user info - DatiPersonali",e)}
@@ -173,6 +152,11 @@ class ChatActivity : AppCompatActivity() {
 
         val db = FirebaseFirestore.getInstance()
         messages.clear()
+        val entry = hashMapOf<String, Any?>(
+                "notifications" to 0
+        )
+        db.collection("chats").document(user!!).collection("contacts").document(you).set(entry,SetOptions.merge())
+
         db.collection("chats").document(user!!).collection("contacts").document(you).collection("messages")
                 .get()
                 .addOnSuccessListener { result ->

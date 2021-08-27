@@ -66,11 +66,13 @@ class GestoreProdotto  : AppCompatActivity() {
             if (p.qta.toString() != qta.text.toString()) p.qta = qta.text.toString().toInt()
 
             if (imgUri != null){
-                uploadPhoto(imgUri!!)
+              //  uploadPhoto(imgUri!!)
+                  p.img = imgUri.toString()
                 updatePhotoProdotto(object : MyCallbackProd {
                     override fun onCallback(newP: Prodotto) {
                         //     updatePhoto(p)
-                        Log.d("photo","$p")
+                        Log.d("aggiorna", "newp = ${newP.img}, \n p = ${p.img}")
+                        Log.d("photo", "$p")
                         updateProdotto(p)
 
                     }
@@ -78,6 +80,7 @@ class GestoreProdotto  : AppCompatActivity() {
               //  var img = updatePhotoProdotto(p)
                 Log.d("photo","Return = $img")
             }
+            updateProdotto(p)
             startActivity(Intent(applicationContext, GestoreActivity::class.java))
         }
 
@@ -112,17 +115,25 @@ class GestoreProdotto  : AppCompatActivity() {
     }
     private fun updatePhotoProdotto(myCallback: MyCallbackProd, p: Prodotto) {
    // private fun updatePhotoProdotto(p: Prodotto) : String {
-
-        val fs = FirebaseStorage.getInstance().reference
         val imageFileName = "products/$codPhoto"
-        val downloadTask = fs.child(imageFileName).downloadUrl
-        Log.d("photo", "downloadTask ${downloadTask}")
-        downloadTask.addOnSuccessListener {
-            Log.d("photo", "dtask ${fs.child(imageFileName).downloadUrl}")
-            Log.d("photo", "downloadurl $it")
-            p.img = it.toString()
+        val storage = FirebaseStorage.getInstance().reference
+        val newphoto = storage.child(imageFileName)
+        newphoto.putFile(imgUri!!)
+                .addOnSuccessListener {
+                    Log.d("photo", "up -> $it \n")
+                    val downloadTask = storage.child(imageFileName).downloadUrl
+                    Log.d("photo", "downloadTask ${downloadTask}")
+                    downloadTask.addOnSuccessListener {
+                        Log.d("photo", "dtask ${storage.child(imageFileName).downloadUrl}")
+                        Log.d("photo", "downloadurl $it")
+                        p.img = it.toString()
+                        myCallback.onCallback(p)
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Errore caricamento foto", Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                }
 
-            myCallback.onCallback(p)
         }
         //return p.img
         /*  downloadTask.addOnSuccessListener {
@@ -154,7 +165,7 @@ class GestoreProdotto  : AppCompatActivity() {
         }
     }*/
 
-    private fun uploadPhoto(imgUri: Uri) {
+/*    private fun uploadPhoto(imgUri: Uri) {
 
         val storage = FirebaseStorage.getInstance().reference
         val newphoto = storage.child("products/$codPhoto")
@@ -167,7 +178,7 @@ class GestoreProdotto  : AppCompatActivity() {
                     Toast.makeText(this, "Errore caricamento foto", Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
                 }
-    }
+    }*/
 
     private fun eliminaProdotto(id: String) {
         val db = FirebaseFirestore.getInstance()
@@ -295,10 +306,10 @@ class GestoreProdotto  : AppCompatActivity() {
             img.setImageBitmap(imgbit)
             var storage = FirebaseStorage.getInstance().reference.child("products/$codPhoto")
             storage.putFile(URI).addOnSuccessListener {
-                Toast.makeText(this, "Foto caricata correttamente FS", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Foto caricata correttamente", Toast.LENGTH_SHORT).show()
             }
                     .addOnFailureListener { e ->
-                        Toast.makeText(this, "Errore caricamento foto FS", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Errore caricamento foto", Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
                     }
 

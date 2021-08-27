@@ -6,19 +6,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MyChatGestoreRecyclerViewAdapter(
-    private val values: ArrayList<Chat>
+    private val chats: ArrayList<Chat>
 ) : RecyclerView.Adapter<MyChatGestoreRecyclerViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -30,10 +29,11 @@ class MyChatGestoreRecyclerViewAdapter(
             val intent = Intent(view.context, ChatActivity::class.java)
             intent.putExtra("mail", mail.text)
             view.context.startActivity(intent)
+
         }
         return ViewHolder(view)
     }
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = chats.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var mail : TextView = view.findViewById(R.id.mail)
@@ -42,12 +42,13 @@ class MyChatGestoreRecyclerViewAdapter(
         var ora : TextView = view.findViewById(R.id.ora)
         var anteprima : TextView = view.findViewById(R.id.anteprima)
         var notifiche : TextView = view.findViewById(R.id.notifiche)
+        var data : TextView = view.findViewById(R.id.data)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
+        val item = chats[position]
         Log.d("mymess","${item.contatto}")
-
+        item.messaggio.sortBy{it.ora}
         var ora = item.messaggio.last().ora.toDate().hours.toString()
         var minuti = item.messaggio.last().ora.toDate().minutes.toString()
         if(minuti.length==1) minuti = "0"+ item.messaggio.last().ora.toDate().minutes.toString()
@@ -56,15 +57,17 @@ class MyChatGestoreRecyclerViewAdapter(
         holder.nome.text = item.contatto.nome
         holder.cognome.text = item.contatto.cognome
         holder.ora.text = "$ora:$minuti"
-
+        Log.d("anteprima","ultimo messaggio => ${item.messaggio.last().testo} \n\n")
         holder.anteprima.text = item.messaggio.last().testo
+        holder.data.text =convertLongToTime(item.messaggio.last().ora.seconds)
+        if(item.notifications==0) holder.notifiche.visibility = View.INVISIBLE
         holder.notifiche.text = item.notifications.toString()
-        /*if(item.notifiche=="0"){
-            holder.notifiche.visibility= View.INVISIBLE
-        }
-        holder.notifiche.text =item.notifiche*/
-
     }
 
-
+    fun convertLongToTime(time: Long): String {
+        val date = Date(time*1000)
+        //  Log.d("mess","time vale $time date vale $date")
+        val format = SimpleDateFormat("dd/MM/yyyy")
+        return format.format(date)
+    }
 }
