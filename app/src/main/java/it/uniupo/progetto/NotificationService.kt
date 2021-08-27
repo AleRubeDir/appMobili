@@ -78,7 +78,7 @@ class NotificationService : Service() {
             mNotificationManager.createNotificationChannel(notificationChannel)
         }*/
         mNotificationManager.notify(System.currentTimeMillis().toInt(), mBuilder.build())
-              
+
 
     }
 
