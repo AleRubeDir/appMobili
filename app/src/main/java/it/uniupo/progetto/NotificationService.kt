@@ -15,10 +15,7 @@ import androidx.core.app.NotificationCompat
 import java.util.*
 
 class NotificationService : Service() {
-    var timer: Timer? = null
-    var timerTask: TimerTask? = null
     var TAG = "Timers"
-    var Your_X_SECS = 5
     override fun onBind(arg0: Intent): IBinder? {
         return null
     }
@@ -26,41 +23,17 @@ class NotificationService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand")
         super.onStartCommand(intent, flags, startId)
-        startTimer()
         return START_STICKY
     }
 
     override fun onCreate() {
         Log.e(TAG, "onCreate")
+        createNotification()
     }
 
     override fun onDestroy() {
         Log.e(TAG, "onDestroy")
-        stopTimerTask()
         super.onDestroy()
-    }
-
-    //we are going to use a handler to be able to run in our TimerTask
-    val handler = Handler()
-    fun startTimer() {
-        timer = Timer()
-        initializeTimerTask()
-        timer!!.schedule(timerTask, 5000, (Your_X_SECS * 1000).toLong()) //
-    }
-
-    fun stopTimerTask() {
-        if (timer != null) {
-            timer!!.cancel()
-            timer = null
-        }
-    }
-
-    fun initializeTimerTask() {
-        timerTask = object : TimerTask() {
-            override fun run() {
-                handler.post { createNotification() }
-            }
-        }
     }
 
     private fun createNotification() {
@@ -77,7 +50,7 @@ class NotificationService : Service() {
             mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID)
             mNotificationManager.createNotificationChannel(notificationChannel)
         }*/
-        mNotificationManager.notify(System.currentTimeMillis().toInt(), mBuilder.build())
+        mNotificationManager.notify(0, mBuilder.build())
 
 
     }
