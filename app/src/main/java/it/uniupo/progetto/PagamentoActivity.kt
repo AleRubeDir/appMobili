@@ -1,8 +1,6 @@
 package it.uniupo.progetto
 
 import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,11 +8,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.NotificationCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.storage.FirebaseStorage
 
 class PagamentoActivity : AppCompatActivity() {
 
@@ -37,7 +33,7 @@ class PagamentoActivity : AppCompatActivity() {
                 ind.text = arr[0] + " " + arr[1] + ","+ arr[2] + " "
             }
         },(FirebaseAuth.getInstance().currentUser?.email))
-        var totdoub = "%.2f".format(HomeActivity.tot)
+        var totdoub = "%.2f".format(ClienteActivity.tot)
         tot.text = getString(R.string.cash,totdoub)
         btn.setOnClickListener{
             if(rg.checkedRadioButtonId==-1) Toast.makeText(this,"Seleziona un metodo di pagamento", Toast.LENGTH_LONG).show()
@@ -72,7 +68,7 @@ class PagamentoActivity : AppCompatActivity() {
                 { _: DialogInterface, _: Int ->
 
 
-                    for(p in HomeActivity.carrello) diminuisciQtaDB(p)
+                    for(p in ClienteActivity.carrello) diminuisciQtaDB(p)
                     svuotaCarrello()
 
                     startService(Intent(this,NotificationService::class.java))
@@ -88,7 +84,7 @@ class PagamentoActivity : AppCompatActivity() {
                             .setAutoCancel(true)
                             .build()
                     notificationManager.notify(0, builder)*/
-                    startActivity(Intent(this,HomeActivity::class.java))
+                    startActivity(Intent(this,ClienteActivity::class.java))
 
                 }
                 .show()
@@ -100,7 +96,7 @@ class PagamentoActivity : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         val user = FirebaseAuth.getInstance().currentUser?.email.toString()
         Log.d("carts","User = $user")
-        for(p in HomeActivity.carrello) {
+        for(p in ClienteActivity.carrello) {
             db.collection("carts").document(user).collection("products").document(p.id.toString()).delete()
                     .addOnSuccessListener {
                         Log.d("cart", "Prodotto rimosso dal carrello")
@@ -114,8 +110,8 @@ class PagamentoActivity : AppCompatActivity() {
                         Log.d("carts", document.toString())
                     }
         }
-        HomeActivity.carrello.clear()
-        HomeActivity.tot=0.0
+        ClienteActivity.carrello.clear()
+        ClienteActivity.tot=0.0
     }
 
     private fun diminuisciQtaDB(p: Prodotto) {

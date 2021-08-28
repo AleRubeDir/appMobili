@@ -55,7 +55,7 @@ class RegisterActivity  : AppCompatActivity() {
                 .addOnSuccessListener { result->
                     for (document in result) {
                         if(document.get("mail").toString() == mail && document.get("type").toString().isNotEmpty()){
-                            startActivity(Intent(this, HomeActivity::class.java))
+                            startActivity(Intent(this, ClienteActivity::class.java))
                         }
                     }
                     val entry = hashMapOf<String, Any?>(

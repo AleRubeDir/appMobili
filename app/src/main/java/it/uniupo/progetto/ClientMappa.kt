@@ -28,7 +28,6 @@ import com.google.android.gms.maps.model.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.ktx.Firebase
 import java.io.IOException
 
 class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
@@ -204,7 +203,7 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                 val go = findViewById<Button>(R.id.go)
                 go.visibility = View.VISIBLE
                 go.setOnClickListener {
-                    startActivity(Intent(this, HomeActivity::class.java))
+                    startActivity(Intent(this, ClienteActivity::class.java))
                 }
             }
             setAddressFirebase(location)

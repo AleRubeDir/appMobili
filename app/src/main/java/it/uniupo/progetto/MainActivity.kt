@@ -1,15 +1,10 @@
 package it.uniupo.progetto
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import com.google.firebase.firestore.FirebaseFirestore
-import it.uniupo.progetto.fragments.ProfileFragment
-import it.uniupo.progetto.fragments.ShopFragment
 
 class MainActivity : AppCompatActivity() {
     val PREF_USER_NAME = "username"
@@ -26,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             when {
                 mail == "Cliente" -> {
                     Log.d("mail", "account cliente")
-                    startActivity(Intent(this, HomeActivity::class.java))
+                    startActivity(Intent(this, ClienteActivity::class.java))
                 }
                 mail == "Rider" -> {
                     Log.d("mail", "account rider")

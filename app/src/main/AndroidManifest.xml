@@ -52,7 +52,7 @@
         <activity android:name=".ScrollingActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".ClienteActivity" />
         <activity android:name=".RiderActivity" />
         <activity android:name=".DatiPersonali" />
         <activity android:name=".Rider_delivery_info" />

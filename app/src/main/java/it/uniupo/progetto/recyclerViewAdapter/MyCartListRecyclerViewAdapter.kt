@@ -1,6 +1,5 @@
 package it.uniupo.progetto.recyclerViewAdapter
 
-import android.graphics.Canvas
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +7,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import it.uniupo.progetto.HomeActivity
+import it.uniupo.progetto.ClienteActivity
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
 
@@ -45,7 +43,7 @@ class MyCartListRecyclerViewAdapter(
             if (p != null) {
                 if (p.qta>=n) {
                     qta.text = n.toString()
-                    Log.d("tot", "PRIMA CARRELLO VALE  ${HomeActivity.carrello}")
+                    Log.d("tot", "PRIMA CARRELLO VALE  ${ClienteActivity.carrello}")
                     salvaQta(p, n)
                 }else{
                     Toast.makeText(parent.context, "Qta max", Toast.LENGTH_SHORT).show()
@@ -120,7 +118,7 @@ class MyCartListRecyclerViewAdapter(
         }
     }
     private fun salvaQta(p: Prodotto, qta: Int){
-        for (x in HomeActivity.carrello){
+        for (x in ClienteActivity.carrello){
             if(x.id == p.id)
                 x.qta = qta
         }

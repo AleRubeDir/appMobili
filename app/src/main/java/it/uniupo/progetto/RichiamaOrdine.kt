@@ -1,8 +1,6 @@
 package it.uniupo.progetto
 
 import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +8,6 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -95,7 +92,7 @@ class RichiamaOrdine : AppCompatActivity() {
                         )
                         db.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
                                 .addOnSuccessListener {
-                                    startActivity(Intent(this,HomeActivity::class.java))
+                                    startActivity(Intent(this,ClienteActivity::class.java))
                                 }
                     }
         }

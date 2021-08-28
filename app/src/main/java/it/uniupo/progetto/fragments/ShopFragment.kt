@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.uniupo.progetto.HomeActivity.Companion.array
+import it.uniupo.progetto.ClienteActivity.Companion.array
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
 import it.uniupo.progetto.recyclerViewAdapter.*

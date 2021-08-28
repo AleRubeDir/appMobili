@@ -187,7 +187,7 @@ class LoginActivity : AppCompatActivity() {
         editor.putString("login", type)
         editor.apply()
         when (type) {
-            "Cliente" -> startActivity(Intent(this, HomeActivity::class.java))
+            "Cliente" -> startActivity(Intent(this, ClienteActivity::class.java))
             "Rider" -> startActivity(Intent(this, RiderActivity::class.java))
             "Gestore" -> startActivity(Intent(this, GestoreActivity::class.java))
             else -> {

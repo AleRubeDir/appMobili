@@ -1,12 +1,10 @@
 package it.uniupo.progetto
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
@@ -37,7 +35,7 @@ class PaginaProdotto  : AppCompatActivity() {
                     Log.d("pprod","np value ${np.value}")
                     addToCart(p,np.value)
 
-                    val home = Intent(applicationContext,HomeActivity::class.java)
+                    val home = Intent(applicationContext,ClienteActivity::class.java)
                     home.putExtra("cart","vai")
                     startActivity(home)
                 }

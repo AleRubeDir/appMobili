@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,9 +37,9 @@ class CartListFragment : Fragment()  {
         getUserCart((object : ItemFragment.Companion.MyCallback {
             override fun onCallback(value: List<Prodotto>) {
                 cartTot()
-                var totdoub = "%.2f".format(HomeActivity.tot)
+                var totdoub = "%.2f".format(ClienteActivity.tot)
                 tot.text = activity?.getString(R.string.cash, totdoub)
-                recyclerView.adapter = MyCartListRecyclerViewAdapter(HomeActivity.carrello)
+                recyclerView.adapter = MyCartListRecyclerViewAdapter(ClienteActivity.carrello)
                 val db = FirebaseFirestore.getInstance()
                 val email = FirebaseAuth.getInstance().currentUser!!.email.toString()
                 db.collection("carts").document(email).collection("products")
@@ -48,14 +47,14 @@ class CartListFragment : Fragment()  {
                             if (e != null) Log.d("mysnap", "Errore connessione $e")
                             if (snap != null)
                                 cartTot()
-                            totdoub = "%.2f".format(HomeActivity.tot)
+                            totdoub = "%.2f".format(ClienteActivity.tot)
                             tot.text = activity?.getString(R.string.cash, totdoub)
                         }
             }
         }))
         val compra = view.findViewById<Button>(R.id.compra)
         compra.setOnClickListener{
-            impostaOrdine(HomeActivity.carrello, object : MyCallback{
+            impostaOrdine(ClienteActivity.carrello, object : MyCallback{
                 override fun onCallback(ordId: String) {
                     intent = Intent(view.context, PagamentoActivity::class.java)
                     intent.putExtra("ord_id",ordId)
@@ -67,8 +66,8 @@ class CartListFragment : Fragment()  {
 
         val swipegesture = object: SwipeGesture(view.context){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                MyCartListRecyclerViewAdapter(HomeActivity.carrello).rimuoviProdottoSwipe(viewHolder.bindingAdapterPosition)
-                recyclerView.adapter = MyCartListRecyclerViewAdapter(HomeActivity.carrello)
+                MyCartListRecyclerViewAdapter(ClienteActivity.carrello).rimuoviProdottoSwipe(viewHolder.bindingAdapterPosition)
+                recyclerView.adapter = MyCartListRecyclerViewAdapter(ClienteActivity.carrello)
                 Log.d("swipe","Swipe effettuato  ${viewHolder.bindingAdapterPosition}  ${viewHolder.adapterPosition}  ${viewHolder.absoluteAdapterPosition}")
                 //super.onSwiped(viewHolder, direction)
             }
@@ -118,15 +117,15 @@ class CartListFragment : Fragment()  {
     }
 
     fun cartTot() {
-      HomeActivity.tot = 0.0;
-            for (p in HomeActivity.carrello) {
-                HomeActivity.tot += (p.prezzo.toDouble() * p.qta)
+      ClienteActivity.tot = 0.0;
+            for (p in ClienteActivity.carrello) {
+                ClienteActivity.tot += (p.prezzo.toDouble() * p.qta)
             }
         }
 
     private fun getUserCart(myCallback: ItemFragment.Companion.MyCallback) {
         val user = FirebaseAuth.getInstance().currentUser!!.email
-        HomeActivity.carrello.clear()
+        ClienteActivity.carrello.clear()
         val db = FirebaseFirestore.getInstance()
         db.collection("carts").document(user!!).collection("products")
             .get()
@@ -137,10 +136,10 @@ class CartListFragment : Fragment()  {
                             val prezzo = document.get("prezzo").toString()
                             val qta = document.getLong("qta")!!.toInt()
                             val p = Prodotto(id, "-1", titolo, "NULL", prezzo, qta)
-                            HomeActivity.carrello.add(p)
+                            ClienteActivity.carrello.add(p)
                         }
-                stampaArray(HomeActivity.carrello)
-                    myCallback.onCallback(HomeActivity.carrello)
+                stampaArray(ClienteActivity.carrello)
+                    myCallback.onCallback(ClienteActivity.carrello)
             }
             .addOnFailureListener {
                 Log.d("totale", "Error getting document - get user cart()")

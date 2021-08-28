@@ -43,7 +43,9 @@ class RiderActivity : AppCompatActivity() {
         replace(R.id.fl_wrapper,fragment)
         commit()
     }
-
+    override fun onBackPressed() {
+        finish()
+    }
     companion object{
 
         var array: ArrayList<Prodotto> = ArrayList()
@@ -52,7 +54,6 @@ class RiderActivity : AppCompatActivity() {
                 property, oldValue, newValue ->
             Log.d("TAG","New Value $newValue")
             Log.d("TAG","Old Value $oldValue")
-            // HomeActivity().updateTot()
         }
     }
 }
