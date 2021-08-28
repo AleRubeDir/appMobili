@@ -1,13 +1,14 @@
 package it.uniupo.progetto.fragments
 
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,41 +16,42 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.Consegna
-import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
 import it.uniupo.progetto.recyclerViewAdapter.*
+import java.io.IOException
+
 /**
  * A fragment representing a list of Items.
  */
 class Rider_ConsegneFragment : Fragment() {
 
-
+    lateinit var viewConsegne: View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_consegne_list, container, false)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.list)
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        viewConsegne = inflater.inflate(R.layout.fragment_consegne_list, container, false)
+        val recyclerView = viewConsegne.findViewById<RecyclerView>(R.id.list)
+        recyclerView.layoutManager = LinearLayoutManager(viewConsegne.context)
 
         getDelivery(
                 object : myCallback {
                     override fun onCallback(consegne: List<Consegna>) {
 
-                        recyclerView.adapter = MyConsegneRecyclerViewAdapter(consegne)
+                        recyclerView.adapter = MyConsegneRecyclerViewAdapter(consegne as MutableList<Consegna>)
                         Log.d("RISULTATO", consegne.toString())
                     }
                 }
         )
 
         //switch per rendere un rider disponibile
-        val delivery_switch = view.findViewById<SwitchCompat>(R.id.switch_delivery)
+        val delivery_switch = viewConsegne.findViewById<SwitchCompat>(R.id.switch_delivery)
         delivery_switch.setOnClickListener{
             val status = delivery_switch.isChecked
             changeStatus(status)
         }
 
 
-        return view
+        return viewConsegne
     }
 
     interface myCallback{
@@ -58,6 +60,11 @@ class Rider_ConsegneFragment : Fragment() {
     }
 
     fun getDelivery(myCallback: myCallback){
+        val market = Location("")
+
+        market.latitude =  44.994154
+        market.longitude =   8.565942
+
         val db = FirebaseFirestore.getInstance()
         val rider = FirebaseAuth.getInstance().currentUser!!.email.toString()
         var consegne = arrayListOf<Consegna>()
@@ -73,8 +80,21 @@ class Rider_ConsegneFragment : Fragment() {
                                         var stato = x.getString("stato").toString()
                                         var tipo_pagamento = x.getString("tipo_pagamento").toString()
                                         var orderId = x.id
+                                        var geocodeMatches: List<Address>? = null
+                                        try {
+                                            geocodeMatches = Geocoder(viewConsegne.context).getFromLocationName(posizione, 1)
+                                        } catch (e: IOException) {
+                                            e.printStackTrace()
+                                        }
+                                        var cons_rider = Location("")
 
-                                        var consegna = Consegna(clienti.id,null,posizione,tipo_pagamento,stato,orderId)
+                                        for (mat in geocodeMatches!!) {
+                                            cons_rider.latitude = mat.latitude
+                                            cons_rider.longitude = mat.longitude
+                                        }
+
+                                        var distanza = (market.distanceTo(cons_rider)/1000).toDouble()
+                                        var consegna = Consegna(clienti.id,null,posizione,tipo_pagamento,stato,orderId,distanza)
 
                                         consegne.add(consegna)
                                     }
