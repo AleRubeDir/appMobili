@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/order"
     android:layout_margin="5dp"
-    card_view:cardBackgroundColor="@color/mimosa"
+    card_view:cardBackgroundColor="#9E940C24"
     card_view:cardCornerRadius="12dp"
     card_view:cardElevation="3dp"
     card_view:contentPadding="4dp"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="@string/indirizzo"
             android:textColor="@color/black"
-            android:textSize="35sp"
+            android:textSize="20sp"
             android:maxLines="1"
             android:textStyle="bold"/>
         <TextView
@@ -41,10 +41,9 @@
             android:layout_below="@+id/indirizzo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity=""
             android:textColor="@color/black"
             android:text="@string/distanza"
-            android:textSize="35sp"
+            android:textSize="20sp"
             android:textStyle="bold"/>
 
         <TextView
@@ -53,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tipo_pagamento"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             />
         <TextView
@@ -64,44 +63,13 @@
             />
         <TextView
             android:id="@+id/orderId"
-            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="101239123"
+            android:textSize="20sp"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-
-            >
-            <ImageButton
-                android:id="@+id/info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/rider_info"
-
-                />
-            <ImageButton
-                android:id="@+id/check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/rider_check"
-                android:layout_toEndOf="@id/info"
-
-                />
-            <ImageButton
-                android:id="@+id/deny"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/rider_deny"
-                android:layout_toEndOf="@id/check"
-                />
-        </RelativeLayout>
-
-
-
+            android:layout_alignBaseline="@id/pagamento"
+            />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -1,17 +1,21 @@
 package it.uniupo.progetto
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import it.uniupo.progetto.fragments.*
+import it.uniupo.progetto.fragments.ProfileFragment
+import it.uniupo.progetto.fragments.Rider_ConsegneFragment
+import it.uniupo.progetto.fragments.Rider_chatFragment
 import kotlin.properties.Delegates
+import kotlin.system.exitProcess
+
 
 class RiderActivity : AppCompatActivity() {
- fun stampaArray(array : ArrayList<Prodotto>){
-        Log.d("totale","RiderActivity- array -> $array")
+ fun stampaArray(array: ArrayList<Prodotto>){
+        Log.d("totale", "RiderActivity- array -> $array")
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,21 +44,15 @@ class RiderActivity : AppCompatActivity() {
     }
 
     private fun makeCurrentFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply{
-        replace(R.id.fl_wrapper,fragment)
+        replace(R.id.fl_wrapper, fragment)
         commit()
     }
     override fun onBackPressed() {
-        finish()
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
-    companion object{
 
-        var array: ArrayList<Prodotto> = ArrayList()
-        var carrello: ArrayList<Prodotto> = ArrayList()
-        var tot by Delegates.observable(0.0){
-                property, oldValue, newValue ->
-            Log.d("TAG","New Value $newValue")
-            Log.d("TAG","Old Value $oldValue")
-        }
-    }
 }
 

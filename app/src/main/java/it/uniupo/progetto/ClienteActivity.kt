@@ -56,7 +56,10 @@ class ClienteActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        finish()
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 
     interface MyCallback {
@@ -66,7 +69,6 @@ class ClienteActivity : AppCompatActivity() {
         var array: ArrayList<Prodotto> = ArrayList()
         var carrello: ArrayList<Prodotto> = ArrayList()
         var tot = 0.0
-
     }
 
 

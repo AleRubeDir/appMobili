@@ -15,6 +15,7 @@ import it.uniupo.progetto.fragments.*
 import kotlin.concurrent.thread
 import kotlin.math.round
 import kotlin.properties.Delegates
+import kotlin.system.exitProcess
 
 class GestoreActivity : AppCompatActivity() {
 
@@ -25,8 +26,10 @@ class GestoreActivity : AppCompatActivity() {
         val shopFragment = ShopFragment()
         val profileFragment = ProfileFragment()
         makeCurrentFragment(shopFragment)
-
-
+        val from_notification = intent.getStringExtra("from_notification")
+        if(from_notification!=null){
+            makeCurrentFragment(orderFragment)
+        }
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
@@ -53,28 +56,16 @@ class GestoreActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        startService(Intent(this,NotificationService::class.java))
-    }
-
     private fun makeCurrentFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply{
         replace(R.id.fl_wrapper,fragment)
         commit()
     }
     override fun onBackPressed() {
-        finish()
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
-    companion object{
 
-        var array: ArrayList<Prodotto> = ArrayList()
-        var carrello: ArrayList<Prodotto> = ArrayList()
-        var tot by Delegates.observable(0.0){
-                property, oldValue, newValue ->
-            Log.d("TAG","New Value $newValue")
-            Log.d("TAG","Old Value $oldValue")
-
-        }
-    }
 }
 

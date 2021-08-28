@@ -73,7 +73,6 @@ class Rider_ConsegneFragment : Fragment() {
                                         var stato = x.getString("stato").toString()
                                         var tipo_pagamento = x.getString("tipo_pagamento").toString()
                                         var orderId = x.id
-
                                         var consegna = Consegna(clienti.id,null,posizione,tipo_pagamento,stato,orderId)
 
                                         consegne.add(consegna)
