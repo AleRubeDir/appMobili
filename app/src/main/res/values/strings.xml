@@ -111,5 +111,6 @@
     <string name="km">%1$s KM </string>
     <string name="assegna_ordini">Assegna ordini</string>
     <string name="storico_ordini">Storico ordini</string>
+    <string name="seleziona_il_rider_per_questa_consegna">Seleziona il rider per questa consegna</string>
 
 </resources>

@@ -25,11 +25,13 @@ import it.uniupo.progetto.R
  * TODO: Replace the implementation with code for your data type.
  */
 class MyConsegneRecyclerViewAdapter(
-    private val values: List<Consegna>
+    private val values: MutableList<Consegna>
 ) : RecyclerView.Adapter<MyConsegneRecyclerViewAdapter.ViewHolder>() {
+    lateinit var view : View
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_consegne, parent, false)
 
         // link all'activity rider_delivery_info
@@ -55,13 +57,20 @@ class MyConsegneRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val item = values[position]
 
         holder.indirizzo.text = item.posizione
         holder.tipo_pagamento.text = item.tipo_pagamento
-        holder.distanza.text = "DISTANZA(TODO)"
+        holder.distanza.text = view.context.getString(R.string.km, "%.2f".format(item.distanza))
+
         holder.userId.text = item.clientMail
         holder.orderId.text = item.orderId
+
+        val  refuse_order_button = view.findViewById<ImageButton>(R.id.deny)
+        refuse_order_button.setOnClickListener{
+            deleteConsegna(position)
+        }
 
     }
 
@@ -99,4 +108,12 @@ class MyConsegneRecyclerViewAdapter(
         Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider).collection("client").document(user).collection("details").document(orderId).set(det, SetOptions.merge())
     }
+
+    fun deleteConsegna(index: Int){
+       values.removeAt(index)
+        notifyDataSetChanged()
+
+
+    }
+
 }

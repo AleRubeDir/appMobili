@@ -34,6 +34,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <activity android:name=".AssegnaOrdine" />
         <activity android:name=".RichiamaOrdine" />
         <activity android:name=".GestoreMappaRider" />
         <activity android:name=".NewChatActivity" />

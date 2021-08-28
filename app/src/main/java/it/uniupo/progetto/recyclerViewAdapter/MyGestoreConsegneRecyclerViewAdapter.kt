@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -27,11 +28,18 @@ import it.uniupo.progetto.R
 class MyGestoreConsegneRecyclerViewAdapter(
         private val values: List<Consegna>
 ) : RecyclerView.Adapter<MyGestoreConsegneRecyclerViewAdapter.ViewHolder>() {
-
+    lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_gestore_consegne, parent, false)
 
+        val consegna = view.findViewById<CardView>(R.id.order)
+        consegna.setOnClickListener{
+            val ordId = view.findViewById<TextView>(R.id.orderId).text.toString()
+            val intent = Intent(view.context, AssegnaOrdine::class.java)
+            intent.putExtra("ordId", ordId)
+            view.context.startActivity(intent)
+        }
         return ViewHolder(view)
     }
 
@@ -40,7 +48,7 @@ class MyGestoreConsegneRecyclerViewAdapter(
 
         holder.indirizzo.text = item.posizione
         holder.tipo_pagamento.text = item.tipo_pagamento
-        holder.distanza.text = "DISTANZA(TODO)"
+        holder.distanza.text = view.context.getString(R.string.km, "%.2f".format(item.distanza))
         holder.userId.text = item.clientMail
         holder.orderId.text = item.orderId
 

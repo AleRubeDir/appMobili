@@ -2,6 +2,8 @@
 package it.uniupo.progetto.fragments
 import it.uniupo.progetto.recyclerViewAdapter.*
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.*
 import it.uniupo.progetto.fragments.ProfileFragment.Azione
+import java.io.IOException
+
 class OrderFragment  : Fragment() {
 
     override fun onCreateView(
@@ -27,28 +31,16 @@ class OrderFragment  : Fragment() {
             startActivity(Intent(view.context,StoricoOrdini::class.java))
         }
 
-        val assegna = view?.findViewById<RelativeLayout>(R.id.assegna)
-        assegna.setOnClickListener{
-            startActivity(Intent(view.context, AssegnaOrdine::class.java))
-        }
-
         val orderView = view.findViewById<RecyclerView>(R.id.list)
 
         getOrders(object: MyCallbackOrders{
             override fun onCallback(order: ArrayList<Consegna>) {
                 for (o in order) Log.d("gestore_", "$o \n")
                 orderView.adapter = MyGestoreConsegneRecyclerViewAdapter(order)
+
             }
         })
-  /*      val recyclerView = view.findViewById<RecyclerView>(R.id.list)
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-        getRiders(object: MyCallback {
-           override fun onCallback(riders: ArrayList<Rider>) {
-               riders.sortBy{it.distanza}
-               recyclerView.adapter = MySelectRiderRecyclerViewAdapter(riders)
-           }
-        })*/
 
         return view
 
@@ -90,8 +82,24 @@ class OrderFragment  : Fragment() {
                                         .addOnSuccessListener {
                                             rider = it.getString("mail").toString()
                                         }
+                                val market = Location("")
+                                market.latitude =  44.994154
+                                market.longitude =   8.565942
+                                var geocodeMatches: List<Address>? = null
+                                try {
+                                    geocodeMatches = Geocoder(view!!.context).getFromLocationName(indirizzo, 1)
+                                } catch (e: IOException) {
+                                    e.printStackTrace()
+                                }
+                                val cons_rider = Location("")
 
-                                var consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento, "stato", ord)
+                                for (mat in geocodeMatches!!) {
+                                    cons_rider.latitude = mat.latitude
+                                    cons_rider.longitude = mat.longitude
+                                }
+
+                                var distanza = (market.distanceTo(cons_rider)/1000).toDouble()
+                                var consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento, "stato", ord,distanza)
                                 orders.add(consegna)
                             }
                             myCallbackOrders.onCallback(orders)
@@ -127,38 +135,10 @@ class OrderFragment  : Fragment() {
                 }
     }
 
-    interface MyCallback{
-        fun onCallback(rider: ArrayList<Rider>)
-    }
+
     interface MyCallbackOrders{
         fun onCallback(order: ArrayList<Consegna>)
     }
-    private fun getRiders(mycallback : MyCallback){
-        val db = FirebaseFirestore.getInstance()
-        var riders = arrayListOf<Rider>()
-        db.collection("riders").get()
-                .addOnSuccessListener {
-                    for(d in it){
-                        if(d.getLong("occupato")!!.toInt()==0){
-                            val riderpos = Location("")
-                            riderpos.latitude = d.getDouble("lat")!!
-                            riderpos.longitude = d.getDouble("lon")!!
-                            val market = Location("")
-                            market.latitude =  44.994154
-                            market.longitude =   8.565942
 
-                            val dist = (market.distanceTo(riderpos)/1000).toDouble()
-                            val rider = Rider(d.getString("nome")!!,d.getString("cognome")!!,riderpos.latitude,riderpos.longitude,dist)
-                            riders.add(rider)
-                        }
-                    }
-                    mycallback.onCallback(riders)
-                }
-    }
-    class Rider( var nome : String, var cognome : String , var lat : Double, var lon : Double, var distanza : Double){
-        override fun toString(): String {
-            return "RIDER\n nome : $nome \n cognome : $cognome \n lat : $lat \n lon : $lon \n distanza : $distanza \n"
-        }
-    }
 
 }

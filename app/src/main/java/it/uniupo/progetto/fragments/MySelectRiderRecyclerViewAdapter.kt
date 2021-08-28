@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import it.uniupo.progetto.AssegnaOrdine
 import it.uniupo.progetto.R
 
-class MySelectRiderRecyclerViewAdapter(var riders: ArrayList<OrderFragment.Rider>) : RecyclerView.Adapter<MySelectRiderRecyclerViewAdapter.ViewHolder>() {
+class MySelectRiderRecyclerViewAdapter(var riders: ArrayList<AssegnaOrdine.Rider>) : RecyclerView.Adapter<MySelectRiderRecyclerViewAdapter.ViewHolder>() {
     lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.gestore_receive_order, parent, false)
+                .inflate(R.layout.rider_list, parent, false)
         return ViewHolder(view)
     }
 
