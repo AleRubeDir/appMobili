@@ -51,6 +51,7 @@ class MyConsegneRecyclerViewAdapter(
             val userMail = view.findViewById<TextView>(R.id.userMail).text.toString()
             val orderId = view.findViewById<TextView>(R.id.orderId).text.toString()
             refuseOrder(userMail,orderId)
+            deleteConsegna(orderId)
         }
 
         return ViewHolder(view)
@@ -67,12 +68,7 @@ class MyConsegneRecyclerViewAdapter(
         holder.userId.text = item.clientMail
         holder.orderId.text = item.orderId
 
-        val  refuse_order_button = view.findViewById<ImageButton>(R.id.deny)
-        refuse_order_button.setOnClickListener{
-            deleteConsegna(position)
-        }
-
-    }
+       }
 
     override fun getItemCount(): Int = values.size
 
@@ -107,11 +103,30 @@ class MyConsegneRecyclerViewAdapter(
         )
         Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider).collection("client").document(user).collection("details").document(orderId).set(det, SetOptions.merge())
+
+
+        db.collection("delivery").document(rider).collection("client").document(user).collection("details").document(orderId).set(det, SetOptions.merge())
+//        db.collection("carts").document(user).collection("products").document(p.id.toString())
+//            .delete()
+//            .addOnSuccessListener {
+//                Log.d("cart", "Eliminazione di $p.id avvenuta con successo")
+//            }
+//            .addOnFailureListener{
+//                Log.d("cart", "Errore eliminazione di $p.id ")
+//            }
     }
 
-    fun deleteConsegna(index: Int){
-       values.removeAt(index)
-        notifyDataSetChanged()
+    fun deleteConsegna(orderID: String){
+
+        for(p in values){
+            if(p.orderId==orderID){
+
+                values.remove(p)
+                notifyDataSetChanged()
+            }
+        }
+
+
 
 
     }
