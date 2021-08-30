@@ -38,7 +38,7 @@ class Rider_ConsegneFragment : Fragment() {
                     override fun onCallback(consegne: List<Consegna>) {
 
                         recyclerView.adapter = MyConsegneRecyclerViewAdapter(consegne as MutableList<Consegna>)
-                        Log.d("RISULTATO", consegne.toString())
+//                        Log.d("RISULTATO", consegne.toString())
                     }
                 }
         )

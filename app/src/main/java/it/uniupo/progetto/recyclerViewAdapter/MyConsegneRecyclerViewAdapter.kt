@@ -1,23 +1,23 @@
 package it.uniupo.progetto.recyclerViewAdapter
 
-import android.content.Context
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.*
-import it.uniupo.progetto.ChooseActivity
 import it.uniupo.progetto.Consegna
 import it.uniupo.progetto.R
+import java.io.IOException
 
 
 /**
@@ -37,21 +37,36 @@ class MyConsegneRecyclerViewAdapter(
         // link all'activity rider_delivery_info
         val info = view.findViewById<ImageButton>(R.id.info)
         info.setOnClickListener {
-            view.context.startActivity(Intent(parent.context, Rider_delivery_info::class.java))
+            var intent = Intent(parent.context, Rider_delivery_info::class.java)
+            val orderId = view.findViewById<TextView>(R.id.orderId).text.toString()
+            intent.putExtra("orderId",orderId)
+            view.context.startActivity(intent)
         }
 
         val accept_order_button = view.findViewById<ImageButton>(R.id.check)
         accept_order_button.setOnClickListener{
             val userMail = view.findViewById<TextView>(R.id.userMail).text.toString()
             val orderId = view.findViewById<TextView>(R.id.orderId).text.toString()
-            acceptOrder(userMail,orderId)
+            val address = view.findViewById<TextView>(R.id.indirizzo).text.toString()
+            var geocodeMatches: List<Address>? = null
+
+            try {
+                geocodeMatches = Geocoder(view.context).getFromLocationName(address, 1)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            var zoomLevel = 11.0f
+            var coord =LatLng(0.0, 0.0)
+            for (mat in geocodeMatches!!) {
+                coord = LatLng(mat.latitude, mat.longitude)
+            }
+            acceptOrder(userMail,orderId,coord.latitude,coord.longitude)
         }
         val  refuse_order_button = view.findViewById<ImageButton>(R.id.deny)
         refuse_order_button.setOnClickListener{
             val userMail = view.findViewById<TextView>(R.id.userMail).text.toString()
             val orderId = view.findViewById<TextView>(R.id.orderId).text.toString()
             refuseOrder(userMail,orderId)
-            deleteConsegna(orderId)
         }
 
         return ViewHolder(view)
@@ -85,27 +100,37 @@ class MyConsegneRecyclerViewAdapter(
         }
     }
 
-    fun acceptOrder(user: String,orderId: String){
+    fun acceptOrder(user: String, orderId: String, latitude: Double, longitude: Double){
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
          val det = hashMapOf<String, Any?>(
-                "stato" to "accettato"
+                "stato" to "accettato",
+                "lat" to latitude,
+                "lon" to longitude,
          )
         Log.d("DELIVERY - ",orderId)
-        db.collection("delivery").document(rider).collection("client").document(user).collection("details").document(orderId).set(det, SetOptions.merge())
+        db.collection("delivery").document(rider).collection(orderId).document("dett").set(det, SetOptions.merge())
     }
 
     fun refuseOrder(user: String,orderId: String){
+//        refuse order:
+//        cambia stato in rifiutato
+//        cancella nel fragment l'ordine
+//
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
         val det = hashMapOf<String, Any?>(
                 "stato" to "rifiutato"
         )
         Log.d("DELIVERY - ",orderId)
-        db.collection("delivery").document(rider).collection("client").document(user).collection("details").document(orderId).set(det, SetOptions.merge())
+        db.collection("delivery").document(rider).collection(orderId).document("dett").set(det, SetOptions.merge())
+        for(p in values){
+            if(p.orderId==orderId){
 
-
-        db.collection("delivery").document(rider).collection("client").document(user).collection("details").document(orderId).set(det, SetOptions.merge())
+                values.remove(p)
+                notifyDataSetChanged()
+            }
+        }
 //        db.collection("carts").document(user).collection("products").document(p.id.toString())
 //            .delete()
 //            .addOnSuccessListener {
@@ -114,21 +139,6 @@ class MyConsegneRecyclerViewAdapter(
 //            .addOnFailureListener{
 //                Log.d("cart", "Errore eliminazione di $p.id ")
 //            }
-    }
-
-    fun deleteConsegna(orderID: String){
-
-        for(p in values){
-            if(p.orderId==orderID){
-
-                values.remove(p)
-                notifyDataSetChanged()
-            }
-        }
-
-
-
-
     }
 
 }
