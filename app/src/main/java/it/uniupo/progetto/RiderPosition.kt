@@ -106,8 +106,9 @@ class RiderPosition : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
         val db = FirebaseFirestore.getInstance()
-
-        db.collection("delivery").document(rider).collection("client").document(email).collection("position").document("pos").get()
+//        TODO()
+//        db.collection("delivery").document(rider).collection("client").document(email).collection("position").document("pos").get()
+        db.collection("riders").document(rider).get()
                 .addOnSuccessListener{ doc ->
 
                     if (doc.getDouble("lon")!=null && doc.getDouble("lat")!=null) {

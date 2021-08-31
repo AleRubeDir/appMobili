@@ -10,17 +10,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/titolo"
-        android:text="TITOLINO"
+        android:text="Informazioni ordine"
         android:textSize="50sp"
         android:gravity="top|center"
+        android:background="@color/new_orange"
+
         />
-    <TextView
-        android:layout_below="@+id/titolo"
+        <fragment
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/titolo"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map_rider"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TITOLINO"
-        android:textSize="50sp"
-        />
+        android:layout_height="match_parent"
+        map:uiZoomControls="false"
+        tools:context=".Rider_delivery_info" >
+
+    </fragment>
 
 
 </RelativeLayout>
