@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/order"
     android:layout_margin="5dp"
-    card_view:cardBackgroundColor="#9E940C24"
+    card_view:cardBackgroundColor="#9E5ADA0B"
     card_view:cardCornerRadius="12dp"
     card_view:cardElevation="3dp"
     card_view:contentPadding="4dp"

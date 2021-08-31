@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.StoricoOrdini.*
+import it.uniupo.progetto.fragments.OrderFragment.*
 
 class RichiamaOrdine : AppCompatActivity() {
     lateinit var rider: String

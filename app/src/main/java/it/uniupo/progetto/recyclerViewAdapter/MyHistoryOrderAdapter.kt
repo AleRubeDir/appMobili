@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.R
 import it.uniupo.progetto.StoricoOrdini.*
+import it.uniupo.progetto.fragments.OrderFragment.*
 
 class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Adapter<MyHistoryOrderAdapter.ViewHolder>() {
     lateinit var view : View
@@ -26,21 +27,18 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = ord[position]
-        checkRatings(item.id!!,holder.ratingQ,item.ratingQ,1)
-        checkRatings(item.id!!,holder.ratingV,item.ratingV,2)
-        checkRatings(item.id!!,holder.ratingC,item.ratingC,3)
+            checkRatings(item.id!!, holder.ratingQ, item.ratingQ, 1)
+            checkRatings(item.id!!, holder.ratingV, item.ratingV, 2)
+            checkRatings(item.id!!, holder.ratingC, item.ratingC, 3)
+            if (item.tipo == "Carta") {
+                holder.card.visibility = View.VISIBLE
 
-        if(item.tipo=="Carta"){
-            holder.card.visibility= View.VISIBLE
-            holder.cash.visibility= View.INVISIBLE
-        }
-        Log.d("history","tot vale ${holder.tot.text.toString().toDouble()}")
-       // holder.tot.text = (holder.tot.text.toString().toDouble() + item.prezzo.toDouble()*item.qta).toString()
-        holder.tot.text = item.tot
-        holder.date.text = item.date
-        holder.cliente.text = item.cliente
-        holder.rider.text = item.rider
-
+            } else holder.cash.visibility = View.VISIBLE
+            // holder.tot.text = (holder.tot.text.toString().toDouble() + item.prezzo.toDouble()*item.qta).toString()
+            holder.tot.text = item.tot
+            holder.date.text = item.date
+            holder.cliente.text = item.cliente
+            holder.rider.text = item.rider
 
     }
 
@@ -86,7 +84,7 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Ad
                 .show()
 
     }
-    override fun getItemCount():Int = 1
+    override fun getItemCount():Int = ord.size
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
         var ratingQ: RatingBar = view.findViewById(R.id.rating_qualita)

@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-   <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+   <androidx.cardview.widget.CardView
+       xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/history_cv"
@@ -36,9 +37,61 @@
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-    <androidx.recyclerview.widget.RecyclerView
+
+
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ordini_arrivo"
+        android:layout_margin="15dp"
+        card_view:cardBackgroundColor="@color/mimosa"
+        card_view:cardCornerRadius="12dp"
+        card_view:cardElevation="3dp"
         android:layout_below="@id/history_cv"
+        card_view:contentPadding="4dp"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/arrivo"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ordini_in_arrivo"
+                android:textColor="@color/black"
+                android:textSize="35sp"
+                android:maxLines="1"
+                android:layout_marginStart="10dp"
+                android:textStyle="bold"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/ordini_arrivo"
+        android:visibility="invisible"
         android:id="@+id/list"
+        android:focusable="true"
+        android:clickable="true"
+        android:name="it.uniupo.progetto.fragments.OrderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".fragments.OrderFragment"
+        tools:listitem="@layout/fragment_gestore_consegne"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/ordini_arrivo"
+        android:visibility="invisible"
+        android:id="@+id/storico_ordini"
         android:focusable="true"
         android:clickable="true"
         android:name="it.uniupo.progetto.fragments.OrderFragment"

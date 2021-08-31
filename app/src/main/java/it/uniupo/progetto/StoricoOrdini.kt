@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import it.uniupo.progetto.recyclerViewAdapter.*
+import it.uniupo.progetto.fragments.OrderFragment.*
+
 class StoricoOrdini : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -175,11 +177,11 @@ class StoricoOrdini : AppCompatActivity() {
     interface MyCallback3 {
         fun onCallback(tipo : String)
     }
-        class Order(var id : String?,var cliente : String, var rider : String , var tipo : String, var arr : ArrayList<Prodotto>, var ratingQ : Int = -1, var ratingV : Int = -1, var ratingC : Int = -1, var date : String, var tot : String , var richiamato : Int = 0) {
+       /* class Order(var id : String?,var cliente : String, var rider : String , var tipo : String, var arr : ArrayList<Prodotto>, var ratingQ : Int = -1, var ratingV : Int = -1, var ratingC : Int = -1, var date : String, var tot : String , var richiamato : Int = 0) {
         override fun toString(): String {
             return "Tipo : $tipo \n ratingQ : $ratingQ \n ratingV : $ratingV \n ratingC : $ratingC \n date : $date \n arr : $arr "
         }
-    }
+    }*/
 }
 
 
