@@ -155,6 +155,10 @@ class PagamentoActivity : AppCompatActivity() {
             "id" to i,
             "tipo" to tipo
         )
+        val dummy = hashMapOf<String,Any>(
+                " " to " "
+        )
+        db.collection("toassignOrders").document(ord_id).set(entry)
         db.collection("orders").document(user).collection("order").document(ord_id).collection("details").document("dett").set(entry)
             .addOnSuccessListener { document->
                 Log.d("myscelta","Selezionato metodo di pagamento")

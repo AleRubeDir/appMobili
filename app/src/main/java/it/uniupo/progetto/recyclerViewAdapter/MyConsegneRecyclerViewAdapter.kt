@@ -122,11 +122,15 @@ class MyConsegneRecyclerViewAdapter(
         val det = hashMapOf<String, Any?>(
                 "stato" to "rifiutato"
         )
+        val dummy = hashMapOf<String,Any>(
+                " " to " "
+        )
         Log.d("DELIVERY - ",orderId)
+        db.collection("assignedOrders").document(orderId).delete()
+        db.collection("toassignOrders").document(orderId).set(dummy)
         db.collection("delivery").document(rider).collection(orderId).document("dett").set(det, SetOptions.merge())
         for(p in values){
             if(p.orderId==orderId){
-
                 values.remove(p)
                 notifyDataSetChanged()
             }

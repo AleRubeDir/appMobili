@@ -1,28 +1,75 @@
 package it.uniupo.progetto.fragments
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.AssegnaOrdine
+import it.uniupo.progetto.GestoreActivity
 import it.uniupo.progetto.R
 
-class MySelectRiderRecyclerViewAdapter(var riders: ArrayList<AssegnaOrdine.Rider>) : RecyclerView.Adapter<MySelectRiderRecyclerViewAdapter.ViewHolder>() {
+class MySelectRiderRecyclerViewAdapter(var riders: ArrayList<AssegnaOrdine.Rider>, var ordId: String?, var clientMail : String?, var tipoPagamento : String?) : RecyclerView.Adapter<MySelectRiderRecyclerViewAdapter.ViewHolder>() {
     lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.rider_list, parent, false)
+
         return ViewHolder(view)
+    }
+
+    private fun scegliRiderPerOrdine(ordId: String?, rider : String) {
+        val db = FirebaseFirestore.getInstance()
+        val entry = hashMapOf<String,Any?>(
+                "lat" to 0.0,
+                "lon" to 0.0,
+                "stato" to "pending",
+                "orderId" to ordId,
+                "client" to clientMail,
+                "tipo_pagamento" to tipoPagamento
+        )
+        val dummy = hashMapOf<String, Any>(
+                "tipo_pagamento" to tipoPagamento!!
+        )
+
+        Log.d("assegna","rider vale $rider ordId vale $ordId")
+        db.collection("delivery").document(rider).collection("orders").document(ordId!!).set(entry, SetOptions.merge())
+        val entry2 = hashMapOf<String, Any>(
+                "mail" to rider
+        )
+        db.collection("orders").get().addOnCompleteListener {
+            for(cliente in it.result){
+                db.collection("orders").document(cliente.id).collection("order").document(ordId!!).collection("rider").document("r").set(entry2, SetOptions.merge())
+                        }
+                    Toast.makeText(view.context,"Proposta inviata al rider",Toast.LENGTH_SHORT).show()
+                    view.context.startActivity(Intent(view.context , GestoreActivity::class.java))
+                }
+        db.collection("toassignOrders").document(ordId!!).delete()
+        db.collection("assignedOrders").document(ordId!!).set(dummy)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = riders[position]
-        Log.d("distance","riders vale $riders")
+        Log.d("assegna","mail bind ${item.mail
+        }")
         holder.nome.text = item.nome
         holder.cognome.text = item.cognome
         holder.distanza.text = view.context.getString(R.string.km, "%.2f".format(item.distanza))
+        holder.mail.text = item.mail
+
+        val scelta = view.findViewById<RelativeLayout>(R.id.rider)
+        scelta.setOnClickListener{
+            scegliRiderPerOrdine(ordId,item.mail)
+
+        }
+
     }
 
     override fun getItemCount():Int = riders.size
@@ -32,5 +79,6 @@ class MySelectRiderRecyclerViewAdapter(var riders: ArrayList<AssegnaOrdine.Rider
         var nome : TextView = view.findViewById(R.id.nome)
         var cognome : TextView = view.findViewById(R.id.cognome)
         var distanza : TextView = view.findViewById(R.id.distanza)
+        var mail : TextView = view.findViewById(R.id.mail)
     }
 }

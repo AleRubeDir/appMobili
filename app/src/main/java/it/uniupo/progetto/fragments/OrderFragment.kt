@@ -39,10 +39,10 @@ class OrderFragment  : Fragment() {
             historyView.visibility = View.INVISIBLE
             if(  orderView.visibility == View.VISIBLE) orderView.visibility = View.INVISIBLE
             else orderView.visibility = View.VISIBLE
-            getOrders(object : MyCallbackConsegne {
-                override fun onCallback(order: ArrayList<Consegna>) {
-                    for (o in order) Log.d("gestore_", "$o \n")
-                    orderView.adapter = MyGestoreConsegneRecyclerViewAdapter(order)
+                    getOrders(object : MyCallbackConsegne {
+                        override fun onCallback(order: ArrayList<Consegna>) {
+                            Log.d("order", "order vale $order")
+                            orderView.adapter = MyGestoreConsegneRecyclerViewAdapter(order)
                 }
             })
         }
@@ -60,8 +60,7 @@ class OrderFragment  : Fragment() {
         }
         return myview
     }
-
-private fun getOrderInfo(myCallback: MyCallback){
+    private fun getOrderInfo(myCallback: MyCallback){
     val db = FirebaseFirestore.getInstance()
     val ords = arrayListOf<Order>()
         db.collection("orders_history").get()
@@ -90,17 +89,49 @@ private fun getOrderInfo(myCallback: MyCallback){
         val prodotti = arrayListOf<Prodotto>()
         var rider = ""
         val orders = arrayListOf<Consegna>()
-        Log.d("gestore_","1")
         getClients(object : NotificationService.MyCallback {
             override fun onCallback(ris: List<String>) {
-                Log.d("gestore_","2")
+                for (cliente in ris) {
+                    db.collection("users").document(cliente).get()
+                            .addOnSuccessListener {
+                                var indirizzo = it.getString("address").toString()
+                                db.collection("toassignOrders").get()
+                                        .addOnCompleteListener {
+                                            for (d in it.result) {
+                                            tipo_pagamento = d.getString("tipo").toString()
+                                                        val market = Location("")
+                                                        market.latitude = 44.994154
+                                                        market.longitude = 8.565942
+                                                        var geocodeMatches: List<Address>? = null
+                                                        try {
+                                                            geocodeMatches = Geocoder(myview.context).getFromLocationName(indirizzo, 1)
+                                                        } catch (e: IOException) {
+                                                            e.printStackTrace()
+                                                        }
+                                                        val cons_rider = Location("")
+
+                                                        for (mat in geocodeMatches!!) {
+                                                            cons_rider.latitude = mat.latitude
+                                                            cons_rider.longitude = mat.longitude
+                                                        }
+                                                        val distanza = (market.distanceTo(cons_rider) / 1000).toDouble()
+                                                        val consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento, "stato", d.id, distanza, rider)
+                                                        orders.add(consegna)
+                                            }
+                    myCallbackOrders.onCallback(orders)
+                                        }
+                            }
+                }
+            }
+        })
+      /*  getClients(object : NotificationService.MyCallback {
+            override fun onCallback(ris: List<String>) {
                 for (cliente in ris) {
                     db.collection("users").document(cliente).get()
                             .addOnSuccessListener {
                     var indirizzo = it.getString("address").toString()
                     getOrderByClients(cliente, object : NotificationService.MyCallback {
                         override fun onCallback(ris: List<String>) {
-                            Log.d("gestore_","3")
                             for (ord in ris) {
                                 tipo_pagamento = ""
                                 prodotti.clear()
@@ -108,17 +139,7 @@ private fun getOrderInfo(myCallback: MyCallback){
                                 db.collection("orders").document(cliente).collection("order").document(ord).collection("details").document("dett").get()
                                         .addOnSuccessListener {
                                             tipo_pagamento = it.getString("tipo").toString()
-                                        }
-                                db.collection("orders").document(cliente).collection("order").document(ord).collection("products").get()
-                                        .addOnSuccessListener {
-                                            for (d in it) {
-                                                var p = Prodotto(d.getLong("id")!!.toInt(), "", d.getString("titolo").toString(), "", d.getString("prezzo").toString(), d.getLong("qta")!!.toInt())
-                                                prodotti.add(p)
-                                            }
-                                        }
-                                db.collection("orders").document(cliente).collection("order").document(ord).collection("rider").document("r").get()
-                                        .addOnSuccessListener {
-                                            rider = it.getString("mail").toString()
+                                          //  rider = it.getString("rider").toString()
                                         }
                                 val market = Location("")
                                 market.latitude =  44.994154
@@ -135,9 +156,8 @@ private fun getOrderInfo(myCallback: MyCallback){
                                     cons_rider.latitude = mat.latitude
                                     cons_rider.longitude = mat.longitude
                                 }
-
                                 var distanza = (market.distanceTo(cons_rider)/1000).toDouble()
-                                var consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento, "stato", ord,distanza)
+                                var consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento, "stato", ord,distanza,rider)
                                 orders.add(consegna)
                             }
                             myCallbackOrders.onCallback(orders)
@@ -146,8 +166,8 @@ private fun getOrderInfo(myCallback: MyCallback){
                   }
                 }
             }
-        })
-      //  myCallbackOrders.onCallback(orders)
+        })*/
+
     }
     private fun getClients(myCallback: NotificationService.MyCallback) {
         val db = FirebaseFirestore.getInstance()
@@ -172,6 +192,7 @@ private fun getOrderInfo(myCallback: MyCallback){
                 }
     }
 
+
     /* FINE ORDINI IN ARRIVO */
     fun convertLongToTime(time: Long): String {
         val date = Date(time*1000)
@@ -185,7 +206,9 @@ private fun getOrderInfo(myCallback: MyCallback){
     interface MyCallback {
         fun onCallback(ords: ArrayList<Order>)
     }
-
+    interface MyCallbackString {
+        fun onCallback(ris: String)
+    }
     interface MyCallback2 {
         fun onCallback(cods: ArrayList<String>)
     }

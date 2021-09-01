@@ -26,32 +26,37 @@ import it.uniupo.progetto.R
  * TODO: Replace the implementation with code for your data type.
  */
 class MyGestoreConsegneRecyclerViewAdapter(
-        private val values: List<Consegna>
+        private val values: ArrayList<Consegna>
 ) : RecyclerView.Adapter<MyGestoreConsegneRecyclerViewAdapter.ViewHolder>() {
     lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_gestore_consegne, parent, false)
 
-        val consegna = view.findViewById<CardView>(R.id.order)
-        consegna.setOnClickListener{
-            val ordId = view.findViewById<TextView>(R.id.orderId).text.toString()
-            val intent = Intent(view.context, AssegnaOrdine::class.java)
-            intent.putExtra("ordId", ordId)
-            view.context.startActivity(intent)
-        }
+
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
+       // if (item.rider != ""){
+                holder.indirizzo.text = item.posizione
+            holder.tipo_pagamento.text = item.tipo_pagamento
+            holder.distanza.text = view.context.getString(R.string.km, "%.2f".format(item.distanza))
+            holder.userId.text = item.clientMail
+            holder.orderId.text = item.orderId
+            val consegna = view.findViewById<CardView>(R.id.order)
+            consegna.setOnClickListener {
 
-        holder.indirizzo.text = item.posizione
-        holder.tipo_pagamento.text = item.tipo_pagamento
-        holder.distanza.text = view.context.getString(R.string.km, "%.2f".format(item.distanza))
-        holder.userId.text = item.clientMail
-        holder.orderId.text = item.orderId
-
+                val intent = Intent(view.context, AssegnaOrdine::class.java)
+                intent.putExtra("ordId", item.orderId)
+                intent.putExtra("client",item.clientMail)
+                intent.putExtra("tipo",item.tipo_pagamento)
+                view.context.startActivity(intent)
+            }
+     //   }else {
+    //        holder.cv.visibility = View.INVISIBLE
+     //   }
     }
 
     override fun getItemCount(): Int = values.size
@@ -63,7 +68,7 @@ class MyGestoreConsegneRecyclerViewAdapter(
         val distanza: TextView = view.findViewById(R.id.distanza)
         val userId: TextView = view.findViewById(R.id.userMail)
         val orderId: TextView = view.findViewById(R.id.orderId)
-
+        val cv : CardView = view.findViewById(R.id.order)
         override fun toString(): String {
             return super.toString()
         }

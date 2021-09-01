@@ -7,11 +7,12 @@ class Consegna(
     val tipo_pagamento: String,
     var stato: String,
     var orderId: String,
-    var distanza: Double
+    var distanza: Double,
+    var rider : String ,
 ) {
-//    override fun toString(): String {
-//        return "$mail - $nome - $cognome -$tipo"
-//    }
+   override fun toString(): String {
+       return "$clientMail - $products - $posizione -$tipo_pagamento - $stato - $orderId - $distanza - $rider"
+    }
 
 
 }
