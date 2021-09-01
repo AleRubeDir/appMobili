@@ -23,15 +23,16 @@
         </RelativeLayout>-->
     </FrameLayout>
 
-    <ImageButton
-        android:id="@+id/chat"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/btn_chat"
-        android:layout_marginBottom="30dp"
-        android:layout_marginStart="10dp"
-        android:src="@drawable/chat"
-        android:layout_above="@+id/bottom_nav"/>
+  <ImageButton
+      android:id="@+id/chat"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      android:background="@drawable/btn_chat"
+      android:layout_marginBottom="30dp"
+      android:layout_marginStart="10dp"
+      android:src="@drawable/chat"
+      android:layout_above="@+id/bottom_nav"/>
+
     <ImageButton
         android:id="@+id/add"
         android:layout_width="60dp"

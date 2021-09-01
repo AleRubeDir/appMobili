@@ -33,7 +33,8 @@ class MySelectRiderRecyclerViewAdapter(var riders: ArrayList<AssegnaOrdine.Rider
                 "stato" to "pending",
                 "orderId" to ordId,
                 "client" to clientMail,
-                "tipo_pagamento" to tipoPagamento
+                "tipo_pagamento" to tipoPagamento,
+                "leftMM" to false
         )
         val dummy = hashMapOf<String, Any>(
                 "tipo_pagamento" to tipoPagamento!!

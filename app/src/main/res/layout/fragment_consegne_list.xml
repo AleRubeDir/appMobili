@@ -16,9 +16,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:textColor="@color/black"
-        android:width="150px"
-
-        android:text="Disponibilità" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:switchMinWidth="60dp"
+        android:padding="10dp"
+        android:text="@string/disponibilit" />
 
 
     <androidx.recyclerview.widget.RecyclerView

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import it.uniupo.progetto.Consegna
 import it.uniupo.progetto.R
 import it.uniupo.progetto.recyclerViewAdapter.*
@@ -46,6 +47,12 @@ class Rider_ConsegneFragment : Fragment() {
 
         //switch per rendere un rider disponibile
         val delivery_switch = viewConsegne.findViewById<SwitchCompat>(R.id.switch_delivery)
+        getDisponibilita(object : myCallbackBoolean{
+            override fun onCallback(ris: Boolean) {
+                delivery_switch.isChecked=!ris
+            }
+        })
+
         delivery_switch.setOnClickListener{
             val status = delivery_switch.isChecked
             changeStatus(status)
@@ -55,8 +62,22 @@ class Rider_ConsegneFragment : Fragment() {
         return viewConsegne
     }
 
+    private fun getDisponibilita(mycallback: myCallbackBoolean) {
+        val db = FirebaseFirestore.getInstance()
+        val rider = FirebaseAuth.getInstance().currentUser!!.email.toString()
+        db.collection("riders").document(rider).get()
+                .addOnSuccessListener {
+                    val occ = it.getBoolean("occupato")
+                    mycallback.onCallback(occ!!)
+                }
+    }
+
     interface myCallback{
         fun onCallback(consegne: List<Consegna>){
+        }
+    }
+    interface myCallbackBoolean{
+        fun onCallback(ris: Boolean){
         }
     }
 
@@ -173,7 +194,7 @@ class Rider_ConsegneFragment : Fragment() {
         val user = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
         val entry = hashMapOf<String,Any>(
-                "occupato" to if (switch ) 0 else 1
+                "occupato" to switch
         )
         db.collection("riders").document(user).set(entry, SetOptions.merge())
     }

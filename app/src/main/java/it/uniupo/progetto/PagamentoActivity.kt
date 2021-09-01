@@ -70,9 +70,6 @@ class PagamentoActivity : AppCompatActivity() {
 
                     for(p in ClienteActivity.carrello) diminuisciQtaDB(p)
                     svuotaCarrello()
-
-                    startService(Intent(this,NotificationService::class.java))
-
                    /* //??????????????????? controllare se funziona
                     notificationManager =   getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                     var pendInt = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)

@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.fragments.*
 import kotlin.concurrent.thread
 import kotlin.math.round
@@ -26,6 +27,10 @@ class GestoreActivity : AppCompatActivity() {
         val shopFragment = ShopFragment()
         val profileFragment = ProfileFragment()
         makeCurrentFragment(shopFragment)
+
+        Log.d("notifications","start notification service ")
+        startService(Intent(this,NotificationService::class.java))
+
         val from_notification = intent.getStringExtra("from_notification")
         if(from_notification!=null){
             makeCurrentFragment(orderFragment)

@@ -22,8 +22,8 @@ class NotificationService : Service() {
         return null
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Log.e(TAG, "onStartCommand")
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(TAG, "onStartCommand")
         super.onStartCommand(intent, flags, startId)
         Log.d(TAG,"onStart")
         return START_STICKY
@@ -35,7 +35,8 @@ class NotificationService : Service() {
         val usr = FirebaseAuth.getInstance().currentUser!!.email.toString()
         getUserType(usr, object : LoginActivity.FirestoreCallback {
             override fun onCallback(type: String) {
-            createNotification("type")
+                Log.d(TAG,"2 type vale $type")
+            createNotification(type)
                 }
             })
 
@@ -52,7 +53,7 @@ class NotificationService : Service() {
                 }
     }
     override fun onDestroy() {
-        Log.e(TAG, "onDestroy")
+        Log.d(TAG, "onDestroy")
         super.onDestroy()
     }
 
@@ -69,17 +70,18 @@ class NotificationService : Service() {
                     getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
                 }
 
-
                 getClients(object : MyCallback {
                     override fun onCallback(ris: List<String>) {
                         for(cliente in ris) {
-                            db.collection("orders").document(cliente).collection("order").addSnapshotListener { snap,e  ->
+                            Log.d(TAG,"cliente vale $cliente")
+                            //db.collection("orders").document(cliente).collection("order").addSnapshotListener { snap,e  ->
+                            db.collection("toassignOrders").addSnapshotListener { snap,e  ->
                                 if (snap != null) {
                                     Log.d(TAG,"dentro createNotification")
                                     val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
                                     val mBuilder = NotificationCompat.Builder(applicationContext)
                                             .setContentTitle("Consegna in arrivo")
-                                            .setContentText("Seleziona il rider per questa consegna")
+                                            .setContentText("Seleziona un rider per questa consegna ")
                                             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                                             .setContentIntent(resultIntent)
                                     mBuilder.setSmallIcon(R.mipmap.ic_launcher)
@@ -90,13 +92,77 @@ class NotificationService : Service() {
                         }
                     }
                 })
-
             }
             "Cliente" -> {
-                TODO()
+                val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
+                getRiders(object : MyCallback{
+                    override fun onCallback(ris: List<String>) {
+                        for(rider in ris){
+                            db.collection("delivery").document(rider).collection("orders").get()
+                                    .addOnCompleteListener {
+                                        for(ord in it.result!!){
+
+                                            db.collection("delivery").document(rider).collection("orders").document(ord.id).addSnapshotListener{ d, e ->
+                                                    Log.d(TAG,"------$rider----${ord.id}-----${d!!.getString("client").toString()}-----\n")
+                                                  //  Log.d(TAG,"user = $user cliente =  ${d!!.getString("client").toString()} left = ${d.getBoolean("leftMM")}")
+                                                  //  Log.d(TAG,"dentro --- ${user == d.getString("client").toString()} - ${d.getBoolean("leftMM")}")
+                                                    if ((user == d.getString("client").toString()) && d.getBoolean("leftMM")!!) {
+                                                   //     Log.d(TAG,"--- ${user == d.getString("client").toString()} - ${d.getBoolean("leftMM")}")
+                                                        val intent = Intent(applicationContext, ChatActivity::class.java)
+                                                        intent.putExtra("mail", rider)
+                                                        val resultIntent = TaskStackBuilder.create(applicationContext).run {
+                                                            // Add the intent, which inflates the back stack
+                                                            addNextIntentWithParentStack(intent)
+                                                            // Get the PendingIntent containing the entire back stack
+                                                            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                                                        }
+                                                        Log.d(TAG, "dentro createNotification")
+                                                        val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                                                        val mBuilder = NotificationCompat.Builder(applicationContext)
+                                                                .setContentTitle("Rider partito")
+                                                                .setContentText("Il rider ha appena lasciato il market, ora puoi chattare con lui")
+                                                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                                                                .setContentIntent(resultIntent)
+                                                        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                                                        mBuilder.setAutoCancel(true)
+                                                        mNotificationManager.notify(0, mBuilder.build())
+                                                    }
+                                                }
+                                            }
+                                        }
+                        }
+                    }
+                })
             }
             "Rider" -> {
-                TODO()
+                val intent = Intent(applicationContext, RiderActivity::class.java)
+                val resultIntent = TaskStackBuilder.create(this).run {
+                    // Add the intent, which inflates the back stack
+                    addNextIntentWithParentStack(intent)
+                    // Get the PendingIntent containing the entire back stack
+                    getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                }
+
+                getRiders(object : MyCallback{
+                    override fun onCallback(ris: List<String>) {
+                        for(rider in ris){
+                            db.collection("delivery").document(rider).collection("orders").addSnapshotListener{ snap, e ->
+                                if (snap != null) {
+                                    Log.d(TAG,"dentro createNotification")
+                                    val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                                    val mBuilder = NotificationCompat.Builder(applicationContext)
+                                            .setContentTitle("Consegna in arrivo")
+                                            .setContentText("Scegli se accettarla o rifiutarla")
+                                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                                            .setContentIntent(resultIntent)
+                                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                                    mBuilder.setAutoCancel(true)
+                                    mNotificationManager.notify(0, mBuilder.build())
+                                }
+                            }
+                        }
+                    }
+                })
             }
         }
     }
@@ -105,6 +171,17 @@ class NotificationService : Service() {
         val db = FirebaseFirestore.getInstance()
         var ris = mutableListOf<String>()
         db.collection("orders").get()
+                .addOnSuccessListener {
+                    for (d in it){
+                        ris.add(d.id)
+                    }
+                    myCallback.onCallback(ris)
+                }
+    }
+    private fun getRiders(myCallback: MyCallback) {
+        val db = FirebaseFirestore.getInstance()
+        var ris = mutableListOf<String>()
+        db.collection("riders").get()
                 .addOnSuccessListener {
                     for (d in it){
                         ris.add(d.id)

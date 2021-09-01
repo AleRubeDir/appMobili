@@ -24,6 +24,10 @@ class RiderActivity : AppCompatActivity() {
         val deliveryFragment = Rider_ConsegneFragment()
         val profileFragment = ProfileFragment()
         makeCurrentFragment(deliveryFragment)
+
+        Log.d("notifications","start notification service ")
+        startService(Intent(this,NotificationService::class.java))
+
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){

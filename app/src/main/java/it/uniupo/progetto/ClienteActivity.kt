@@ -33,6 +33,10 @@ class ClienteActivity : AppCompatActivity() {
         val cartFragment = CartListFragment()
         val profileFragment = ProfileFragment()
         val shopFragment = ItemFragment()
+
+        Log.d("notifications","start notification service ")
+        startService(Intent(this,NotificationService::class.java))
+
         if(intent.getStringExtra("cart")=="vai"){
             makeCurrentFragment(cartFragment)
         }
