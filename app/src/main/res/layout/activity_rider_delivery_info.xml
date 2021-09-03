@@ -44,7 +44,9 @@
         android:background="@drawable/gradient_orange"
         android:text="@string/ConfermaPagamento"
         android:padding="5dp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:clickable="true"
+        android:focusable="true"/>
 
     <com.ncorti.slidetoact.SlideToActView
         android:id="@+id/ConsegnaRider"

@@ -151,7 +151,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
         val db = FirebaseFirestore.getInstance()
         var rider = FirebaseAuth.getInstance().currentUser!!.email
         val det = hashMapOf<String, Any?>(
-                "statoPagamento" to "accettato",
+                "statoPagamento" to 1,
         )
 //        Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(
@@ -164,17 +164,16 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
         val db = FirebaseFirestore.getInstance()
         var rider = FirebaseAuth.getInstance().currentUser!!.email
 
-
-
         db.collection("delivery").document(rider!!).collection("orders").document(orderId).get()
                 .addOnSuccessListener { doc ->
 
                     //la consegna può terminare solo se il pagamento è stato confermato( accettato/rifiutato)
-                    if (doc.getString("statoPagamento") != "accettato" || doc.getString("statoPagamento") != "rifiutato") {
+                    if (doc.getLong("statoPagamento")!!.toInt() == -1) {
+                        Log.d("mattia","dentro if, non pagato " + doc.getLong("statoPagamento")!!.toInt())
                         Toast.makeText(this, "Prima conferma il pagamento!!!!!", Toast.LENGTH_SHORT).show()
 
                     } else {
-
+                        Log.d("mattia","dentro else, pagato")
                         // termina consegna
                         val det = hashMapOf<String, Any?>(
                                 "stato" to "terminato",
@@ -188,16 +187,18 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                                 "occupato" to false,
                         )
                         db.collection("riders").document(rider!!).set(occ, SetOptions.merge())
+                        Log.d("mattia", "dopo azioni che funzionano ")
 
                         //salva in order_history
                         val client = doc.getString("client")
                         val stato = doc.getString("stato")
-                        val statoPagamento = doc.getString("statoPagamento")
+                        val statoPagamento = doc.getLong("statoPagamento")!!.toInt()
                         val tipoPagamento = doc.getString("tipo_pagamento")
                         //risultato ordine da fare successivamente
 
                         val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                         val currentDate = sdf.format(Date())
+                        Log.d("mattia", "dopo di retrieve dati "  + client + stato + statoPagamento + tipoPagamento)
 
                         val newOrderHistory = hashMapOf<String, Any?>(
                                 "data" to  currentDate,
@@ -206,10 +207,10 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                                 "tipo" to tipoPagamento,
                                 "risultatoOrdine" to statoPagamento
                        )
-
+                        Log.d("mattia", "prima di aggiunta in order history: " + orderId + newOrderHistory)
                         db.collection("orders_history").document(orderId).set(newOrderHistory)
 
-                        //uscire da activity
+                        //cambiare  activity
                     }
                 }
     }
