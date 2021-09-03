@@ -10,8 +10,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -25,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.ncorti.slidetoact.SlideToActView
 
 class Rider_delivery_info : AppCompatActivity() {
     private lateinit var mMap: GoogleMap
@@ -33,24 +32,27 @@ class Rider_delivery_info : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider_delivery_info)
-        val ordine = intent.getBooleanExtra("ordineAccettato",false)
+        val ordine = intent.getBooleanExtra("ordineAccettato", false)
         if (ordine){
             onStartRiderActivity()
         }
-        val terminaConsegna = findViewById<Button>(R.id.ConsegnaRider)
-        terminaConsegna.setOnClickListener{
-//            devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
-            val orderId = intent.getStringExtra("orderId")!!
-            Log.d("mattia","Premuto terminaConsegna"+orderId)
+        val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
 
-            terminaConsegnaFun(orderId)
+        consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener{
+            override fun onSlideComplete(view: SlideToActView) {
+//            devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
+                val orderId = intent.getStringExtra("orderId")!!
+                Log.d("mattia", "Premuto terminaConsegna" + orderId)
+                terminaConsegnaFun(orderId)
+            }
         }
+
 
         val confermaPagamento = findViewById<Button>(R.id.RiderConfermaPagamento)
         confermaPagamento.setOnClickListener{
 //            devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
             val orderId = intent.getStringExtra("orderId")
-            Log.d("mattia","Premuto terminaConsegna"+orderId)
+            Log.d("mattia", "Premuto terminaConsegna" + orderId)
         }
     }
 
@@ -61,7 +63,10 @@ class Rider_delivery_info : AppCompatActivity() {
         var geocodeMatches: List<Address>? = null
 
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
             return
         }
         fusedLocationClient.lastLocation
@@ -76,13 +81,14 @@ class Rider_delivery_info : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         val emailRider = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val orderId = intent.getStringExtra("orderId")
-        db.collection("delivery").document(emailRider).collection(orderId!!).document("dett").get()
+        db.collection("delivery").document(emailRider).collection("orders").document(orderId!!).get()
                 .addOnSuccessListener{ doc ->
 
                     if (doc.getDouble("lon")!=null && doc.getDouble("lat")!=null) {
 //                        Log.d("rider_pos", "rider -> ${doc.getDouble("lat")}, ${doc.getDouble("lon")}")
                         val riderPos = LatLng(doc.getDouble("lat")!!, doc.getDouble("lon")!!)
-                        mMap.addMarker(MarkerOptions()
+                        mMap.addMarker(
+                            MarkerOptions()
                                 .position(riderPos)
                                 .title("Destinazione")
                         )
@@ -100,9 +106,18 @@ class Rider_delivery_info : AppCompatActivity() {
 
         val left = (background.intrinsicWidth - vectorDrawable!!.intrinsicWidth) / 2
         val top = (background.intrinsicHeight - vectorDrawable!!.intrinsicHeight) / 3
-        vectorDrawable!!.setBounds(left, top, left + vectorDrawable.intrinsicWidth, top + vectorDrawable.intrinsicHeight)
+        vectorDrawable!!.setBounds(
+            left,
+            top,
+            left + vectorDrawable.intrinsicWidth,
+            top + vectorDrawable.intrinsicHeight
+        )
 
-        val bitmap= Bitmap.createBitmap(background!!.intrinsicWidth, background.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val bitmap= Bitmap.createBitmap(
+            background!!.intrinsicWidth,
+            background.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
         val canvas= Canvas(bitmap)
         background.draw(canvas)
         vectorDrawable!!.draw(canvas)
@@ -110,7 +125,7 @@ class Rider_delivery_info : AppCompatActivity() {
     }
 
     private fun onStartRiderActivity(){
-        val consegnaRider = findViewById<Button>(R.id.ConsegnaRider)
+        val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
         consegnaRider.visibility= View.VISIBLE
 
         val pagamentoRider = findViewById<Button>(R.id.RiderConfermaPagamento)
@@ -121,20 +136,19 @@ class Rider_delivery_info : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         var rider = FirebaseAuth.getInstance().currentUser!!.email
         val det = hashMapOf<String, Any?>(
-                "stato" to "terminato",
+            "stato" to "terminato",
+            )
+//        Log.d("DELIVERY - ",orderId)
+        db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(
+            det,
+            SetOptions.merge()
+        )
 
+        val occ = hashMapOf<String, Any?>(
+            "occupato" to false,
         )
 //        Log.d("DELIVERY - ",orderId)
-        db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(det, SetOptions.merge())
-
-        val det1 = hashMapOf<String, Any?>(
-                "occupato" to false,
-        )
-//        Log.d("DELIVERY - ",orderId)
-        db.collection("riders").document(rider!!).set(det1, SetOptions.merge())
-
-
-
+        db.collection("riders").document(rider!!).set(occ, SetOptions.merge())
 
     }
 }
