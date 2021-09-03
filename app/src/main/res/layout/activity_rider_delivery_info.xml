@@ -11,13 +11,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/titolo"
         android:text="Informazioni ordine"
-        android:textSize="50sp"
+        android:textSize="47sp"
+        android:maxLines="1"
+        android:textColor="@color/black"
         android:gravity="top|center"
         android:background="@color/new_orange"
 
         />
         <fragment
-        android:layout_marginTop="15dp"
         android:layout_below="@id/titolo"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -30,48 +31,37 @@
 
     </fragment>
 
-    <LinearLayout
+
+
+    <Button
+        android:id="@+id/RiderConfermaPagamento"
+        android:layout_below="@id/titolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/gradient_orange"
+        android:text="@string/ConfermaPagamento"
+        android:padding="5dp"
+        android:visibility="invisible" />
+
+    <com.ncorti.slidetoact.SlideToActView
+        android:id="@+id/ConsegnaRider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titolo"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/spaziatura"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titolo"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/ConsegnaRider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/grad_menu"
-            android:text="@string/FineCorsa"
-            android:textColor="@color/white"
-
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/RiderConfermaPagamento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/gradient_orange"
-            android:text="@string/ConfermaPagamento"
-            android:visibility="invisible" />
-
-    </LinearLayout>
-
-
-    <!--        android:layout_marginEnd="15dp"-->
+        android:elevation="6dp"
+        app:area_margin="8dp"
+        app:animation_duration="250"
+        app:outer_color="@color/menu"
+        app:inner_color="@color/mimosa"
+        app:text="@string/swipe"
+        app:text_size="14sp"
+        app:text_style="bold"
+        app:slider_height="80dp"
+        app:slider_locked="false"
+        android:visibility="invisible"
+        android:layout_margin="15dp"
+        />
 </RelativeLayout>
