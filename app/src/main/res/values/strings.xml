@@ -115,4 +115,7 @@
     <string name="ordini_in_arrivo">Ordini in arrivo</string>
     <string name="disponibilit">Disponibilità</string>
 
+    <string name="FineCorsa"> Termina Corsa</string>
+    <string name="ConfermaPagamento"> Conferma Pagamento</string>
+
 </resources>

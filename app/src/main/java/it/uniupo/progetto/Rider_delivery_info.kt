@@ -8,6 +8,8 @@ import android.location.Address
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 class Rider_delivery_info : AppCompatActivity() {
     private lateinit var mMap: GoogleMap
@@ -30,7 +33,25 @@ class Rider_delivery_info : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider_delivery_info)
+        val ordine = intent.getBooleanExtra("ordineAccettato",false)
+        if (ordine){
+            onStartRiderActivity()
+        }
+        val terminaConsegna = findViewById<Button>(R.id.ConsegnaRider)
+        terminaConsegna.setOnClickListener{
+//            devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
+            val orderId = intent.getStringExtra("orderId")!!
+            Log.d("mattia","Premuto terminaConsegna"+orderId)
 
+            terminaConsegnaFun(orderId)
+        }
+
+        val confermaPagamento = findViewById<Button>(R.id.RiderConfermaPagamento)
+        confermaPagamento.setOnClickListener{
+//            devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
+            val orderId = intent.getStringExtra("orderId")
+            Log.d("mattia","Premuto terminaConsegna"+orderId)
+        }
     }
 
     fun onMapReady(p0: GoogleMap) {
@@ -73,7 +94,6 @@ class Rider_delivery_info : AppCompatActivity() {
 
     private fun bitMapFromVector(vectorResID: Int): BitmapDescriptor {
 
-
         val background = ContextCompat.getDrawable(applicationContext, R.drawable.ic_pin)
         background!!.setBounds(0, 0, background.intrinsicWidth, background.intrinsicHeight)
         val vectorDrawable= ContextCompat.getDrawable(applicationContext!!, vectorResID)
@@ -87,5 +107,34 @@ class Rider_delivery_info : AppCompatActivity() {
         background.draw(canvas)
         vectorDrawable!!.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    private fun onStartRiderActivity(){
+        val consegnaRider = findViewById<Button>(R.id.ConsegnaRider)
+        consegnaRider.visibility= View.VISIBLE
+
+        val pagamentoRider = findViewById<Button>(R.id.RiderConfermaPagamento)
+        pagamentoRider.visibility= View.VISIBLE
+    }
+
+    private fun terminaConsegnaFun(orderId: String){
+        val db = FirebaseFirestore.getInstance()
+        var rider = FirebaseAuth.getInstance().currentUser!!.email
+        val det = hashMapOf<String, Any?>(
+                "stato" to "terminato",
+
+        )
+//        Log.d("DELIVERY - ",orderId)
+        db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(det, SetOptions.merge())
+
+        val det1 = hashMapOf<String, Any?>(
+                "occupato" to false,
+        )
+//        Log.d("DELIVERY - ",orderId)
+        db.collection("riders").document(rider!!).set(det, SetOptions.merge())
+
+
+
+
     }
 }
