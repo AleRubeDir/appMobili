@@ -55,7 +55,7 @@ class Rider_delivery_info : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         val emailRider = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val orderId = intent.getStringExtra("orderId")
-        db.collection("delivery").document(emailRider).collection(orderId!!).document("dett").get()
+        db.collection("delivery").document(emailRider).collection("orders").document(orderId!!).get()
                 .addOnSuccessListener{ doc ->
 
                     if (doc.getDouble("lon")!=null && doc.getDouble("lat")!=null) {
