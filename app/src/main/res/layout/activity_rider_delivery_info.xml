@@ -60,8 +60,9 @@
         app:text_size="14sp"
         app:text_style="bold"
         app:slider_height="80dp"
-        app:slider_locked="false"
+        app:slider_locked="true"
         android:visibility="invisible"
         android:layout_margin="15dp"
+
         />
 </RelativeLayout>

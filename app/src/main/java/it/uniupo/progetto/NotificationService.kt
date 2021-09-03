@@ -105,7 +105,7 @@ class NotificationService : Service() {
                                                     Log.d(TAG,"------$rider----${ord.id}-----${d!!.getString("client").toString()}-----\n")
                                                   //  Log.d(TAG,"user = $user cliente =  ${d!!.getString("client").toString()} left = ${d.getBoolean("leftMM")}")
                                                   //  Log.d(TAG,"dentro --- ${user == d.getString("client").toString()} - ${d.getBoolean("leftMM")}")
-                                                    if ((user == d.getString("client").toString()) && d.getBoolean("leftMM")!!) {
+                                                    if ((user == d.getString("client").toString()) && d.getBoolean("leftMM")==true) {
                                                    //     Log.d(TAG,"--- ${user == d.getString("client").toString()} - ${d.getBoolean("leftMM")}")
                                                         val intent = Intent(applicationContext, ChatActivity::class.java)
                                                         intent.putExtra("mail", rider)

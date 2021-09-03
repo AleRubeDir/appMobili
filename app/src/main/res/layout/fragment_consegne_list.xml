@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--    vengono mostrate solo se si trovano in uno stato pending-->
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"

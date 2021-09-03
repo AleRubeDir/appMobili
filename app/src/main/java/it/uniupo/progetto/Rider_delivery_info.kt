@@ -10,12 +10,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -24,8 +27,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.ncorti.slidetoact.SlideToActView
+import java.text.SimpleDateFormat
+import java.util.*
 
-class Rider_delivery_info : AppCompatActivity() {
+
+class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,27 +42,36 @@ class Rider_delivery_info : AppCompatActivity() {
         if (ordine){
             onStartRiderActivity()
         }
+
+        val mapFragment = supportFragmentManager
+                .findFragmentById(R.id.map_rider) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+
         val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
 
         consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener{
             override fun onSlideComplete(view: SlideToActView) {
 //            devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
                 val orderId = intent.getStringExtra("orderId")!!
-                Log.d("mattia", "Premuto terminaConsegna" + orderId)
+                Log.d("mattia", "Premuto terminaConsegna " + orderId)
+                if(consegnaRider.isLocked)
+                    Toast.makeText(applicationContext,"Conferma il pagamento prima di terminare la corsa",Toast.LENGTH_SHORT).show()
                 terminaConsegnaFun(orderId)
+
             }
         }
 
-
         val confermaPagamento = findViewById<Button>(R.id.RiderConfermaPagamento)
         confermaPagamento.setOnClickListener{
-//            devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
-            val orderId = intent.getStringExtra("orderId")
-            Log.d("mattia", "Premuto terminaConsegna" + orderId)
+            val orderId = intent.getStringExtra("orderId")!!
+            confermaPagamentofun(orderId)
+            consegnaRider.isLocked = false
+            Log.d("mattia", "Premuto confermaPagamento " + orderId)
         }
     }
 
-    fun onMapReady(p0: GoogleMap) {
+    override fun onMapReady(p0: GoogleMap) {
         var zoomLevel = 16.0f
         mMap = p0
         mMap.uiSettings.isMyLocationButtonEnabled = false
@@ -132,23 +147,72 @@ class Rider_delivery_info : AppCompatActivity() {
         pagamentoRider.visibility= View.VISIBLE
     }
 
-    private fun terminaConsegnaFun(orderId: String){
+    private fun confermaPagamentofun(orderId: String){
         val db = FirebaseFirestore.getInstance()
         var rider = FirebaseAuth.getInstance().currentUser!!.email
         val det = hashMapOf<String, Any?>(
-            "stato" to "terminato",
-            )
+                "statoPagamento" to "accettato",
+        )
 //        Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(
-            det,
-            SetOptions.merge()
+                det,
+                SetOptions.merge()
         )
-
-        val occ = hashMapOf<String, Any?>(
-            "occupato" to false,
-        )
-//        Log.d("DELIVERY - ",orderId)
-        db.collection("riders").document(rider!!).set(occ, SetOptions.merge())
-
     }
+
+    private fun terminaConsegnaFun(orderId: String){
+        val db = FirebaseFirestore.getInstance()
+        var rider = FirebaseAuth.getInstance().currentUser!!.email
+
+
+
+        db.collection("delivery").document(rider!!).collection("orders").document(orderId).get()
+                .addOnSuccessListener { doc ->
+
+                    //la consegna può terminare solo se il pagamento è stato confermato( accettato/rifiutato)
+                    if (doc.getString("statoPagamento") != "accettato" || doc.getString("statoPagamento") != "rifiutato") {
+                        Toast.makeText(this, "Prima conferma il pagamento!!!!!", Toast.LENGTH_SHORT).show()
+
+                    } else {
+
+                        // termina consegna
+                        val det = hashMapOf<String, Any?>(
+                                "stato" to "terminato",
+                        )
+                        db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(
+                                det,
+                                SetOptions.merge()
+                        )
+                        //rende di nuovo disponibile rider
+                        val occ = hashMapOf<String, Any?>(
+                                "occupato" to false,
+                        )
+                        db.collection("riders").document(rider!!).set(occ, SetOptions.merge())
+
+                        //salva in order_history
+                        val client = doc.getString("client")
+                        val stato = doc.getString("stato")
+                        val statoPagamento = doc.getString("statoPagamento")
+                        val tipoPagamento = doc.getString("tipo_pagamento")
+                        //risultato ordine da fare successivamente
+
+                        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+                        val currentDate = sdf.format(Date())
+
+                        val newOrderHistory = hashMapOf<String, Any?>(
+                                "data" to  currentDate,
+                                "mail" to client,
+                                "rider" to rider!!,
+                                "tipo" to tipoPagamento,
+                                "risultatoOrdine" to statoPagamento
+                       )
+
+                        db.collection("orders_history").document(orderId).set(newOrderHistory)
+
+                        //uscire da activity
+                    }
+                }
+    }
+
+
 }
