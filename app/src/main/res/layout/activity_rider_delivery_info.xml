@@ -30,5 +30,48 @@
 
     </fragment>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titolo"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/spaziatura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titolo"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
 
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/ConsegnaRider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/grad_menu"
+            android:text="@string/FineCorsa"
+            android:textColor="@color/white"
+
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/RiderConfermaPagamento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/gradient_orange"
+            android:text="@string/ConfermaPagamento"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+
+    <!--        android:layout_marginEnd="15dp"-->
 </RelativeLayout>

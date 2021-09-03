@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import com.google.android.gms.maps.model.LatLng
@@ -31,8 +32,7 @@ class MyConsegneRecyclerViewAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_consegne, parent, false)
+        view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_consegne, parent, false)
 
         // link all'activity rider_delivery_info
         val info = view.findViewById<ImageButton>(R.id.info)
@@ -42,7 +42,6 @@ class MyConsegneRecyclerViewAdapter(
             intent.putExtra("orderId",orderId)
             view.context.startActivity(intent)
         }
-
         val accept_order_button = view.findViewById<ImageButton>(R.id.check)
         accept_order_button.setOnClickListener{
             val userMail = view.findViewById<TextView>(R.id.userMail).text.toString()
@@ -61,7 +60,19 @@ class MyConsegneRecyclerViewAdapter(
                 coord = LatLng(mat.latitude, mat.longitude)
             }
             acceptOrder(userMail,orderId,coord.latitude,coord.longitude)
+
+
+            var intent = Intent(parent.context, Rider_delivery_info::class.java)
+            intent.putExtra("orderId",orderId)!!
+            intent.putExtra("userMail",userMail)!!
+            intent.putExtra("ordineAccettato",true)
+            view.context.startActivity(intent)
+
+//            startService(Intent(this,NotificationService::class.java))
+
         }
+
+
         val  refuse_order_button = view.findViewById<ImageButton>(R.id.deny)
         refuse_order_button.setOnClickListener{
             val userMail = view.findViewById<TextView>(R.id.userMail).text.toString()
@@ -109,7 +120,7 @@ class MyConsegneRecyclerViewAdapter(
                 "lon" to longitude,
          )
         Log.d("DELIVERY - ",orderId)
-        db.collection("delivery").document(rider).collection(orderId).document("dett").set(det, SetOptions.merge())
+        db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
     }
 
     fun refuseOrder(user: String,orderId: String){
@@ -128,7 +139,7 @@ class MyConsegneRecyclerViewAdapter(
         Log.d("DELIVERY - ",orderId)
         db.collection("assignedOrders").document(orderId).delete()
         db.collection("toassignOrders").document(orderId).set(dummy)
-        db.collection("delivery").document(rider).collection(orderId).document("dett").set(det, SetOptions.merge())
+        db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
         for(p in values){
             if(p.orderId==orderId){
                 values.remove(p)
