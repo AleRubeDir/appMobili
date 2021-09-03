@@ -109,7 +109,7 @@ class MyConsegneRecyclerViewAdapter(
                 "lon" to longitude,
          )
         Log.d("DELIVERY - ",orderId)
-        db.collection("delivery").document(rider).collection(orderId).document("dett").set(det, SetOptions.merge())
+        db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
     }
 
     fun refuseOrder(user: String,orderId: String){
@@ -128,7 +128,7 @@ class MyConsegneRecyclerViewAdapter(
         Log.d("DELIVERY - ",orderId)
         db.collection("assignedOrders").document(orderId).delete()
         db.collection("toassignOrders").document(orderId).set(dummy)
-        db.collection("delivery").document(rider).collection(orderId).document("dett").set(det, SetOptions.merge())
+        db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
         for(p in values){
             if(p.orderId==orderId){
                 values.remove(p)

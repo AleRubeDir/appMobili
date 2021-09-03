@@ -101,7 +101,6 @@ class NotificationService : Service() {
                             db.collection("delivery").document(rider).collection("orders").get()
                                     .addOnCompleteListener {
                                         for(ord in it.result!!){
-
                                             db.collection("delivery").document(rider).collection("orders").document(ord.id).addSnapshotListener{ d, e ->
                                                     Log.d(TAG,"------$rider----${ord.id}-----${d!!.getString("client").toString()}-----\n")
                                                   //  Log.d(TAG,"user = $user cliente =  ${d!!.getString("client").toString()} left = ${d.getBoolean("leftMM")}")
