@@ -131,7 +131,7 @@ class Rider_delivery_info : AppCompatActivity() {
                 "occupato" to false,
         )
 //        Log.d("DELIVERY - ",orderId)
-        db.collection("riders").document(rider!!).set(det, SetOptions.merge())
+        db.collection("riders").document(rider!!).set(det1, SetOptions.merge())
 
 
 
