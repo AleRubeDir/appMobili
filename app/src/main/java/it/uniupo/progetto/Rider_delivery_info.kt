@@ -1,6 +1,7 @@
 package it.uniupo.progetto
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -52,15 +53,15 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
 
         val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
 
+      /*  if(consegnaRider.isLocked)
+            Toast.makeText(applicationContext,"Conferma il pagamento prima di terminare la corsa",Toast.LENGTH_SHORT).show()*/
         consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener{
             override fun onSlideComplete(view: SlideToActView) {
 //            devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
                 val orderId = intent.getStringExtra("orderId")!!
                 Log.d("mattia", "Premuto terminaConsegna " + orderId)
-                if(consegnaRider.isLocked)
-                    Toast.makeText(applicationContext,"Conferma il pagamento prima di terminare la corsa",Toast.LENGTH_SHORT).show()
                 terminaConsegnaFun(orderId)
-
+                startActivity(Intent(applicationContext,RiderActivity::class.java))
             }
         }
 
@@ -68,7 +69,9 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
         confermaPagamento.setOnClickListener{
             val orderId = intent.getStringExtra("orderId")!!
             confermaPagamentofun(orderId)
+            Toast.makeText(applicationContext,"Pagamento confermato",Toast.LENGTH_SHORT).show()
             consegnaRider.isLocked = false
+            consegnaRider.visibility = View.VISIBLE
             Log.d("mattia", "Premuto confermaPagamento " + orderId)
         }
     }

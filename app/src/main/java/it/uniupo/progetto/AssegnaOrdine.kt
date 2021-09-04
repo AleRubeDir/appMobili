@@ -35,7 +35,7 @@ class AssegnaOrdine : AppCompatActivity() {
         db.collection("riders").get()
                 .addOnSuccessListener {
                     for(d in it){
-                        if(!d.getBoolean("occupato")!!){
+                        if(!d.getBoolean("disponibile")!!){
                             val riderpos = Location("")
                             riderpos.latitude = d.getDouble("lat")!!
                             riderpos.longitude = d.getDouble("lon")!!

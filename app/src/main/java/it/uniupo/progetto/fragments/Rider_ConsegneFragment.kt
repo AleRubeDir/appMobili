@@ -67,7 +67,7 @@ class Rider_ConsegneFragment : Fragment() {
         val rider = FirebaseAuth.getInstance().currentUser!!.email.toString()
         db.collection("riders").document(rider).get()
                 .addOnSuccessListener {
-                    val occ = it.getBoolean("occupato")
+                    val occ = it.getBoolean("disponibile")
                     mycallback.onCallback(occ!!)
                 }
     }

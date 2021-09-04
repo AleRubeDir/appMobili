@@ -39,7 +39,9 @@ class MyConsegneRecyclerViewAdapter(
         info.setOnClickListener {
             var intent = Intent(parent.context, Rider_delivery_info::class.java)
             val orderId = view.findViewById<TextView>(R.id.orderId).text.toString()
+            val address = view.findViewById<TextView>(R.id.indirizzo).text.toString()
             intent.putExtra("orderId",orderId)
+            intent.putExtra("address",address)
             view.context.startActivity(intent)
         }
         val accept_order_button = view.findViewById<ImageButton>(R.id.check)
@@ -63,9 +65,9 @@ class MyConsegneRecyclerViewAdapter(
 
 
             var intent = Intent(parent.context, Rider_delivery_info::class.java)
-            intent.putExtra("address",address)!!
-            intent.putExtra("orderId",orderId)!!
-            intent.putExtra("userMail",userMail)!!
+            intent.putExtra("address",address)
+            intent.putExtra("orderId",orderId)
+            intent.putExtra("userMail",userMail)
             intent.putExtra("ordineAccettato",true)
             view.context.startActivity(intent)
         }
