@@ -62,8 +62,6 @@ class MyConsegneRecyclerViewAdapter(
                 coord = LatLng(mat.latitude, mat.longitude)
             }
             acceptOrder(userMail,orderId,coord.latitude,coord.longitude)
-
-
             var intent = Intent(parent.context, Rider_delivery_info::class.java)
             intent.putExtra("address",address)
             intent.putExtra("orderId",orderId)
@@ -111,8 +109,6 @@ class MyConsegneRecyclerViewAdapter(
         val db = FirebaseFirestore.getInstance()
          val det = hashMapOf<String, Any?>(
                 "stato" to -1,
-                "lat" to latitude,
-                "lon" to longitude,
          )
         Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
@@ -120,36 +116,78 @@ class MyConsegneRecyclerViewAdapter(
 
     fun refuseOrder(user: String,orderId: String){
 //        refuse order:
-//        cambia stato in rifiutato
-//        cancella nel fragment l'ordine
-//
+
+
+
+
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
+ /*       //        cambia stato in rifiutato
         val det = hashMapOf<String, Any?>(
+            // 1 terminato
+            // 0 rifiutato
+            // -1 pending
                 "stato" to 0
         )
-        val dummy = hashMapOf<String,Any>(
-                " " to " "
-        )
-        Log.d("DELIVERY - ",orderId)
-        db.collection("assignedOrders").document(orderId).delete()
-        db.collection("toassignOrders").document(orderId).set(dummy)
         db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
+        //        cambia stato in rifiutato
+*/
+//      toglie da assignedOrders, mette in toassignOrders
+        Log.d("DELIVERY - ",orderId)
+        db.collection("assignedOrders").document(orderId).get()
+            .addOnCompleteListener {
+                val tipoPagamento = it.result.getString("tipo").toString()
+                val indirizzo = it.result.getString("indirizzo").toString()
+                val cliente = it.result.getString("cliente").toString()
+                val dummy = hashMapOf<String, Any?>(
+                    "tipo" to tipoPagamento,
+                    //indirizzo ordine
+                    "indirizzo" to indirizzo,
+                    "cliente" to cliente
+                )
+                db.collection("toassignOrders").document(orderId).set(dummy)
+            }
+        db.collection("assignedOrders").document(orderId).delete()
+//      toglie da assignedOrders, mette in toassignOrders
+
+//        cancella nel fragment l'ordine
         for(p in values){
             if(p.orderId==orderId){
                 values.remove(p)
                 notifyDataSetChanged()
             }
         }
+//        cancella nel fragment l'ordine
 
-//        db.collection("carts").document(user).collection("products").document(p.id.toString())
-//            .delete()
-//            .addOnSuccessListener {
-//                Log.d("cart", "Eliminazione di $p.id avvenuta con successo")
-//            }
-//            .addOnFailureListener{
-//                Log.d("cart", "Errore eliminazione di $p.id ")
-//            }
+
+        //cancella ordine nel db delivery
+        db.collection("delivery").document(rider).collection("orders").document(orderId).get()
+            .addOnCompleteListener {
+                var cliente = it.result.getString("client").toString()
+                var distanza = it.result.getDouble("distanza")
+                var orderId = it.result.getString("orderId").toString()
+                var statoOrdine = it.result.getLong("stato")!!.toInt()
+                var tipo_pagamento = it.result.getString("tipo_pagamento").toString()
+                val entry = hashMapOf<String, Any?>(
+                    "tipo_pagamento" to tipo_pagamento,
+                    //indirizzo ordine
+                    "distanza" to distanza,
+                    "cliente" to cliente,
+                    "orderId" to orderId,
+                    "statoOrdine" to statoOrdine,
+                )
+                db.collection("orders_history").document(orderId).set(entry, SetOptions.merge())
+                    .addOnSuccessListener {
+                        db.collection("delivery").document(rider).collection("orders").document(orderId).delete()
+                    }
+            }
+        //cancella ordine nel db delivery
+        //rider torna disponibile
+        val disponibile = hashMapOf<String, Any?>(
+         "disponibile" to true
+        )
+        db.collection("riders").document(rider).set(disponibile, SetOptions.merge())
+        //rider torna disponibile
     }
 
 }

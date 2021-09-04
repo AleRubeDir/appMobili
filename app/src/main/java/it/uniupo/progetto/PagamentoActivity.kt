@@ -141,7 +141,6 @@ class PagamentoActivity : AppCompatActivity() {
         if(i==0) tipo = "Carta"
         else tipo="Contanti"
         val entry = hashMapOf<String,Any>(
-            "id" to i,
             "tipo" to tipo,
             //indirizzo ordine
             "indirizzo" to indirizzo,
