@@ -119,9 +119,6 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun onStartRiderActivity(){
-        val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
-        consegnaRider.visibility= View.VISIBLE
-
         val pagamentoRider = findViewById<Button>(R.id.RiderConfermaPagamento)
         pagamentoRider.visibility= View.VISIBLE
     }
@@ -183,8 +180,9 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                                 "data" to  currentDate,
                                 "mail" to client,
                                 "rider" to rider!!,
-                                "tipo" to tipoPagamento,
-                                "risultatoOrdine" to statoPagamento
+                                "tipoPagamento" to tipoPagamento,
+                                "statoPagamento" to statoPagamento,
+                                "risultatoOrdine" to 1
                        )
                         Log.d("mattia", "prima di aggiunta in order history: " + orderId + newOrderHistory)
                         db.collection("orders_history").document(orderId).set(newOrderHistory)

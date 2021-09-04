@@ -37,8 +37,17 @@ class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: Array
                 "tipo_pagamento" to tipoPagamento,
                 "leftMM" to false
         )
-        val dummy = hashMapOf<String, Any>(
-                "tipo_pagamento" to tipoPagamento!!
+        var add=""
+        db.collection("users").document(clientMail!!).get()
+            .addOnSuccessListener { document->
+                add = document.getString("address").toString()
+            }
+
+        val dummy = hashMapOf<String, Any?>(
+            "tipo" to tipoPagamento,
+            //indirizzo ordine
+            "indirizzo" to add,
+            "cliente" to clientMail
         )
 
         Log.d("assegna","rider vale $rider ordId vale $ordId")
@@ -48,13 +57,13 @@ class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: Array
         )
         db.collection("orders").get().addOnCompleteListener {
             for(cliente in it.result){
-                db.collection("orders").document(cliente.id).collection("order").document(ordId!!).collection("rider").document("r").set(entry2, SetOptions.merge())
+                db.collection("orders").document(cliente.id).collection("order").document(ordId).collection("rider").document("r").set(entry2, SetOptions.merge())
                         }
                     Toast.makeText(view.context,"Proposta inviata al rider",Toast.LENGTH_SHORT).show()
                     view.context.startActivity(Intent(view.context , GestoreActivity::class.java))
                 }
-        db.collection("toassignOrders").document(ordId!!).delete()
-        db.collection("assignedOrders").document(ordId!!).set(dummy)
+        db.collection("toassignOrders").document(ordId).delete()
+        db.collection("assignedOrders").document(ordId).set(dummy)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
