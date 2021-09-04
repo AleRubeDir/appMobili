@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/order"
+        android:icon="@drawable/rider"
+        android:title="Ordini">
+    </item>
+    <item
+        android:id="@+id/shop"
+        android:icon="@drawable/ic_baseline_list_24"
+        android:title="@string/nav_shop">
+    </item>
+    <item
+        android:id="@+id/profilo"
+        android:icon="@drawable/profile"
+        android:title="@string/rider_profile">
+    </item>
+</menu>

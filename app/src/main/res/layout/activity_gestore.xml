@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <FrameLayout
+        android:id="@+id/fl_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_nav"
+        >
+
+  <!--      <RelativeLayout
+            android:id="@+id/tot_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemBackground="@color/complementary"
+            android:layout_gravity="center|top">
+
+        </RelativeLayout>-->
+    </FrameLayout>
+
+  <ImageButton
+      android:id="@+id/chat"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      android:background="@drawable/btn_chat"
+      android:layout_marginBottom="30dp"
+      android:layout_marginStart="10dp"
+      android:src="@drawable/chat"
+      android:layout_above="@+id/bottom_nav"/>
+
+    <ImageButton
+        android:id="@+id/add"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_chat"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/plus"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/bottom_nav"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        app:itemBackground="@color/menu"
+        app:itemIconTint="#fff"
+        app:itemTextColor="#fff"
+        app:menu="@menu/gestore_menu" />
+</RelativeLayout>

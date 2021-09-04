@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    >
+    <TextView
+        android:id="@+id/track"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/traccia_il_tuo_ordine"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="15dp"
+        android:focusable="true"
+        android:clickable="true"
+
+        />
+    <TextView
+        android:id="@+id/chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/chat_w_rider"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="15dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_below="@id/track"
+       />
+    <TextView
+        android:id="@+id/ritira"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/richiama_ordine"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="15dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_below="@id/chat"
+        />
+    <TextView
+        android:id="@+id/past_orders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/storico_degli_ordini"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="15dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_below="@id/ritira"
+        />
+
+</RelativeLayout>

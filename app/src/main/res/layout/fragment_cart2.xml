@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rel"
+    android:layout_margin="5dp"
+    card_view:cardBackgroundColor="@color/mimosa"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="3dp"
+    card_view:contentPadding="4dp"
+    android:foreground="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+-->
+
+    <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textSize="20sp"
+        android:text="Pollo con mandorle "
+        android:maxLines="2"
+        android:textColor="@color/black"
+        android:ems="9"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/prezzo"
+        android:layout_below="@id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:paddingBottom="15dp"
+        android:textSize="20sp"
+        android:text="@string/cash"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:id="@+id/id"/>
+    <Button
+        android:background="@drawable/btn_chat_light"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/qta"
+        android:text="-"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:id="@+id/minus"
+        />
+    <TextView
+        android:id="@+id/qta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_centerVertical="true"
+        android:textSize="20sp"
+        android:layout_toStartOf="@id/plus"
+        android:text="10"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+    <Button
+        android:layout_width="50dp"
+        android:background="@drawable/btn_chat_light"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:text="+"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginTop="15dp"
+        android:id="@+id/plus"
+        />
+
+
+</RelativeLayout>
+<!--
+</androidx.cardview.widget.CardView>-->

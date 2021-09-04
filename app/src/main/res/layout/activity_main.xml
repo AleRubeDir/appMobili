@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp">
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="161dp"
+        android:layout_height="161dp"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/logo"
+        android:src="@mipmap/ic_launcher_foreground" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/log_string"
+        android:textColor="@color/black"
+        android:layout_marginTop="-20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/btn_log"
+
+        />
+    <Button
+        android:id="@+id/btn_log"
+        android:background="@drawable/gradient_orange"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:textColor="@color/black"
+        android:layout_centerInParent="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reg_string"
+        android:textColor="@color/black"
+        android:layout_marginTop="-20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/btn_reg"
+        />
+    <Button
+        android:background="@drawable/gradient_orange"
+        android:id="@+id/btn_reg"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/btn_log"
+        android:layout_centerHorizontal="true"
+        />
+</RelativeLayout>

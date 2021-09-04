@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:focusable="true"
+        android:clickable="true"
+        android:name="it.uniupo.progetto.fragments.CartListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".fragments.CartListFragment"
+        tools:listitem="@layout/fragment_cart2" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tot_layout"
+        android:padding="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:background="@color/white">
+     <!--   android:layout_above="@id/bottom_nav"
+        app:itemBackground="@color/complementary"-->
+        <TextView
+            android:id="@+id/tot_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/totale"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_alignBaseline="@+id/compra"
+            />
+        <TextView
+            android:id="@+id/tot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/cash"
+            android:maxLines="1"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/tot_label"
+            android:textSize="25sp"
+            android:layout_alignBaseline="@+id/compra"
+            />
+        <Button
+            android:id="@+id/compra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_orange"
+            android:textSize="20sp"
+            android:layout_alignParentEnd="true"
+            android:paddingEnd="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black"
+            android:paddingStart="10dp"
+            android:text="@string/compra"/>
+    </RelativeLayout>
+</RelativeLayout>
+
+

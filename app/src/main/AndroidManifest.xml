@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="it.uniupo.progetto">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the "MyLocation" functionality.
+    -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/mm"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Progetto">
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <activity android:name=".AssegnaOrdine" />
+        <activity android:name=".RichiamaOrdine" />
+        <activity android:name=".GestoreMappaRider" />
+        <activity android:name=".NewChatActivity" />
+        <activity android:name=".StoricoOrdini" />
+        <activity android:name=".RiderPosition" />
+        <activity android:name=".Ordini" />
+        <activity android:name=".PagamentoActivity" />
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".AddProduct" />
+        <activity android:name=".GestoreProdotto" />
+        <activity android:name=".GestoreActivity" />
+        <activity android:name=".ClientMappa" />
+        <activity android:name=".PaginaProdotto" />
+        <activity android:name=".ChooseActivity" />
+        <activity android:name=".FirstTimeActivity" />
+        <activity android:name=".ScrollingActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".ClienteActivity" />
+        <activity android:name=".RiderActivity" />
+        <activity android:name=".DatiPersonali" />
+        <activity android:name=".Rider_delivery_info" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/mm">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <service
+            android:enabled="true"
+            android:exported="false"
+            android:name=".NotificationService" />
+    </application>
+</manifest>

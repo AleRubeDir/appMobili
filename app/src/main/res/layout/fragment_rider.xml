@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+    <androidx.cardview.widget.CardView
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/rel"
+        android:layout_margin="15dp"
+        card_view:cardBackgroundColor="@color/grad4"
+        card_view:cardCornerRadius="12dp"
+        card_view:cardElevation="3dp"
+        card_view:contentPadding="4dp"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.Gestore">
+
+    <ImageView
+        android:id="@+id/img_rider"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/rider"
+        />
+    <TextView
+        android:id="@+id/rider_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_rider"
+        android:textSize="@dimen/slide_title"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="@string/rider_title" />
+    <TextView
+        android:id="@+id/customer_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rider_title"
+        android:textSize="@dimen/slidedesc"
+        android:gravity="center"
+        android:text="@string/rider_desc" />
+
+</RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

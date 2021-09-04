@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<Button
+    android:id="@+id/newChat"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/inizia_una_nuova_chat"
+    android:textColor="@color/black"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:layout_marginBottom="15dp"
+    android:background="@drawable/gradient_orange"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="15dp"
+    android:layout_marginEnd="15dp"
+    />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chats"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_below="@id/newChat"
+        android:name="it.uniupo.progetto.fragments.ChatGestoreFragment"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".fragments.ChatGestoreFragment"
+        tools:listitem="@layout/chat_element" />
+
+</RelativeLayout>

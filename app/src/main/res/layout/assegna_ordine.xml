@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:text="@string/seleziona_il_rider_per_questa_consegna"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/title"
+        android:id="@+id/list"
+        android:focusable="true"
+        android:clickable="true"
+        android:name="it.uniupo.progetto.fragments.OrderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".AssegnaOrdine"
+        tools:listitem="@layout/rider_list"
+        />
+</RelativeLayout>

@@ -1,0 +1,122 @@
+<resources>
+    <string name="app_name">Progetto</string>
+    <string name="register">Registrati</string>
+    <string name="login">Accedi</string>
+    <string name="log_string">Hai già un account?</string>
+    <string name="reg_string">Sei nuovo? Iscriviti</string>
+    <string name="reg_title">Crea il tuo account</string>
+    <string name="nome">Nome</string>
+    <string name="cognome">Cognome</string>
+    <string name="indirizzo">Indirizzo</string>
+    <string name="cliente">Cliente</string>
+    <string name="rider">Rider</string>
+    <string name="gestore">Gestore</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="logo">Logo</string>
+    <string name="compra">Compra!</string>
+    <string name="hintname">Mario</string>
+    <string name="hintsurname">Rossi</string>
+    <string name="hintmail">mario.rossi@gmail.com</string>
+    <string name="scelta_login">Scegli come accedere</string>
+    <string name="scelta_reg">Scegli come registrarti</string>
+    <!-- HOME -->
+    <string name="search">Cerca...</string>
+    <string name="add_cart">Aggiungi al carrello</string>
+    <string name="totale">Totale</string>
+    <string name="cash">%1$s €</string>
+    <!-- profilo -->
+
+    <string name="tipo">Tipo</string>
+    <!-- -->
+    <!-- -->    <!-- xxx -->  <!-- -->
+    <!-- fragment_gestore -->
+    <string name="gestore_title">GESTORE</string>
+    <string name="gestore_desc">Amministra il market</string>
+    <!-- -->
+    <!-- fragment_customer -->
+    <string name="customer_title">CLIENTE</string>
+    <string name="customer_desc">Ordina quello che vuoi</string>
+    <string name="nav_shop">Negozio</string>
+    <string name="nav_profile">Profilo</string>
+    <string name="nav_cart">Carrello</string>
+    <!-- -->
+    <!-- fragment_rider -->
+    <string name="rider_title">RIDER</string>
+    <string name="rider_desc">Consegna gli ordini</string>
+    <string name="rider_delivery">Consegne</string>
+    <string name="rider_chat">Chat</string>
+    <string name="rider_profile">Profilo</string>
+
+    <!-- -->
+    <!-- fragment_cart -->
+    <string name="carrello">Carrello</string>
+    <!-- -->
+    <!-- SCELTA -->
+    <string name="end">FINE</string>
+    <string name="next">AVANTI</string>
+    <string name="scelta_titolo">Completa il tuo account</string>
+
+    <!-- -->
+    <string name="mm">MiniMarket</string>
+    <!-- -->
+    <!-- -->
+    <string name="title_activity_welcome">Home Screen</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_rider">RiderActivity</string>
+    <string name="title_activity_client_mappa">Map</string>
+    <string name="il_mio_profilo">Il mio profilo</string>
+    <string name="salva_modifiche">Salva modifiche</string>
+    <string name="resta_connesso">Resta connesso</string>
+    <string name="mostra_password">Mostra password</string>
+    <string name="nascondi_password">Nascondi password</string>
+    <string name="nomeprodotto">Nome prodotto</string>
+    <string name="descrizione_prodotto">Descrizione prodotto</string>
+    <string name="prezzo">Prezzo</string>
+    <string name="quantit">Quantità</string>
+    <string name="aggiungi_prodotto">Aggiungi prodotto</string>
+    <string name="immagine_prodotto">Immagine prodotto</string>
+    <string name="inizia_una_nuova_chat">Inizia una nuova chat</string>
+    <string name="title_activity_pagamento">PagamentoActivity</string>
+
+    <string name="hello_world">Hello Square World!</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="contanti">Contanti</string>
+    <string name="carta_di_credito">Carta</string>
+    <string name="scegli_metodo_di_pagamento">Scegli metodo di pagamento</string>
+    <string name="in_entrambi_i_casi_il_pagamento_avver_con_il_rider">In entrambi i casi il pagamento avverà con il rider</string>
+    <string name="inserisci_il_tuo_indirizzo">Inserisci il tuo indirizzo</string>
+    <string name="distanza">Distanza</string>
+    <string name="title_activity_rider_delivery_info">rider_delivery_info</string>
+    <string name="tipo_pagamento">tipo Pagamento</string>
+    <string name="segui_il_tuo_ordine">Segui il tuo ordine</string>
+    <string name="traccia_il_tuo_ordine">Traccia il tuo ordine</string>
+    <string name="chat_w_rider">Chat con rider</string>
+    <string name="richiama_ordine">Richiama ordine</string>
+    <string name="storico_degli_ordini">Storico degli ordini</string>
+    <string name="i_miei_ordini">I miei ordini</string>
+
+    <string name="scegli_il_rider_con_cui_iniziare_una_chat">Scegli il rider con cui iniziare una chat</string>
+    <string name="elimina_prodotto">Elimina prodotto</string>
+    <string name="annulla_un_ordine_senza_pagare_niente">Annulla un ordine senza pagare niente</string>
+    <string name="richiama_il_tuo_ordine">Richiama il tuo ordine</string>
+    <string name="ordine_n">Ordine n°</string>
+    <string name="prodotti">Prodotti</string>
+    <string name="richiama">Richiama</string>
+
+    <string name="tot">Totale \t %1$s €</string>
+    <string name="ord">Ordine \t %1$s </string>
+    <string name="km">%1$s KM </string>
+    <string name="assegna_ordini">Assegna ordini</string>
+    <string name="storico_ordini">Storico ordini</string>
+    <string name="seleziona_il_rider_per_questa_consegna">Seleziona il rider per questa consegna</string>
+    <string name="ordini_in_arrivo">Ordini in arrivo</string>
+    <string name="disponibilit">Disponibilità</string>
+
+    <string name="FineCorsa"> Termina Corsa</string>
+    <string name="ConfermaPagamento"> Conferma Pagamento</string>
+    <string name="swipe"> Swipe per terminare la corsa</string>
+    <string name="informazioni_ordine">Informazioni ordine</string>
+</resources>

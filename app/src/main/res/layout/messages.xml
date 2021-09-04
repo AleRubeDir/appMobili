@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/date"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        >
+        <TextView
+            android:id="@+id/date_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="20 Luglio 2021"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date"
+        android:id="@+id/rcvd">
+        <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="#FFC699"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        >
+
+        <TextView
+            android:id="@+id/messaggio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ciao come stai??"
+
+            android:textColor="@color/black"
+            android:maxWidth="210dp"
+            android:padding="5dp"
+            android:textSize="20sp"
+
+            />
+
+    </androidx.cardview.widget.CardView>
+         <TextView
+        android:id="@+id/ora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/card"
+        android:layout_alignBottom="@id/card"
+        android:layout_marginBottom="5dp"
+             android:textColor="@color/black"
+        android:text="10:30"/>
+    </RelativeLayout>
+<RelativeLayout
+    android:layout_below="@id/date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/send">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="#B1D9F8"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true">
+
+        <TextView
+            android:id="@+id/messaggioS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ciao come stai??"
+            android:textColor="@color/black"
+            android:padding="5dp"
+            android:maxWidth="210dp"
+            android:textSize="20sp"
+            />
+
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/oraS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/cardS"
+        android:layout_alignBottom="@id/cardS"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/black"
+        android:text="10:30"/>
+    </RelativeLayout>
+</RelativeLayout>
+
+
+
