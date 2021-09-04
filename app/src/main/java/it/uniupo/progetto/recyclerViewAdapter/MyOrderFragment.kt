@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /*
+=======
+package it.uniupo.progetto.recyclerViewAdapter/*
+>>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
 package it.uniupo.progetto.fragments
 
 import android.os.Bundle

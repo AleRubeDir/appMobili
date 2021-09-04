@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     >
+<<<<<<< HEAD
+=======
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notifica"
+        android:text="notifica"
+        android:background="@color/menu"/>
+>>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
 
     <FrameLayout
         android:id="@+id/fl_wrapper"
@@ -13,7 +22,21 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_nav"
         />
+<<<<<<< HEAD
 
+=======
+<!--    <ImageButton
+        android:id="@+id/chat"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_chat"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/chat"
+        android:visibility="invisible"
+        android:layout_above="@+id/bottom_nav"/>-->
+>>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
 <RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

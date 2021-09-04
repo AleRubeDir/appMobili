@@ -166,6 +166,7 @@ class Rider_ConsegneFragment : Fragment() {
         db.collection("delivery").document(rider).collection("orders").get()
                 .addOnCompleteListener {
                     for(order in it.result){
+<<<<<<< HEAD
                         var ordId = order.id
                         var client = order.getString("client").toString()
                         var stato = order.getString("stato").toString()
@@ -177,11 +178,29 @@ class Rider_ConsegneFragment : Fragment() {
                         cons_rider.longitude = lon!!
                         cons_rider.latitude = lat!!
                         var distanza = (market.distanceTo(cons_rider)/1000).toDouble()
+=======
+                        val ordId = order.getString("orderId").toString()
+                        Log.d("mattia","riempimento liste: " + ordId)
+                        val client = order.getString("client").toString()
+                        val stato = order.getLong("stato")!!.toInt()
+                        val lat = order.getDouble("lat")
+                        val lon = order.getDouble("lon")
+                        val tipo_pagamento = order.getString("tipo_pagamento").toString()
+                        //giusta questa distanza??
+                        val cons_rider = Location("")
+                        cons_rider.longitude = lon!!
+                        cons_rider.latitude = lat!!
+                        val distanza = (market.distanceTo(cons_rider)/1000).toDouble()
+>>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
                         var posizione = ""
                         db.collection("users").document(client).get()
                                 .addOnSuccessListener {
                                     posizione = it.getString("address").toString()
+<<<<<<< HEAD
                                     var consegna = Consegna(client,null,posizione,tipo_pagamento,stato,ordId,distanza,rider)
+=======
+                                    val consegna = Consegna(client,null,posizione,tipo_pagamento,stato,ordId,distanza,rider)
+>>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
                                     Log.d("consegne","consegna vale $consegna")
                                     consegne.add(consegna)
                         myCallback.onCallback(consegne)

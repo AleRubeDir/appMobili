@@ -78,19 +78,35 @@ class MyGestoreConsegneRecyclerViewAdapter(
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
         val det = hashMapOf<String, Any?>(
+<<<<<<< HEAD
                 "stato" to "accettato"
         )
         Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider).collection("client").document(user).collection("details").document(orderId).set(det, SetOptions.merge())
+=======
+                //stato in pending
+                "stato" to -1
+        )
+        Log.d("DELIVERY - ",orderId)
+        db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
+>>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
     }
 
     fun refuseOrder(user: String,orderId: String){
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
         val det = hashMapOf<String, Any?>(
+<<<<<<< HEAD
                 "stato" to "rifiutato"
         )
         Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider).collection("client").document(user).collection("details").document(orderId).set(det, SetOptions.merge())
+=======
+                // stato in rifiutato
+                "stato" to 0
+        )
+        Log.d("DELIVERY - ",orderId)
+        db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
+>>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
     }
 }

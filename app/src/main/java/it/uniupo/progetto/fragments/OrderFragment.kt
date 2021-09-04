@@ -98,7 +98,11 @@ class OrderFragment  : Fragment() {
                                 db.collection("toassignOrders").get()
                                         .addOnCompleteListener {
                                             for (d in it.result) {
+<<<<<<< HEAD
                                             tipo_pagamento = d.getString("tipo").toString()
+=======
+                                                        tipo_pagamento = d.getString("tipo").toString()
+>>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
                                                         val market = Location("")
                                                         market.latitude = 44.994154
                                                         market.longitude = 8.565942
@@ -115,7 +119,11 @@ class OrderFragment  : Fragment() {
                                                             cons_rider.longitude = mat.longitude
                                                         }
                                                         val distanza = (market.distanceTo(cons_rider) / 1000).toDouble()
+<<<<<<< HEAD
                                                         val consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento, "stato", d.id, distanza, rider)
+=======
+                                                        val consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento,-1, d.id, distanza, rider)
+>>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
                                                         orders.add(consegna)
                                             }
                     myCallbackOrders.onCallback(orders)
