@@ -119,8 +119,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun onStartRiderActivity(){
-        val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
-        consegnaRider.visibility= View.VISIBLE
+
 
         val pagamentoRider = findViewById<Button>(R.id.RiderConfermaPagamento)
         pagamentoRider.visibility= View.VISIBLE

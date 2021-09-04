@@ -141,6 +141,7 @@ class MyConsegneRecyclerViewAdapter(
                 notifyDataSetChanged()
             }
         }
+
 //        db.collection("carts").document(user).collection("products").document(p.id.toString())
 //            .delete()
 //            .addOnSuccessListener {
