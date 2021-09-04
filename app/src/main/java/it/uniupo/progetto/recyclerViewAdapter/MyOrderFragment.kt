@@ -1,4 +1,4 @@
-/*
+package it.uniupo.progetto.recyclerViewAdapter/*
 package it.uniupo.progetto.fragments
 
 import android.os.Bundle

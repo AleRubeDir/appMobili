@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -39,6 +40,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider_delivery_info)
         val ordine = intent.getBooleanExtra("ordineAccettato", false)
+
         if (ordine){
             onStartRiderActivity()
         }
@@ -176,7 +178,8 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                         Log.d("mattia","dentro else, pagato")
                         // termina consegna
                         val det = hashMapOf<String, Any?>(
-                                "stato" to "terminato",
+                                //stato terminato
+                                "stato" to 1,
                         )
                         db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(
                                 det,
@@ -191,7 +194,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
 
                         //salva in order_history
                         val client = doc.getString("client")
-                        val stato = doc.getString("stato")
+                        val stato = doc.getLong("stato")!!.toInt()
                         val statoPagamento = doc.getLong("statoPagamento")!!.toInt()
                         val tipoPagamento = doc.getString("tipo_pagamento")
                         //risultato ordine da fare successivamente

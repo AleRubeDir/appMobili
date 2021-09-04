@@ -115,7 +115,7 @@ class MyConsegneRecyclerViewAdapter(
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
          val det = hashMapOf<String, Any?>(
-                "stato" to "accettato",
+                "stato" to -1,
                 "lat" to latitude,
                 "lon" to longitude,
          )
@@ -131,7 +131,7 @@ class MyConsegneRecyclerViewAdapter(
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
         val det = hashMapOf<String, Any?>(
-                "stato" to "rifiutato"
+                "stato" to 0
         )
         val dummy = hashMapOf<String,Any>(
                 " " to " "
