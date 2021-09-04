@@ -16,7 +16,7 @@ import it.uniupo.progetto.AssegnaOrdine
 import it.uniupo.progetto.GestoreActivity
 import it.uniupo.progetto.R
 
-class MySelectRiderRecyclerViewAdapter(var riders: ArrayList<AssegnaOrdine.Rider>, var ordId: String?, var clientMail : String?, var tipoPagamento : String?) : RecyclerView.Adapter<MySelectRiderRecyclerViewAdapter.ViewHolder>() {
+class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: ArrayList<AssegnaOrdine.Rider>, var ordId: String?, var clientMail : String?, var tipoPagamento : String?) : RecyclerView.Adapter<MySelectRiderRecyclerViewAdapter.ViewHolder>() {
     lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
@@ -28,18 +28,10 @@ class MySelectRiderRecyclerViewAdapter(var riders: ArrayList<AssegnaOrdine.Rider
     private fun scegliRiderPerOrdine(ordId: String?, rider : String) {
         val db = FirebaseFirestore.getInstance()
         val entry = hashMapOf<String,Any?>(
-<<<<<<< HEAD
-                "lat" to 0.0,
-                "lon" to 0.0,
-                "stato" to "pending",
-=======
-
-                "lat" to 0.0,
-                "lon" to 0.0,
+                "distanza" to distanza,
                 //stato pending
                 "stato" to -1,
                 "statoPagamento" to -1,
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
                 "orderId" to ordId,
                 "client" to clientMail,
                 "tipo_pagamento" to tipoPagamento,

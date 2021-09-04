@@ -17,10 +17,11 @@ class AssegnaOrdine : AppCompatActivity() {
         val ordId = intent.getStringExtra("ordId")
         val clientMail = intent.getStringExtra("client")
         val tipo = intent.getStringExtra("tipo")
+        val distanza = intent.getDoubleExtra("distanza",0.0)
       getRiders(object: MyCallback {
          override fun onCallback(riders: ArrayList<Rider>) {
              riders.sortBy{it.distanza}
-             recyclerView.adapter = MySelectRiderRecyclerViewAdapter(riders,ordId,clientMail,tipo)
+             recyclerView.adapter = MySelectRiderRecyclerViewAdapter(distanza,riders,ordId,clientMail,tipo)
          }
       })
 

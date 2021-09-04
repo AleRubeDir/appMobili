@@ -118,8 +118,6 @@
     <string name="FineCorsa"> Termina Corsa</string>
     <string name="ConfermaPagamento"> Conferma Pagamento</string>
     <string name="swipe"> Swipe per terminare la corsa</string>
-<<<<<<< HEAD
     <string name="informazioni_ordine">Informazioni ordine</string>
-=======
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
+
 </resources>

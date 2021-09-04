@@ -37,9 +37,9 @@ class Rider_ConsegneFragment : Fragment() {
         Log.d("consegne", "dentro rider")
         getDelivery(
                 object : myCallback {
-                    override fun onCallback(consegne: List<Consegna>) {
+                    override fun onCallback(consegne: MutableList<Consegna>) {
                         Log.d("consegne", "consegne vale $consegne")
-                        recyclerView.adapter = MyConsegneRecyclerViewAdapter(consegne as MutableList<Consegna>)
+                        recyclerView.adapter = MyConsegneRecyclerViewAdapter(consegne)
 //                        Log.d("RISULTATO", consegne.toString())
                     }
                 })
@@ -73,7 +73,7 @@ class Rider_ConsegneFragment : Fragment() {
     }
 
     interface myCallback{
-        fun onCallback(consegne: List<Consegna>){
+        fun onCallback(consegne: MutableList<Consegna>){
         }
     }
     interface myCallbackBoolean{
@@ -90,117 +90,20 @@ class Rider_ConsegneFragment : Fragment() {
         val db = FirebaseFirestore.getInstance()
         val rider = FirebaseAuth.getInstance().currentUser!!.email.toString()
         var consegne = arrayListOf<Consegna>()
-        /*    db.collection("delivery").document(rider).collection("client").get()
-                .addOnSuccessListener {
-                    result ->
-                    for(clienti in result){
-                        db.collection("delivery").document(rider).collection("client").document(clienti.id).collection("details").get()
-                                .addOnSuccessListener {
-                                    result ->
-                                    for (x in result){
-                                        var posizione = x.getString("posizione").toString()
-                                        var stato = x.getString("stato").toString()
-                                        var tipo_pagamento = x.getString("tipo_pagamento").toString()
-                                        var orderId = x.id
-                                        var geocodeMatches: List<Address>? = null
-                                        try {
-                                            geocodeMatches = Geocoder(viewConsegne.context).getFromLocationName(posizione, 1)
-                                        } catch (e: IOException) {
-                                            e.printStackTrace()
-                                        }
-                                        var cons_rider = Location("")
-
-                                        for (mat in geocodeMatches!!) {
-                                            cons_rider.latitude = mat.latitude
-                                            cons_rider.longitude = mat.longitude
-                                        }
-
-                                        var distanza = (market.distanceTo(cons_rider)/1000).toDouble()
-                                        var consegna = Consegna(clienti.id,null,posizione,tipo_pagamento,stato,orderId,distanza,rider)
-
-                                        consegne.add(consegna)
-                                    }
-                                    myCallback.onCallback(consegne)
-                                }
-                        //db.collection("delivery").document(rider).collection("client").document(clienti.id).collection("products").get()
-                        //Log.d("Consegne",clienti.id)
-                    }
-                }*/
-        /*  db.collection("orders").get()
-                .addOnSuccessListener {
-                    for(d in it){
-                        db.collection("orders").document(d.id).collection("order").get()
-                                .addOnSuccessListener {
-                                    for(ord in it){
-                                        db.collection("orders").document(d.id).collection("order").document(ord.id).collection("details").document("dett").get()
-                                                .addOnSuccessListener { x->
-                                                    var posizione = x.getString("posizione").toString()
-                                                    var stato = x.getString("stato").toString()
-                                                    var tipo_pagamento = x.getString("tipo").toString()
-                                                    var orderId = ord.id
-                                                    var geocodeMatches: List<Address>? = null
-                                                    try {
-                                                        geocodeMatches = Geocoder(viewConsegne.context).getFromLocationName(posizione, 1)
-                                                    } catch (e: IOException) {
-                                                        e.printStackTrace()
-                                                    }
-                                                    var cons_rider = Location("")
-
-                                                    for (mat in geocodeMatches!!) {
-                                                        cons_rider.latitude = mat.latitude
-                                                        cons_rider.longitude = mat.longitude
-                                                    }
-
-                                                    var distanza = (market.distanceTo(cons_rider)/1000).toDouble()
-                                                    var consegna = Consegna(d.id,null,posizione,tipo_pagamento,stato,orderId,distanza,rider)
-
-                                                    consegne.add(consegna)
-                                                }
-                                        myCallback.onCallback(consegne)
-                                                }
-                                    }
-                                }
-                    }
-                }*/
-
         db.collection("delivery").document(rider).collection("orders").get()
                 .addOnCompleteListener {
                     for(order in it.result){
-<<<<<<< HEAD
-                        var ordId = order.id
-                        var client = order.getString("client").toString()
-                        var stato = order.getString("stato").toString()
-                        var lat = order.getDouble("lat")
-                        var lon = order.getDouble("lon")
-                        var tipo_pagamento = order.getString("tipo_pagamento").toString()
-                        //giusta questa distanza??
-                        var cons_rider = Location("")
-                        cons_rider.longitude = lon!!
-                        cons_rider.latitude = lat!!
-                        var distanza = (market.distanceTo(cons_rider)/1000).toDouble()
-=======
                         val ordId = order.getString("orderId").toString()
                         Log.d("mattia","riempimento liste: " + ordId)
                         val client = order.getString("client").toString()
                         val stato = order.getLong("stato")!!.toInt()
-                        val lat = order.getDouble("lat")
-                        val lon = order.getDouble("lon")
+                        val distanza = order.getDouble("distanza")!!
                         val tipo_pagamento = order.getString("tipo_pagamento").toString()
-                        //giusta questa distanza??
-                        val cons_rider = Location("")
-                        cons_rider.longitude = lon!!
-                        cons_rider.latitude = lat!!
-                        val distanza = (market.distanceTo(cons_rider)/1000).toDouble()
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
                         var posizione = ""
                         db.collection("users").document(client).get()
                                 .addOnSuccessListener {
                                     posizione = it.getString("address").toString()
-<<<<<<< HEAD
-                                    var consegna = Consegna(client,null,posizione,tipo_pagamento,stato,ordId,distanza,rider)
-=======
                                     val consegna = Consegna(client,null,posizione,tipo_pagamento,stato,ordId,distanza,rider)
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
                                     Log.d("consegne","consegna vale $consegna")
                                     consegne.add(consegna)
                         myCallback.onCallback(consegne)
@@ -213,7 +116,7 @@ class Rider_ConsegneFragment : Fragment() {
         val user = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
         val entry = hashMapOf<String,Any>(
-                "occupato" to switch
+                "disponibile" to switch
         )
         db.collection("riders").document(user).set(entry, SetOptions.merge())
     }

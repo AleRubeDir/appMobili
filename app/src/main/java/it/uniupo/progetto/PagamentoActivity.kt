@@ -26,22 +26,27 @@ class PagamentoActivity : AppCompatActivity() {
         val tot = findViewById<TextView>(R.id.tot)
         val ind = findViewById<TextView>(R.id.indirizzo)
 
-        getIndirizzo(object : MyCallback {
-            override fun onCallback(ris :String) {
-                Log.d("indirizzo", ris)
-                var arr = ris.split(",")
-                ind.text = arr[0] + " " + arr[1] + ","+ arr[2] + " "
-            }
-        },(FirebaseAuth.getInstance().currentUser?.email))
+
         var totdoub = "%.2f".format(ClienteActivity.tot)
         tot.text = getString(R.string.cash,totdoub)
+        val cliente = FirebaseAuth.getInstance().currentUser?.email
         btn.setOnClickListener{
             if(rg.checkedRadioButtonId==-1) Toast.makeText(this,"Seleziona un metodo di pagamento", Toast.LENGTH_LONG).show()
             else {
                 var i = 1
                 if(rg.checkedRadioButtonId==R.id.carta) i =0
-            selezionaMetodo(ord_id,i)
-            showAlert()
+                getIndirizzo(object : MyCallback {
+                    override fun onCallback(ris :String) {
+                        Log.d("indirizzo", ris)
+                        var arr = ris.split(",")
+                        var indirizzo = arr[0] + " " + arr[1] + ","+ arr[2] + " "
+                        ind.text = indirizzo
+                        selezionaMetodo(cliente!!,indirizzo, ord_id,i)
+                        showAlert()
+
+                    }
+                },cliente )
+
             }
         }
 
@@ -66,21 +71,8 @@ class PagamentoActivity : AppCompatActivity() {
                 .setMessage("Riceverai una notifica appena il rider partirà con il tuo ordine")
                 .setNeutralButton("Chiudi")
                 { _: DialogInterface, _: Int ->
-
-
                     for(p in ClienteActivity.carrello) diminuisciQtaDB(p)
                     svuotaCarrello()
-                   /* //??????????????????? controllare se funziona
-                    notificationManager =   getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    var pendInt = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-                    var builder = NotificationCompat.Builder(this)
-                            .setContentTitle("Consegna in arrivo")
-                            .setContentText("Seleziona il rider per questa consegna")
-                            .setContentIntent(pendInt)
-                            .setSmallIcon(R.drawable.cart)
-                            .setAutoCancel(true)
-                            .build()
-                    notificationManager.notify(0, builder)*/
                     startActivity(Intent(this,ClienteActivity::class.java))
 
                 }
@@ -142,7 +134,7 @@ class PagamentoActivity : AppCompatActivity() {
                 .map { allowedChars.random() }
                 .joinToString("")
     }
-    private fun selezionaMetodo(ord_id : String, i: Int) {
+    private fun selezionaMetodo(cliente : String ,indirizzo : String , ord_id : String, i: Int) {
         val db = FirebaseFirestore.getInstance()
         val user = FirebaseAuth.getInstance().currentUser?.email.toString()
         var tipo = ""
@@ -150,7 +142,10 @@ class PagamentoActivity : AppCompatActivity() {
         else tipo="Contanti"
         val entry = hashMapOf<String,Any>(
             "id" to i,
-            "tipo" to tipo
+            "tipo" to tipo,
+            //indirizzo ordine
+            "indirizzo" to indirizzo,
+            "cliente" to cliente
         )
         val dummy = hashMapOf<String,Any>(
                 " " to " "

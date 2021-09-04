@@ -6,24 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Rider_delivery_info">
 
-<<<<<<< HEAD
-        <fragment
-=======
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/titolo"
-        android:text="Informazioni ordine"
-        android:textSize="47sp"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:gravity="top|center"
-        android:background="@color/new_orange"
-
-        />
         <fragment
         android:layout_below="@id/titolo"
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map_rider"
@@ -34,7 +18,6 @@
         tools:context=".Rider_delivery_info" >
 
     </fragment>
-<<<<<<< HEAD
             <androidx.cardview.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
@@ -59,11 +42,6 @@
 
 
             </androidx.cardview.widget.CardView>
-=======
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
-
-
-
     <Button
         android:id="@+id/RiderConfermaPagamento"
         android:layout_below="@id/titolo"
@@ -96,9 +74,5 @@
         app:slider_locked="true"
         android:visibility="invisible"
         android:layout_margin="15dp"
-<<<<<<< HEAD
-=======
-
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
-        />
+/>
 </RelativeLayout>

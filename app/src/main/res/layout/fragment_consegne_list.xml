@@ -26,11 +26,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
-<<<<<<< HEAD
-        android:name="it.uniupo.progetto.fragments.Consegne_todo"
-=======
         android:name="it.uniupo.progetto.fragments.Consegne"
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"

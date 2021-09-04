@@ -85,99 +85,40 @@ class OrderFragment  : Fragment() {
     /*  ORDINI IN ARRIVO  */
     private fun getOrders(myCallbackOrders: MyCallbackConsegne) {
         val db = FirebaseFirestore.getInstance()
-        var tipo_pagamento = ""
         val prodotti = arrayListOf<Prodotto>()
-        var rider = ""
         val orders = arrayListOf<Consegna>()
-        getClients(object : NotificationService.MyCallback {
-            override fun onCallback(ris: List<String>) {
-                for (cliente in ris) {
-                    db.collection("users").document(cliente).get()
-                            .addOnSuccessListener {
-                                var indirizzo = it.getString("address").toString()
-                                db.collection("toassignOrders").get()
-                                        .addOnCompleteListener {
-                                            for (d in it.result) {
-<<<<<<< HEAD
-                                            tipo_pagamento = d.getString("tipo").toString()
-=======
-                                                        tipo_pagamento = d.getString("tipo").toString()
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
-                                                        val market = Location("")
-                                                        market.latitude = 44.994154
-                                                        market.longitude = 8.565942
-                                                        var geocodeMatches: List<Address>? = null
-                                                        try {
-                                                            geocodeMatches = Geocoder(myview.context).getFromLocationName(indirizzo, 1)
-                                                        } catch (e: IOException) {
-                                                            e.printStackTrace()
-                                                        }
-                                                        val cons_rider = Location("")
 
-                                                        for (mat in geocodeMatches!!) {
-                                                            cons_rider.latitude = mat.latitude
-                                                            cons_rider.longitude = mat.longitude
-                                                        }
-                                                        val distanza = (market.distanceTo(cons_rider) / 1000).toDouble()
-<<<<<<< HEAD
-                                                        val consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento, "stato", d.id, distanza, rider)
-=======
-                                                        val consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento,-1, d.id, distanza, rider)
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
-                                                        orders.add(consegna)
-                                            }
-                    myCallbackOrders.onCallback(orders)
-                                        }
-                            }
+        db.collection("toassignOrders").get()
+            .addOnCompleteListener {
+                for (d in it.result) {
+                    var cliente = d.getString("cliente").toString()
+                    var indirizzo = d.getString("indirizzo").toString()
+                    var tipo_pagamento = d.getString("tipo").toString()
+
+                    //distanza
+                    val market = Location("")
+                    market.latitude = 44.994154
+                    market.longitude = 8.565942
+                    var geocodeMatches: List<Address>? = null
+                    try {
+                        geocodeMatches = Geocoder(myview.context).getFromLocationName(indirizzo, 1)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                    val cons_rider = Location("")
+                    for (mat in geocodeMatches!!) {
+                        cons_rider.latitude = mat.latitude
+                        cons_rider.longitude = mat.longitude
+                    }
+                    val distanza = (market.distanceTo(cons_rider) / 1000).toDouble()
+                    //distanza
+                    val consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento,-1, d.id, distanza, "non_selezionato")
+                    orders.add(consegna)
                 }
+                myCallbackOrders.onCallback(orders)
             }
-        })
-      /*  getClients(object : NotificationService.MyCallback {
-            override fun onCallback(ris: List<String>) {
-                for (cliente in ris) {
-                    db.collection("users").document(cliente).get()
-                            .addOnSuccessListener {
-                    var indirizzo = it.getString("address").toString()
-                    getOrderByClients(cliente, object : NotificationService.MyCallback {
-                        override fun onCallback(ris: List<String>) {
-                            for (ord in ris) {
-                                tipo_pagamento = ""
-                                prodotti.clear()
-                                rider = ""
-                                db.collection("orders").document(cliente).collection("order").document(ord).collection("details").document("dett").get()
-                                        .addOnSuccessListener {
-                                            tipo_pagamento = it.getString("tipo").toString()
-                                          //  rider = it.getString("rider").toString()
-                                        }
-                                val market = Location("")
-                                market.latitude =  44.994154
-                                market.longitude =   8.565942
-                                var geocodeMatches: List<Address>? = null
-                                try {
-                                    geocodeMatches = Geocoder(myview.context).getFromLocationName(indirizzo, 1)
-                                } catch (e: IOException) {
-                                    e.printStackTrace()
-                                }
-                                val cons_rider = Location("")
-
-                                for (mat in geocodeMatches!!) {
-                                    cons_rider.latitude = mat.latitude
-                                    cons_rider.longitude = mat.longitude
-                                }
-                                var distanza = (market.distanceTo(cons_rider)/1000).toDouble()
-                                var consegna = Consegna(cliente, prodotti, indirizzo, tipo_pagamento, "stato", ord,distanza,rider)
-                                orders.add(consegna)
-                            }
-                            myCallbackOrders.onCallback(orders)
-                        }
-                    })
-                  }
-                }
-            }
-        })*/
-
-    }
-    private fun getClients(myCallback: NotificationService.MyCallback) {
+          }
+ /*   private fun getClients(myCallback: NotificationService.MyCallback) {
         val db = FirebaseFirestore.getInstance()
         var ris = mutableListOf<String>()
         db.collection("orders").get()
@@ -199,7 +140,7 @@ class OrderFragment  : Fragment() {
                     myCallback.onCallback(ris)
                 }
     }
-
+*/
 
     /* FINE ORDINI IN ARRIVO */
     fun convertLongToTime(time: Long): String {
