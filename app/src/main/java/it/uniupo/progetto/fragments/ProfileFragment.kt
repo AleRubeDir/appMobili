@@ -31,12 +31,12 @@ class ProfileFragment : Fragment() {
         var array = ArrayList<Azione>()
         val type = requireActivity().getSharedPreferences("login", 0).getString("login", "")
         array.add(Azione("Dati personali", 0))
-        array.add(Azione("Logout", 4))
+        array.add(Azione("Logout", 5))
         if (type == "Cliente") {
             array.add(Azione("La mia posizione", 1))
             array.add(Azione("I miei ordini", 2))
         } else if (type == "Rider") {
-        /*    array.add(Azione("I miei ordini", 2))*/
+            array.add(Azione("Storico Ordini", 4))
         } else if (type == "Gestore") {
             array.add(Azione("Posizioni rider",3))
         }

@@ -57,6 +57,10 @@ import it.uniupo.progetto.fragments.ProfileFragment
                  view.context.startActivity(intent)
              }
              else if(id.text=="4"){
+                 val intent = Intent(view.context, StoricoOrdini::class.java)
+                 view.context.startActivity(intent)
+             }
+             else if(id.text=="5"){
                  parent.context.getSharedPreferences("login",0).edit().remove("login").apply()
                  FirebaseAuth.getInstance().signOut()
                  val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
