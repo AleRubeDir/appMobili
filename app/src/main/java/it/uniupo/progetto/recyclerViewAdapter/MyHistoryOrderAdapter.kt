@@ -1,7 +1,6 @@
 package it.uniupo.progetto.recyclerViewAdapter
 
 import android.content.DialogInterface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.R
-import it.uniupo.progetto.StoricoOrdini.*
 import it.uniupo.progetto.fragments.OrderFragment.*
 
-class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Adapter<MyHistoryOrderAdapter.ViewHolder>() {
+class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String) : RecyclerView.Adapter<MyHistoryOrderAdapter.ViewHolder>() {
     lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
@@ -26,7 +24,8 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = ord[position]
+        if(tipo=="Cliente"){
+            val item = ord[position]
             checkRatings(item.id!!, holder.ratingQ, item.ratingQ, 1)
             checkRatings(item.id!!, holder.ratingV, item.ratingV, 2)
             checkRatings(item.id!!, holder.ratingC, item.ratingC, 3)
@@ -36,6 +35,18 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Ad
             holder.date.text = item.date
             holder.cliente.text = item.cliente
             holder.rider.text = item.rider
+        } else if(tipo=="Rider"){
+            val item = ord[position]
+            checkRatings(item.id!!, holder.ratingRC, item.ratingRC, 4)
+            checkRatings(item.id!!, holder.ratingRP, item.ratingRP, 5)
+
+            if (item.tipo == "Carta") {
+                holder.card.visibility = View.VISIBLE
+            } else holder.cash.visibility = View.VISIBLE
+            holder.date.text = item.date
+            holder.cliente.text = item.cliente
+            holder.rider.text = item.rider
+        }
 
     }
 
@@ -50,6 +61,8 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Ad
                             var newrat = "ratingQ"
                             if(type==2) newrat = "ratingV"
                             else if(type==3) newrat = "ratingC"
+                            else if(type==4) newrat = "ratingRC"
+                            else if(type==5) newrat = "ratingRP"
                             val entry = hashMapOf<String, Any?>(
                                     newrat to ratingBar.progress,
                             )
@@ -87,6 +100,8 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Ad
         var ratingQ: RatingBar = view.findViewById(R.id.rating_qualita)
         var ratingV: RatingBar = view.findViewById(R.id.rating_velocita)
         var ratingC: RatingBar = view.findViewById(R.id.rating_cortesia)
+        var ratingRC: RatingBar = view.findViewById(R.id.rating_cortesia_cliente)
+        var ratingRP: RatingBar = view.findViewById(R.id.rating_presenza)
         var cash: ImageView = view.findViewById(R.id.cash)
         var card: ImageView = view.findViewById(R.id.card)
         var date : TextView = view.findViewById(R.id.date)

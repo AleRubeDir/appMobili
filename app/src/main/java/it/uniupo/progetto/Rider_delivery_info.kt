@@ -209,9 +209,11 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                                 "tipoPagamento" to tipoPagamento,
                                 "statoPagamento" to statoPagamento,
                                 "risultatoOrdine" to 1,
-                            "ratingQ" to -1,
-                            "ratingV" to -1,
-                            "ratingC" to -1,
+                                "ratingQ" to -1,
+                                "ratingV" to -1,
+                                "ratingC" to -1,
+                                "ratingRC" to -1,
+                                "ratingRP" to -1,
 
                        )
                         Log.d("mattia", "prima di aggiunta in order history: " + orderId + newOrderHistory)

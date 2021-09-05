@@ -22,25 +22,31 @@ class StoricoOrdini : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         getUserType(object : MyCallback3{
             override fun onCallback(tipo: String) {
-                if(tipo=="Cliente"){
+
+//                if(tipo=="Cliente"){
                     val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
                     getAllCodes(mail, object : MyCallback2{
+
                         override fun onCallback(cods: ArrayList<String>) {
+
                             Log.d("history","cods vale : ${cods}")
                             getHistoryCodes(cods, object : MyCallback2{
+
                                 override fun onCallback(cods: ArrayList<String>) {
+
                                     Log.d("history","history_cods vale : ${cods}")
                                     getOrdersByUser(mail,object : MyCallback{
+
                                         override fun onCallback(ord : ArrayList<Order>){
                                             Log.d("history","Ord vale ${ord}")
-                                            recyclerView.adapter = MyHistoryOrderAdapter(ord)
+                                            recyclerView.adapter = MyHistoryOrderAdapter(ord,tipo)
                                         }
                                     },cods)
                                 }
                             })
                         }
                     })
-                }
+//                }
             }
         })
     }

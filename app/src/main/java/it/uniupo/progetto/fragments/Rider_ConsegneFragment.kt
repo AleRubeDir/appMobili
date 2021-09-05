@@ -200,6 +200,7 @@ class Rider_ConsegneFragment(var ind: String?, var ordId: String?, var userMail:
                                             "ratingV" to -1,
                                             "ratingC" to -1,
 
+
                                             )
                                     Log.d("mattia", "prima di aggiunta in order history: " + orderId + newOrderHistory)
                                     db.collection("orders_history").document(orderId).set(newOrderHistory)

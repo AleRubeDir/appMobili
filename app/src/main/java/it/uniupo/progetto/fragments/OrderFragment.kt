@@ -52,7 +52,7 @@ class OrderFragment  : Fragment() {
             else historyView.visibility = View.VISIBLE
                     getOrderInfo(object : MyCallback {
                         override fun onCallback(ords: ArrayList<Order>) {
-                            historyView.adapter = MyHistoryOrderAdapter(ords)
+                            historyView.adapter = MyHistoryOrderAdapter(ords, "Gestore")
                 }
             })
 
@@ -73,7 +73,7 @@ class OrderFragment  : Fragment() {
                                     val ratingV = d.getLong("ratingV")!!.toInt()
                                     val ratingC = d.getLong("ratingC")!!.toInt()
                                     val tot = d.getString("tot").toString()
-                                    val ord = Order(d.id, u, rider, tipo, arrayListOf(), ratingQ, ratingV, ratingC, convertLongToTime(data), tot, 0)
+                                    val ord = Order(d.id, u, rider, tipo, arrayListOf(), ratingQ, ratingV, ratingC,-1,-1, convertLongToTime(data), tot, 0)
                                     Log.d("history", "ord vale $ord")
                                     ords.add(ord)
                         }
@@ -130,7 +130,7 @@ class OrderFragment  : Fragment() {
     interface MyCallback {
         fun onCallback(ords: ArrayList<Order>)
     }
-    class Order(var id : String?,var cliente : String, var rider : String , var tipo : String, var arr : ArrayList<Prodotto>, var ratingQ : Int = -1, var ratingV : Int = -1, var ratingC : Int = -1, var date : String, var tot : String , var richiamato : Int = 0) {
+    class Order(var id : String?,var cliente : String, var rider : String , var tipo : String, var arr : ArrayList<Prodotto>, var ratingQ : Int = -1, var ratingV : Int = -1, var ratingC : Int = -1,var ratingRC : Int = -1,var ratingRP : Int = -1, var date : String, var tot : String , var richiamato : Int = 0) {
         override fun toString(): String {
             return "\n id : $id cliente : $cliente \n rider : $rider\n Tipo : $tipo \n ratingQ : $ratingQ \n ratingV : $ratingV \n ratingC : $ratingC \n date : $date \n arr : $arr "
         }
