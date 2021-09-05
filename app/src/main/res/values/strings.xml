@@ -119,5 +119,9 @@
     <string name="ConfermaPagamento"> Conferma Pagamento</string>
     <string name="swipe"> Swipe per terminare la corsa</string>
     <string name="informazioni_ordine">Informazioni ordine</string>
+    <string name="qualit_merce">Qualità merce</string>
+    <string name="velocit_consegna">Velocità consegna</string>
+    <string name="cortesia_rider">Cortesia rider</string>
+    <string name="dati_personali">Dati personali</string>
 
 </resources>

@@ -36,27 +36,12 @@ class ProfileFragment : Fragment() {
             array.add(Azione("La mia posizione", 1))
             array.add(Azione("I miei ordini", 2))
         } else if (type == "Rider") {
-            array.add(Azione("I miei ordini", 2))
+        /*    array.add(Azione("I miei ordini", 2))*/
         } else if (type == "Gestore") {
             array.add(Azione("Posizioni rider",3))
         }
         array.sortBy { it.id }
-     /*   getUserType(user, object : LoginActivity.FirestoreCallback {
-            override fun onCallback(type: String) {
-                Log.d("login","+++++ $type")
-                if (type == "Cliente") {
-                    array.add(Azione("Dati personali", 0))
-
-                    array.add(Azione("Logout", 3))
-                    array.add(Azione("La mia posizione", 1))
-                    array.add(Azione("I miei ordini", 2))
-                } else if (type == "Rider") {
-                    array.add(Azione("I miei ordini", 2))
-                }
-
-            }
-
-        })*/
+        Log.d("profile","array vale $array")
         recyclerView.adapter = ProfileActionsAdapter(array)
 
         return view
