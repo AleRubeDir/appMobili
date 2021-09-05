@@ -41,54 +41,42 @@ import java.util.*
 /**
  * A fragment representing a list of Items.
  */
-class Rider_ConsegneFragment(var ind: String?, var ordId: String?, var userMail: String?, var i: Int) : Fragment() {
+class Rider_ConsegneFragment(var address: String, var orderId: String, var userMail: String, var i: Int) : Fragment() {
 
     lateinit var viewConsegne: View
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
         if (i == 1) {
-            viewConsegne = inflater.inflate(R.layout.activity_rider_delivery_info, container, false)
+                    viewConsegne = inflater.inflate(R.layout.activity_rider_delivery_info, container, false)
             class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                 private lateinit var mMap: GoogleMap
-
                 override fun onCreate(savedInstanceState: Bundle?) {
-
                     super.onCreate(savedInstanceState)
-                    setContentView(R.layout.activity_rider_delivery_info)
-                    val ordine = intent.getBooleanExtra("ordineAccettato", false)
+                    viewConsegne = inflater.inflate(R.layout.activity_rider_delivery_info, container, false)
+                    val confermaPagamento = viewConsegne.findViewById<Button>(R.id.RiderConfermaPagamento) //bottone
+                    val consegnaRider = viewConsegne.findViewById<SlideToActView>(R.id.ConsegnaRider) //slider
 
-                    if (ordine) {
-                        onStartRiderActivity()
-                    }
-
+                    confermaPagamento.visibility = View.VISIBLE
                     val mapFragment = supportFragmentManager
                             .findFragmentById(R.id.map_rider) as SupportMapFragment
                     mapFragment.getMapAsync(this)
 
-
-                    val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
-
-                    /*  if(consegnaRider.isLocked)
-                          Toast.makeText(applicationContext,"Conferma il pagamento prima di terminare la corsa",Toast.LENGTH_SHORT).show()*/
-                    consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
-                        override fun onSlideComplete(view: SlideToActView) {
-//            devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
-                            val orderId = intent.getStringExtra("orderId")!!
-                            Log.d("mattia", "Premuto terminaConsegna " + orderId)
-                            terminaConsegnaFun(orderId)
-                            startActivity(Intent(applicationContext, RiderActivity::class.java))
-                        }
-                    }
-
-                    val confermaPagamento = findViewById<Button>(R.id.RiderConfermaPagamento)
-                    confermaPagamento.setOnClickListener {
-                        val orderId = intent.getStringExtra("orderId")!!
+                   confermaPagamento.setOnClickListener {
                         confermaPagamentofun(orderId)
                         Toast.makeText(applicationContext, "Pagamento confermato", Toast.LENGTH_SHORT).show()
                         consegnaRider.isLocked = false
                         consegnaRider.visibility = View.VISIBLE
                         Log.d("mattia", "Premuto confermaPagamento " + orderId)
+                    }
+
+                    consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
+                        override fun onSlideComplete(view: SlideToActView) {
+                    // devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
+                            Log.d("mattia", "Premuto terminaConsegna " + orderId)
+                            terminaConsegnaFun(orderId)
+                            startActivity(Intent(applicationContext, RiderActivity::class.java))
+                        }
                     }
                 }
 
@@ -115,7 +103,6 @@ class Rider_ConsegneFragment(var ind: String?, var ordId: String?, var userMail:
                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
                                }
                            }*/
-                    val address = intent.getStringExtra("address")!!
                     try {
                         geocodeMatches = Geocoder(applicationContext).getFromLocationName(address, 1)
                     } catch (e: IOException) {
@@ -132,11 +119,6 @@ class Rider_ConsegneFragment(var ind: String?, var ordId: String?, var userMail:
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(riderPos, zoomLevel))
                     }
 
-                }
-
-                private fun onStartRiderActivity() {
-                    val pagamentoRider = findViewById<Button>(R.id.RiderConfermaPagamento)
-                    pagamentoRider.visibility = View.VISIBLE
                 }
 
                 private fun confermaPagamentofun(orderId: String) {

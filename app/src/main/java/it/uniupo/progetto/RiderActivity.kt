@@ -29,7 +29,7 @@ class RiderActivity : AppCompatActivity() {
             val ind = intent.getStringExtra("address")
             val ordId = intent.getStringExtra("orderId")
             val userMail = intent.getStringExtra("userMail")
-            makeCurrentFragment(Rider_ConsegneFragment(ind,ordId,userMail,1))
+            makeCurrentFragment(Rider_ConsegneFragment(ind!!,ordId!!,userMail!!,1))
         }
 
 
