@@ -116,10 +116,6 @@ class MyConsegneRecyclerViewAdapter(
 
     fun refuseOrder(user: String,orderId: String){
 //        refuse order:
-
-
-
-
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
  /*       //        cambia stato in rifiutato
@@ -177,9 +173,9 @@ class MyConsegneRecyclerViewAdapter(
                     "statoOrdine" to statoOrdine,
                 )
                 db.collection("orders_history").document(orderId).set(entry, SetOptions.merge())
-                    .addOnSuccessListener {
-                        db.collection("delivery").document(rider).collection("orders").document(orderId).delete()
-                    }
+                db.collection("delivery").document(rider).collection("orders").document(orderId).delete()
+                db.collection("toassignOrders").document(orderId).delete()
+
             }
         //cancella ordine nel db delivery
         //rider torna disponibile
