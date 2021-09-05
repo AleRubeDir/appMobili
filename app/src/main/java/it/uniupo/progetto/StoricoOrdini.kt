@@ -41,25 +41,6 @@ class StoricoOrdini : AppCompatActivity() {
                         }
                     })
                 }
-                else if(tipo=="Rider"){
-                    val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
-                    getAllCodes(mail, object : MyCallback2{
-                        override fun onCallback(cods: ArrayList<String>) {
-                            Log.d("history","cods vale : ${cods}")
-                            getHistoryCodes(cods, object : MyCallback2{
-                                override fun onCallback(cods: ArrayList<String>) {
-                                    Log.d("history","history_cods vale : ${cods}")
-                                    getOrdersByUser(mail,object : MyCallback{
-                                        override fun onCallback(ord : ArrayList<Order>){
-                                            Log.d("history","Ord vale ${ord}")
-                                            recyclerView.adapter = MyHistoryOrderAdapter(ord)
-                                        }
-                                    },cods)
-                                }
-                            })
-                        }
-                    })
-                }
             }
         })
     }
@@ -93,7 +74,7 @@ class StoricoOrdini : AppCompatActivity() {
                 }
     }
 
-    private fun gettAllUsersWithOrders(mycallback: MyCallback2){
+/*    private fun gettAllUsersWithOrders(mycallback: MyCallback2){
         var users = arrayListOf<String>()
         val db = FirebaseFirestore.getInstance()
 
@@ -104,7 +85,7 @@ class StoricoOrdini : AppCompatActivity() {
                     }
                     mycallback.onCallback(users)
                 }
-    }
+    }*/
     private fun getAllCodes(mail : String , mycallback: MyCallback2){
 
         val db = FirebaseFirestore.getInstance()
@@ -159,11 +140,7 @@ class StoricoOrdini : AppCompatActivity() {
     interface MyCallback3 {
         fun onCallback(tipo : String)
     }
-       /* class Order(var id : String?,var cliente : String, var rider : String , var tipo : String, var arr : ArrayList<Prodotto>, var ratingQ : Int = -1, var ratingV : Int = -1, var ratingC : Int = -1, var date : String, var tot : String , var richiamato : Int = 0) {
-        override fun toString(): String {
-            return "Tipo : $tipo \n ratingQ : $ratingQ \n ratingV : $ratingV \n ratingC : $ratingC \n date : $date \n arr : $arr "
-        }
-    }*/
+
 }
 
 

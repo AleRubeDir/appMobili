@@ -62,7 +62,8 @@ class MyConsegneRecyclerViewAdapter(
                 coord = LatLng(mat.latitude, mat.longitude)
             }
             acceptOrder(userMail,orderId,coord.latitude,coord.longitude)
-            var intent = Intent(parent.context, Rider_delivery_info::class.java)
+            //var intent = Intent(parent.context, Rider_delivery_info::class.java)
+            var intent = Intent(parent.context, RiderActivity::class.java)
             intent.putExtra("address",address)
             intent.putExtra("orderId",orderId)
             intent.putExtra("userMail",userMail)

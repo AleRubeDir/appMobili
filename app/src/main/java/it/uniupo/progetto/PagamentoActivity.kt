@@ -25,30 +25,28 @@ class PagamentoActivity : AppCompatActivity() {
         val rg = findViewById<RadioGroup>(R.id.group)
         val tot = findViewById<TextView>(R.id.tot)
         val ind = findViewById<TextView>(R.id.indirizzo)
-
-
-        var totdoub = "%.2f".format(ClienteActivity.tot)
-        tot.text = getString(R.string.cash,totdoub)
         val cliente = FirebaseAuth.getInstance().currentUser?.email
-        btn.setOnClickListener{
-            if(rg.checkedRadioButtonId==-1) Toast.makeText(this,"Seleziona un metodo di pagamento", Toast.LENGTH_LONG).show()
-            else {
-                var i = 1
-                if(rg.checkedRadioButtonId==R.id.carta) i =0
-                getIndirizzo(object : MyCallback {
-                    override fun onCallback(ris :String) {
-                        Log.d("indirizzo", ris)
-                        var arr = ris.split(",")
-                        var indirizzo = arr[0] + " " + arr[1] + ","+ arr[2] + " "
-                        ind.text = indirizzo
+        getIndirizzo(object : MyCallback {
+            override fun onCallback(ris :String) {
+                Log.d("indirizzo", "indirizzo vale $ris")
+                val arr = ris.split(",")
+                val indirizzo = arr[0] + " " + arr[1] + ","+ arr[2] + " "
+                Log.d("indirizzo", "indirizzo splittato vale $indirizzo")
+                ind.text = indirizzo
+                btn.setOnClickListener{
+                    if(rg.checkedRadioButtonId==-1) Toast.makeText(this@PagamentoActivity,"Seleziona un metodo di pagamento", Toast.LENGTH_LONG).show()
+                    else {
+                        var i = 1
+                        if(rg.checkedRadioButtonId==R.id.carta) i =0
                         selezionaMetodo(cliente!!,indirizzo, ord_id,i)
                         showAlert()
-
                     }
-                },cliente )
-
+                }
             }
-        }
+        },cliente )
+        var totdoub = "%.2f".format(ClienteActivity.tot)
+        tot.text = getString(R.string.cash,totdoub)
+
 
     }
 
@@ -58,6 +56,7 @@ class PagamentoActivity : AppCompatActivity() {
         db.collection("users").document(email!!).get()
                 .addOnSuccessListener { document->
                     add = document.getString("address").toString()
+                    Log.d("indirizzo","dentro add vale $add")
                     myCallback.onCallback(add)
                 }
 

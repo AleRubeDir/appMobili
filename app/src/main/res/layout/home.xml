@@ -23,7 +23,7 @@
         android:src="@drawable/chat"
         android:visibility="invisible"
         android:layout_above="@+id/bottom_nav"/>-->
->>>>>>> 16caefea8b77745f20c2fdf9d1fb1f94764b2d4f
+
 <RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

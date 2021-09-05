@@ -14,24 +14,6 @@ class Ordini : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    /*    setContentView(R.layout.ordini)
-        val track = findViewById<TextView>(R.id.track)
-        val chat = findViewById<TextView>(R.id.chat)
-        val ritira = findViewById<TextView>(R.id.ritira)
-        val orders = findViewById<TextView>(R.id.past_orders)
-
-        track.setOnClickListener{
-            startActivity(Intent(this, RiderPosition::class.java))
-        }
-        chat.setOnClickListener{
-
-        }
-        ritira.setOnClickListener{
-
-        }
-        orders.setOnClickListener{
-
-        }*/
         setContentView(R.layout.fragment_my_orders)
         //       // Log.d("login", "---- ${requireActivity().getSharedPreferences("login", 0).getString("login", "")}")
         val recyclerView = findViewById<RecyclerView>(R.id.profile_actions)

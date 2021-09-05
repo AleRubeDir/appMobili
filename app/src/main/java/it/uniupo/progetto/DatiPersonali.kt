@@ -3,6 +3,7 @@ package it.uniupo.progetto
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -29,8 +30,10 @@ class DatiPersonali  : AppCompatActivity() {
                 nome.text = u.nome
                 cognome.text = u.cognome
                 tipo.text = u.tipo
-                if(u.indirizzo!="null")
+                if(u.indirizzo!="null") {
+                    indirizzo.visibility = View.VISIBLE
                     indirizzo.text = u.indirizzo
+                }
             }
         })
     }

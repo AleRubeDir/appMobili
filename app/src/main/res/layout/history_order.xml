@@ -57,19 +57,19 @@
         android:id="@+id/qualita"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Qualità merce"
+        android:text="@string/qualit_merce"
         android:layout_below="@id/rider"/>
     <TextView
         android:id="@+id/velocita"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Velocità consegna"
+        android:text="@string/velocit_consegna"
         android:layout_below="@id/rating_qualita"/>
     <TextView
         android:id="@+id/cortesia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cortesia rider"
+        android:text="@string/cortesia_rider"
         android:layout_below="@id/rating_velocita"/>
     <RatingBar
         android:id="@+id/rating_qualita"
@@ -89,13 +89,43 @@
         android:layout_marginTop="10dp"
         android:isIndicator="true"
         android:progressTint="@color/mimosa" />
-
     <RatingBar
         android:id="@+id/rating_cortesia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="?android:attr/ratingBarStyleIndicator"
         android:layout_below="@id/cortesia"
+        android:layout_marginTop="10dp"
+        android:isIndicator="true"
+        android:progressTint="@color/mimosa" />
+    <TextView
+        android:layout_marginTop="3dp"
+        android:id="@+id/presenza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Presenza in casa"
+        android:layout_below="@id/rating_cortesia"/>
+    <TextView
+        android:id="@+id/cortesia_cliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cortesia cliente"
+        android:layout_below="@id/rating_presenza"/>
+    <RatingBar
+        android:id="@+id/rating_presenza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/ratingBarStyleIndicator"
+        android:layout_below="@id/presenza"
+        android:layout_marginTop="10dp"
+        android:isIndicator="true"
+        android:progressTint="@color/mimosa" />
+    <RatingBar
+        android:id="@+id/rating_cortesia_cliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/ratingBarStyleIndicator"
+        android:layout_below="@id/cortesia_cliente"
         android:layout_marginTop="10dp"
         android:isIndicator="true"
         android:progressTint="@color/mimosa" />
