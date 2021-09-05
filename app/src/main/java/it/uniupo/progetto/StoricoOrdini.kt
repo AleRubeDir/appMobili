@@ -122,7 +122,7 @@ class StoricoOrdini : AppCompatActivity() {
                             val ratingQ = d.getLong("ratingQ")!!.toInt()
                             val ratingV = d.getLong("ratingV")!!.toInt()
                             val ratingC = d.getLong("ratingC")!!.toInt()
-                        ord = Order(id,mail, rider , tipo, prod, ratingQ,ratingV,ratingC, data, "0" )
+                        ord = Order(id,mail, rider , tipo, prod, ratingQ,ratingV,ratingC, -1,-1 , data, "0" )
                         Log.d("history","dentro ord vale $ord")
                         ords.add(ord)
             mycallback.onCallback(ords)

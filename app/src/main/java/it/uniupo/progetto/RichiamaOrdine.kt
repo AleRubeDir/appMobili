@@ -139,7 +139,7 @@ class RichiamaOrdine : AppCompatActivity() {
                         var tot = 0.0
                         prod.forEach { tot += it.qta * it.prezzo.toDouble() }
                         Log.d("richiama","tot vale $tot")
-                        ordine = Order(c,email,"","",prod,-1,-1,-1,"",tot.toString())
+                        ordine = Order(c,email,"","",prod,-1,-1,-1,-1,-1,"",tot.toString())
                         myCallback.onCallback(ordine)
                     }
 

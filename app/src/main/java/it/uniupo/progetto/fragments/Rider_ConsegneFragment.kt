@@ -47,6 +47,7 @@ class Rider_ConsegneFragment(var address: String, var orderId: String, var userM
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
+//        spiegazione i
         if (i == 1) {
                     viewConsegne = inflater.inflate(R.layout.activity_rider_delivery_info, container, false)
             class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
