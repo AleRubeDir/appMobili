@@ -21,7 +21,6 @@ import kotlin.collections.ArrayList
 
 class OrderFragment  : Fragment() {
     lateinit var myview : View
-   // val ords = arrayListOf<Order>()
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -118,30 +117,6 @@ class OrderFragment  : Fragment() {
                 myCallbackOrders.onCallback(orders)
             }
           }
- /*   private fun getClients(myCallback: NotificationService.MyCallback) {
-        val db = FirebaseFirestore.getInstance()
-        var ris = mutableListOf<String>()
-        db.collection("orders").get()
-                .addOnSuccessListener {
-                    for (d in it){
-                    ris.add(d.id)
-                }
-                    myCallback.onCallback(ris)
-                }
-    }
-    private fun getOrderByClients(client : String,myCallback: NotificationService.MyCallback){
-        val db = FirebaseFirestore.getInstance()
-        var ris = mutableListOf<String>()
-        db.collection("orders").document(client).collection("order").get()
-                .addOnSuccessListener {
-                    for (d in it){
-                        ris.add(d.id)
-                    }
-                    myCallback.onCallback(ris)
-                }
-    }
-*/
-
     /* FINE ORDINI IN ARRIVO */
     fun convertLongToTime(time: Long): String {
         val date = Date(time*1000)
@@ -155,21 +130,9 @@ class OrderFragment  : Fragment() {
     interface MyCallback {
         fun onCallback(ords: ArrayList<Order>)
     }
-    interface MyCallbackString {
-        fun onCallback(ris: String)
-    }
-    interface MyCallback2 {
-        fun onCallback(cods: ArrayList<String>)
-    }
-    interface MyCallbackProds {
-        fun onCallback(prods: ArrayList<Prodotto>)
-    }
-    interface MyCallbackContatore {
-        fun onCallback(size : Int )
-    }
     class Order(var id : String?,var cliente : String, var rider : String , var tipo : String, var arr : ArrayList<Prodotto>, var ratingQ : Int = -1, var ratingV : Int = -1, var ratingC : Int = -1, var date : String, var tot : String , var richiamato : Int = 0) {
         override fun toString(): String {
-            return "Tipo : $tipo \n ratingQ : $ratingQ \n ratingV : $ratingV \n ratingC : $ratingC \n date : $date \n arr : $arr "
+            return "\n id : $id cliente : $cliente \n rider : $rider\n Tipo : $tipo \n ratingQ : $ratingQ \n ratingV : $ratingV \n ratingC : $ratingC \n date : $date \n arr : $arr "
         }
     }
 }

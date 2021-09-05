@@ -123,16 +123,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tot"
-        android:layout_alignParentEnd="true"
         android:layout_below="@id/tipo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:textColor="@color/black"
-        android:textSize="25sp"/>
-    <TextView
-        android:layout_below="@id/tot"
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

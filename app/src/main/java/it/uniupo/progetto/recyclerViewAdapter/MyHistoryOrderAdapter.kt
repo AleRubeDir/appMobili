@@ -32,10 +32,7 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Ad
             checkRatings(item.id!!, holder.ratingC, item.ratingC, 3)
             if (item.tipo == "Carta") {
                 holder.card.visibility = View.VISIBLE
-
             } else holder.cash.visibility = View.VISIBLE
-            // holder.tot.text = (holder.tot.text.toString().toDouble() + item.prezzo.toDouble()*item.qta).toString()
-            holder.tot.text = item.tot
             holder.date.text = item.date
             holder.cliente.text = item.cliente
             holder.rider.text = item.rider
@@ -59,7 +56,7 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Ad
 
                             val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
                             val db = FirebaseFirestore.getInstance()
-                            db.collection("orders_history").document(mail).collection("orders").document(id).collection("others").document("info")
+                            db.collection("orders_history").document(id)
                                     .set(entry, SetOptions.merge())
                             holder.setIsIndicator(true)
                         }
@@ -92,7 +89,6 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>) : RecyclerView.Ad
         var ratingC: RatingBar = view.findViewById(R.id.rating_cortesia)
         var cash: ImageView = view.findViewById(R.id.cash)
         var card: ImageView = view.findViewById(R.id.card)
-        var tot : TextView = view.findViewById(R.id.tot)
         var date : TextView = view.findViewById(R.id.date)
         var cliente : TextView = view.findViewById(R.id.cliente)
         var rider : TextView = view.findViewById(R.id.rider)

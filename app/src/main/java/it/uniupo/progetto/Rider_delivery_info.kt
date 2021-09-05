@@ -171,18 +171,19 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                         val statoPagamento = doc.getLong("statoPagamento")!!.toInt()
                         val tipoPagamento = doc.getString("tipo_pagamento")
                         //risultato ordine da fare successivamente
-
-                        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-                        val currentDate = sdf.format(Date())
                         Log.d("mattia", "dopo di retrieve dati "  + client + stato + statoPagamento + tipoPagamento)
 
                         val newOrderHistory = hashMapOf<String, Any?>(
-                                "data" to  currentDate,
+                                "data" to  Date(),
                                 "mail" to client,
                                 "rider" to rider!!,
                                 "tipoPagamento" to tipoPagamento,
                                 "statoPagamento" to statoPagamento,
-                                "risultatoOrdine" to 1
+                                "risultatoOrdine" to 1,
+                            "ratingQ" to -1,
+                            "ratingV" to -1,
+                            "ratingC" to -1,
+
                        )
                         Log.d("mattia", "prima di aggiunta in order history: " + orderId + newOrderHistory)
                         db.collection("orders_history").document(orderId).set(newOrderHistory)
@@ -191,6 +192,12 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
     }
-
+    fun convertLongToTime(time: Long): String {
+        //passare i secondi a questa funzione
+        val date = Date(time*1000)
+        //  Log.d("mess","time vale $time date vale $date")
+        val format = SimpleDateFormat("dd/MM/yyyy")
+        return format.format(date)
+    }
 
 }
