@@ -22,30 +22,26 @@ class StoricoOrdini : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         getUserType(object : MyCallback3{
             override fun onCallback(tipo: String) {
-                if(tipo=="Gestore"){
-                    Log.d("history","Gestore")
-                    gettAllUsersWithOrders(object : MyCallback2{
-                        override fun onCallback(users: ArrayList<String>) {
-
-                            for(u in users) {
-                                Log.d("history","$u")
-                                getAllCodes(u,object : MyCallback2 {
-                                    override fun onCallback(cods: ArrayList<String>) {
-                                        Log.d("history","$cods")
-                                        getOrdersByUser(u,object : MyCallback {
-                                            override fun onCallback(ord : ArrayList<Order>){
-                                                Log.d("history", "Ord vale ${ord}")
-                                                recyclerView.adapter = MyHistoryOrderAdapter(ord)
-                                            }
-                                        }, cods)
-
-                                    }
-                                })
-                            }
+                if(tipo=="Cliente"){
+                    val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
+                    getAllCodes(mail, object : MyCallback2{
+                        override fun onCallback(cods: ArrayList<String>) {
+                            Log.d("history","cods vale : ${cods}")
+                            getHistoryCodes(cods, object : MyCallback2{
+                                override fun onCallback(cods: ArrayList<String>) {
+                                    Log.d("history","history_cods vale : ${cods}")
+                                    getOrdersByUser(mail,object : MyCallback{
+                                        override fun onCallback(ord : ArrayList<Order>){
+                                            Log.d("history","Ord vale ${ord}")
+                                            recyclerView.adapter = MyHistoryOrderAdapter(ord)
+                                        }
+                                    },cods)
+                                }
+                            })
                         }
                     })
-
-                }else if(tipo=="Cliente"){
+                }
+                else if(tipo=="Rider"){
                     val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
                     getAllCodes(mail, object : MyCallback2{
                         override fun onCallback(cods: ArrayList<String>) {

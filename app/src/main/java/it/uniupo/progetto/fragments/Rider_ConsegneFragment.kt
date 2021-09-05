@@ -49,7 +49,7 @@ class Rider_ConsegneFragment : Fragment() {
         val delivery_switch = viewConsegne.findViewById<SwitchCompat>(R.id.switch_delivery)
         getDisponibilita(object : myCallbackBoolean{
             override fun onCallback(ris: Boolean) {
-                delivery_switch.isChecked=!ris
+                delivery_switch.isChecked=ris
             }
         })
 

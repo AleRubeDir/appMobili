@@ -27,4 +27,5 @@
     <color name="new_yellow">#f6c667</color>
     <color name="mimosa">#f6c667</color>
     <color name="new_orange">#FF9636</color>
+    <color name="error">#ff033e</color>
 </resources>
