@@ -61,6 +61,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                 val orderId = intent.getStringExtra("orderId")!!
                 Log.d("mattia", "Premuto terminaConsegna " + orderId)
                 terminaConsegnaFun(orderId)
+                //per tornare indietro con l'aztivity
                 startActivity(Intent(applicationContext,RiderActivity::class.java))
             }
         }
@@ -74,6 +75,38 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
             consegnaRider.visibility = View.VISIBLE
             Log.d("mattia", "Premuto confermaPagamento " + orderId)
         }
+
+        val errorePagamento = findViewById<Button>(R.id.RiderProblemiPagamento)
+        errorePagamento.setOnClickListener{
+            val orderId = intent.getStringExtra("orderId")!!
+            errorePagamentofun(orderId)
+            Toast.makeText(applicationContext,"Pagamento rifiutato",Toast.LENGTH_SHORT).show()
+            consegnaRider.isLocked = false
+            consegnaRider.visibility = View.VISIBLE
+            Log.d("mattia", "Premuto errorePagamento " + orderId)
+        }
+    }
+
+    private fun onStartRiderActivity(){
+        val pagamentoRider = findViewById<Button>(R.id.RiderConfermaPagamento)
+        pagamentoRider.visibility= View.VISIBLE
+        val errorePagamentoRider = findViewById<Button>(R.id.RiderProblemiPagamento)
+        errorePagamentoRider.visibility= View.VISIBLE
+    }
+
+    private fun errorePagamentofun(orderId: String) {
+            val db = FirebaseFirestore.getInstance()
+            var rider = FirebaseAuth.getInstance().currentUser!!.email
+            val det = hashMapOf<String, Any?>(
+                    "statoPagamento" to 0,
+                    "stato" to 0,
+            )
+//        Log.d("DELIVERY - ",orderId)
+            db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(
+                    det,
+                    SetOptions.merge()
+            )
+
     }
 
     override fun onMapReady(p0: GoogleMap) {
@@ -118,10 +151,6 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private fun onStartRiderActivity(){
-        val pagamentoRider = findViewById<Button>(R.id.RiderConfermaPagamento)
-        pagamentoRider.visibility= View.VISIBLE
-    }
 
     private fun confermaPagamentofun(orderId: String){
         val db = FirebaseFirestore.getInstance()
@@ -194,6 +223,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
     }
+
     fun convertLongToTime(time: Long): String {
         //passare i secondi a questa funzione
         val date = Date(time*1000)

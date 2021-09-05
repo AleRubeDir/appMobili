@@ -117,6 +117,7 @@
 
     <string name="FineCorsa"> Termina Corsa</string>
     <string name="ConfermaPagamento"> Conferma Pagamento</string>
+    <string name="ErrorePagamento"> Problemi con pagamento?</string>
     <string name="swipe"> Swipe per terminare la corsa</string>
     <string name="informazioni_ordine">Informazioni ordine</string>
     <string name="qualit_merce">Qualità merce</string>

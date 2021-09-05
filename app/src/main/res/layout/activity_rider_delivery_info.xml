@@ -16,7 +16,6 @@
         android:layout_height="match_parent"
         map:uiZoomControls="false"
         tools:context=".Rider_delivery_info" >
-
     </fragment>
             <androidx.cardview.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -39,9 +38,8 @@
                     android:maxLines="1"
                     android:textColor="@color/black"
                     android:gravity="top|center" />
-
-
             </androidx.cardview.widget.CardView>
+
     <Button
         android:id="@+id/RiderConfermaPagamento"
         android:layout_below="@id/titolo"
@@ -52,6 +50,22 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/gradient_orange"
         android:text="@string/ConfermaPagamento"
+        android:padding="5dp"
+        android:visibility="invisible"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <Button
+        android:id="@+id/RiderProblemiPagamento"
+        android:layout_below="@id/RiderConfermaPagamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"
+        android:background="@color/error"
+        android:textColor="@color/white"
+        android:text="@string/ErrorePagamento"
         android:padding="5dp"
         android:visibility="invisible"
         android:clickable="true"
