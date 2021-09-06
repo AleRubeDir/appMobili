@@ -19,6 +19,7 @@ import it.uniupo.progetto.*
 import it.uniupo.progetto.Consegna
 import it.uniupo.progetto.R
 import java.io.IOException
+import java.util.*
 
 
 /**
@@ -115,8 +116,8 @@ class MyConsegneRecyclerViewAdapter(
         db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
     }
 
-    fun refuseOrder(user: String,orderId: String){
 //        refuse order:
+    fun refuseOrder(user: String,orderId: String){
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
  /*       //        cambia stato in rifiutato
@@ -156,27 +157,46 @@ class MyConsegneRecyclerViewAdapter(
         }
 //        cancella nel fragment l'ordine
 
-
         //cancella ordine nel db delivery
         db.collection("delivery").document(rider).collection("orders").document(orderId).get()
             .addOnCompleteListener {
+
+
+//                data 6 settembre 2021 17:20:29 UTC+2
+//                mail "20029064@studenti.uniupo.it"
+//                ratingC -1
+//                ratingQ -1
+//                ratingV -1
+//                rider "iltennistafolle@gmail.com"
+//                risultatoOrdine 1
+//                statoPagamento 0
+//                tipoPagamento "Carta"
+
                 var cliente = it.result.getString("client").toString()
                 var distanza = it.result.getDouble("distanza")
                 var orderId = it.result.getString("orderId").toString()
                 var statoOrdine = it.result.getLong("stato")!!.toInt()
                 var tipo_pagamento = it.result.getString("tipo_pagamento").toString()
                 val entry = hashMapOf<String, Any?>(
-                    "tipo_pagamento" to tipo_pagamento,
+                    "data" to  Date(),
+                    "tipoPagamento" to tipo_pagamento,
                     //indirizzo ordine
                     "distanza" to distanza,
                     "cliente" to cliente,
                     "orderId" to orderId,
                     "statoOrdine" to statoOrdine,
+                    "ratingC" to -1,
+                    "ratingQ" to-1,
+                    "ratingV" to -1,
+                    "rider" to rider,
+                    "risultatoOrdine" to -2,
+                    "statoPagamento" to -2,
                 )
                 db.collection("orders_history").document(orderId).set(entry, SetOptions.merge())
-                db.collection("delivery").document(rider).collection("orders").document(orderId).delete()
-                db.collection("toassignOrders").document(orderId).delete()
-
+                        .addOnSuccessListener {
+                            db.collection("delivery").document(rider).collection("orders").document(orderId).delete()
+                            db.collection("toassignOrders").document(orderId).delete()
+                        }
             }
         //cancella ordine nel db delivery
         //rider torna disponibile

@@ -31,9 +31,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.ncorti.slidetoact.SlideToActView
-import it.uniupo.progetto.Consegna
-import it.uniupo.progetto.R
-import it.uniupo.progetto.RiderActivity
+import it.uniupo.progetto.*
 import it.uniupo.progetto.recyclerViewAdapter.*
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -53,14 +51,22 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
             viewConsegne = inflater.inflate(R.layout.activity_rider_delivery_info, container, false)
             val confermaPagamento = viewConsegne.findViewById<Button>(R.id.RiderConfermaPagamento) //bottone
             val rifiutaPagamento = viewConsegne.findViewById<Button>(R.id.RiderProblemiPagamento) //bottone
+            val partenzaMM = viewConsegne.findViewById<Button>(R.id.leftMMButton) //bottone
             val consegnaRider = viewConsegne.findViewById<SlideToActView>(R.id.ConsegnaRider) //slider
 
-            confermaPagamento.visibility = View.VISIBLE
-            rifiutaPagamento.visibility = View.VISIBLE
+
+            partenzaMM.visibility = View.VISIBLE
             val mapFragment = childFragmentManager
                     .findFragmentById(R.id.map_rider) as SupportMapFragment
             mapFragment.getMapAsync(this)
 
+            partenzaMM.setOnClickListener{
+                confermaPagamento.visibility = View.VISIBLE
+                rifiutaPagamento.visibility = View.VISIBLE
+//                manda notifica
+
+
+            }
             confermaPagamento.setOnClickListener {
                 confermaPagamentofun()
                 Toast.makeText(viewConsegne.context, "Pagamento confermato", Toast.LENGTH_SHORT).show()
@@ -73,6 +79,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                 Toast.makeText(viewConsegne.context, "Pagamento rifiutato", Toast.LENGTH_SHORT).show()
                 consegnaRider.isLocked = false
                 consegnaRider.visibility = View.VISIBLE
+                Log.d("mattia", "Premuto rifiutaPagamento" + RiderActivity.ordId!!)
             }
 
             consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
@@ -82,8 +89,6 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                     terminaConsegnaFun()
                 }
             }
-
-
 
     }
         else {
@@ -130,6 +135,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
         db.collection("delivery").document(rider!!).collection("orders").get()
                 .addOnCompleteListener {
                     for(d in it.result){
+//                        var orderId = d.id
                         db.collection("delivery").document(rider!!).collection("orders").document(d.id).set(
                                 det,
                                 SetOptions.merge()
@@ -187,7 +193,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                 }
     }
 
-    private fun terminaConsegnaFun() {
+    public fun terminaConsegnaFun() {
         val db = FirebaseFirestore.getInstance()
         var rider = FirebaseAuth.getInstance().currentUser!!.email
 
@@ -241,8 +247,36 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         db.collection("delivery").document(rider!!).collection("orders").document(RiderActivity.ordId!!).delete()
                         db.collection("toAssignOrders").document(rider!!).collection("orders").document(RiderActivity.ordId!!).delete()
 
-                        //cambiare  activity
                     }
+                }
+        for(p in ClienteActivity.carrello) {
+            diminuisciQtaDB(p)
+        }
+    }
+
+    private fun diminuisciQtaDB(p: Prodotto) {
+
+        val db = FirebaseFirestore.getInstance()
+        db.collection("products").document(p.id.toString()).get()
+                .addOnSuccessListener { document->
+                    val vecchiaqta = document.getLong("qta")!!.toInt()
+                    val nuovaqta = vecchiaqta-p.qta
+                    val entry = hashMapOf<String, Any?>(
+                            "qta" to nuovaqta,
+                    )
+                    db.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
+                            .addOnSuccessListener {
+                                Log.d("qta","Qta prodotto aggiornata con successo")
+                            }
+                            .addOnFailureListener{
+                                Log.w("qta","Errore modifica qtaDB $it")
+                                it.printStackTrace()
+                            }
+
+                }
+                .addOnFailureListener{
+                    Log.w("qta","Errore ottenimento qtaDB $it")
+                    it.printStackTrace()
                 }
     }
 

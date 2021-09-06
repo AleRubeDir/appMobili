@@ -1,9 +1,17 @@
 package it.uniupo.progetto
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import it.uniupo.progetto.fragments.ProfileFragment
@@ -24,6 +32,8 @@ class RiderActivity : AppCompatActivity() {
         makeCurrentFragment(deliveryFragment)
         Log.d("notifications","start notification service ")
         startService(Intent(this,NotificationService::class.java))
+        // inizializza valori in caso di ordine accettato
+
         if(intent.getBooleanExtra("ordineAccettato",false)){
             ind = intent.getStringExtra("address")
             ordId = intent.getStringExtra("orderId")
@@ -37,7 +47,9 @@ class RiderActivity : AppCompatActivity() {
         nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.chat -> {
+
                     makeCurrentFragment(chatFragment)
+
                 }
                 R.id.consegne -> {
                     makeCurrentFragment(deliveryFragment)
@@ -61,6 +73,7 @@ class RiderActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
+
     companion object {
         var flag_consegna = 0
         var ind : String? = null

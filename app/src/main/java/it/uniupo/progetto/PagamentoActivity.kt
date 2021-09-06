@@ -70,7 +70,7 @@ class PagamentoActivity : AppCompatActivity() {
                 .setMessage("Riceverai una notifica appena il rider partirà con il tuo ordine")
                 .setNeutralButton("Chiudi")
                 { _: DialogInterface, _: Int ->
-                    for(p in ClienteActivity.carrello) diminuisciQtaDB(p)
+//                    for(p in ClienteActivity.carrello) diminuisciQtaDB(p)
                     svuotaCarrello()
                     startActivity(Intent(this,ClienteActivity::class.java))
 
@@ -102,30 +102,7 @@ class PagamentoActivity : AppCompatActivity() {
         ClienteActivity.tot=0.0
     }
 
-    private fun diminuisciQtaDB(p: Prodotto) {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("products").document(p.id.toString()).get()
-                .addOnSuccessListener { document->
-                    val vecchiaqta = document.getLong("qta")!!.toInt()
-                    val nuovaqta = vecchiaqta-p.qta
-                    val entry = hashMapOf<String, Any?>(
-                            "qta" to nuovaqta,
-                    )
-                    db.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
-                            .addOnSuccessListener {
-                                Log.d("qta","Qta prodotto aggiornata con successo")
-                            }
-                            .addOnFailureListener{
-                                Log.w("qta","Errore modifica qtaDB $it")
-                                it.printStackTrace()
-                            }
 
-                }
-                .addOnFailureListener{
-                    Log.w("qta","Errore ottenimento qtaDB $it")
-                    it.printStackTrace()
-                }
-    }
 
     fun getRandomString() : String {
         val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')

@@ -10,6 +10,7 @@ import android.os.IBinder
 
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -79,14 +80,43 @@ class NotificationService : Service() {
                                 if (snap != null) {
                                     Log.d(TAG,"dentro createNotification")
                                     val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                                    val mBuilder = Notification.Builder(applicationContext)
-                                            .setContentTitle("Consegna in arrivo")
-                                            .setContentText("Seleziona un rider per questa consegna ")
-                                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                                            .setContentIntent(resultIntent)
-                                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                                    mBuilder.setAutoCancel(true)
-                                    mNotificationManager.notify(0, mBuilder.build())
+
+                                   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        val name = getString(R.string.notificheRider)
+                                        val descriptionText = "nuovoOrdine"
+                                        val importance = NotificationManager.IMPORTANCE_DEFAULT
+                                        val CHANNEL_ID = getString(R.string.notificheRider)
+                                        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                                            description = descriptionText
+                                        }
+                                        // Register the channel with the system
+                                        val notificationManager: NotificationManager =
+                                                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                                        notificationManager.createNotificationChannel(channel)
+
+                                        var builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+                                                .setSmallIcon(R.mipmap.ic_launcher)
+                                                .setContentTitle("Consegna in arrivo")
+                                                .setContentText("Seleziona un rider per questa consegna ")
+//                                                .setStyle(NotificationCompat.BigTextStyle()
+//                                                        .bigText("Much longer text that cannot fit one line..."))
+                                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                                .setContentIntent(resultIntent)
+
+                                        with(NotificationManagerCompat.from(applicationContext)) {
+                                            // notificationId is a unique int for each notification that you must define
+                                            notify(1234, builder.build())
+                                        }
+                                    }else {
+                                        Log.d("NOTIFICA","<oreo")
+                                        var mBuilder = Notification.Builder(applicationContext)
+                                                .setContentTitle("Consegna in arrivo")
+                                                .setContentText("Seleziona un rider per questa consegna ")
+                                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                                        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                                        mBuilder.setAutoCancel(true)
+                                        mNotificationManager.notify(0, mBuilder.build())
+                                    }
                                 }
                             }
                         }
@@ -117,14 +147,43 @@ class NotificationService : Service() {
                                                         }
                                                         Log.d(TAG, "dentro createNotification")
                                                         val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                                                        val mBuilder = NotificationCompat.Builder(applicationContext)
-                                                                .setContentTitle("Rider partito")
-                                                                .setContentText("Il rider ha appena lasciato il market, ora puoi chattare con lui")
-                                                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                                                                .setContentIntent(resultIntent)
-                                                        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                                                        mBuilder.setAutoCancel(true)
-                                                        mNotificationManager.notify(0, mBuilder.build())
+                                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                                            val name = getString(R.string.notificheRider)
+                                                            val descriptionText = "nuovoOrdine"
+                                                            val importance = NotificationManager.IMPORTANCE_DEFAULT
+                                                            val CHANNEL_ID = getString(R.string.notificheRider)
+                                                            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                                                                description = descriptionText
+                                                            }
+                                                            // Register the channel with the system
+                                                            val notificationManager: NotificationManager =
+                                                                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                                                            notificationManager.createNotificationChannel(channel)
+
+                                                            var builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+                                                                    .setSmallIcon(R.mipmap.ic_launcher)
+                                                                    .setContentTitle("Rider partito")
+                                                                    .setContentText("Il rider ha appena lasciato il market, ora puoi chattare con lui")
+//                                                .setStyle(NotificationCompat.BigTextStyle()
+//                                                        .bigText("Much longer text that cannot fit one line..."))
+                                                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                                                    .setContentIntent(resultIntent)
+
+                                                            with(NotificationManagerCompat.from(applicationContext)) {
+                                                                // notificationId is a unique int for each notification that you must define
+                                                                notify(1234, builder.build())
+                                                            }
+                                                        }else {
+                                                            Log.d("NOTIFICA","<oreo")
+                                                            var mBuilder = Notification.Builder(applicationContext)
+                                                                    .setContentTitle("Rider partito")
+                                                                    .setContentText("Il rider ha appena lasciato il market, ora puoi chattare con lui")
+                                                                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                                                            mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                                                            mBuilder.setAutoCancel(true)
+                                                            mNotificationManager.notify(0, mBuilder.build())
+                                                        }
+
                                                     }
                                                 }
                                             }
@@ -149,14 +208,44 @@ class NotificationService : Service() {
                                 if (snap != null) {
                                     Log.d(TAG,"dentro createNotification")
                                     val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                                    val mBuilder = NotificationCompat.Builder(applicationContext)
-                                            .setContentTitle("Consegna in arrivo")
-                                            .setContentText("Scegli se accettarla o rifiutarla")
-                                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                                            .setContentIntent(resultIntent)
-                                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                                    mBuilder.setAutoCancel(true)
-                                    mNotificationManager.notify(0, mBuilder.build())
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        val name = getString(R.string.notificheRider)
+                                        val descriptionText = "nuovoOrdine"
+                                        val importance = NotificationManager.IMPORTANCE_DEFAULT
+                                        val CHANNEL_ID = getString(R.string.notificheRider)
+                                        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                                            description = descriptionText
+                                        }
+                                        // Register the channel with the system
+                                        val notificationManager: NotificationManager =
+                                                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                                        notificationManager.createNotificationChannel(channel)
+
+                                        var builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+                                                .setSmallIcon(R.mipmap.ic_launcher)
+                                                .setContentTitle("Ordine ASSEGNATO")
+                                                .setContentText("Ti è stato assegnato un nuovo ordine.")
+//                                                .setStyle(NotificationCompat.BigTextStyle()
+//                                                        .bigText("Much longer text that cannot fit one line..."))
+                                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                                .setContentIntent(resultIntent)
+
+                                        with(NotificationManagerCompat.from(applicationContext)) {
+                                            // notificationId is a unique int for each notification that you must define
+                                            notify(1234, builder.build())
+                                        }
+                                    }else {
+                                        Log.d("NOTIFICA","<oreo")
+                                        var mBuilder = Notification.Builder(applicationContext)
+                                                .setContentTitle("Ordine ASSEGNATO")
+                                                .setContentText("Ti è stato assegnato un nuovo ordine.")
+                                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                                        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                                        mBuilder.setAutoCancel(true)
+                                        mNotificationManager.notify(0, mBuilder.build())
+                                    }
+
+
                                 }
                             }
                         }
