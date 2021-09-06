@@ -19,12 +19,11 @@ class RiderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider)
         val chatFragment = Rider_chatFragment()
-        val deliveryFragment = Rider_ConsegneFragment("", "", "", 1)
+        val deliveryFragment = Rider_ConsegneFragment("", "", "", 0)
         val profileFragment = ProfileFragment()
         makeCurrentFragment(deliveryFragment)
         Log.d("notifications","start notification service ")
         startService(Intent(this,NotificationService::class.java))
-
         if(intent.getBooleanExtra("ordineAccettato",false)){
             val ind = intent.getStringExtra("address")
             val ordId = intent.getStringExtra("orderId")
