@@ -57,19 +57,20 @@
 
     <Button
         android:id="@+id/RiderProblemiPagamento"
-        android:layout_below="@id/RiderConfermaPagamento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/RiderConfermaPagamento"
+        android:layout_alignStart="@id/RiderConfermaPagamento"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_alignParentEnd="true"
-        android:background="@color/error"
-        android:textColor="@color/white"
-        android:text="@string/ErrorePagamento"
-        android:padding="5dp"
-        android:visibility="invisible"
+        android:background="@drawable/gradient_red"
         android:clickable="true"
-        android:focusable="true"/>
+        android:focusable="true"
+        android:padding="5dp"
+        android:text="@string/ErrorePagamento"
+        android:textColor="@color/white"
+        android:visibility="invisible" />
 
     <com.ncorti.slidetoact.SlideToActView
         android:id="@+id/ConsegnaRider"
@@ -89,4 +90,16 @@
         android:visibility="invisible"
         android:layout_margin="15dp"
 />
+    <Button
+        android:id="@+id/leftMMButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ConsegnaRider"
+        android:text="@string/partenza_da_mm"
+        android:layout_alignStart="@id/RiderConfermaPagamento"
+        android:background="@drawable/button_mm"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible"
+        />
+
 </RelativeLayout>

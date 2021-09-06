@@ -124,5 +124,9 @@
     <string name="velocit_consegna">Velocità consegna</string>
     <string name="cortesia_rider">Cortesia rider</string>
     <string name="dati_personali">Dati personali</string>
+    <string name="partenza_da_mm">Partenza</string>
 
+
+<!--    NOTIFICHE-->
+    <string name="notificheRider">Nuovo ordine</string>
 </resources>
