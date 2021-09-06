@@ -129,4 +129,6 @@
 
 <!--    NOTIFICHE-->
     <string name="notificheRider">Nuovo ordine</string>
+    <string name="cortesia_cliente">cortesiaCliente</string>
+    <string name="presenza_in_casa">Presenza</string>
 </resources>

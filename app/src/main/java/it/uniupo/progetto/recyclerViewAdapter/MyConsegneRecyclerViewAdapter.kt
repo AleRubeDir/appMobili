@@ -18,6 +18,7 @@ import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.*
 import it.uniupo.progetto.Consegna
 import it.uniupo.progetto.R
+import it.uniupo.progetto.fragments.Rider_ConsegneFragment
 import java.io.IOException
 import java.util.*
 
@@ -176,6 +177,7 @@ class MyConsegneRecyclerViewAdapter(
                 var distanza = it.result.getDouble("distanza")
                 var orderId = it.result.getString("orderId").toString()
                 var statoOrdine = it.result.getLong("stato")!!.toInt()
+//                var statoPagamento = it.result.getLong("statoPagamento")!!.toInt()
                 var tipo_pagamento = it.result.getString("tipo_pagamento").toString()
                 val entry = hashMapOf<String, Any?>(
                     "data" to  Date(),
@@ -184,7 +186,7 @@ class MyConsegneRecyclerViewAdapter(
                     "distanza" to distanza,
                     "cliente" to cliente,
                     "orderId" to orderId,
-                    "statoOrdine" to statoOrdine,
+//                    "risultatoOrdine" to statoOrdine,
                     "ratingC" to -1,
                     "ratingQ" to-1,
                     "ratingV" to -1,
@@ -197,7 +199,11 @@ class MyConsegneRecyclerViewAdapter(
                             db.collection("delivery").document(rider).collection("orders").document(orderId).delete()
                             db.collection("toassignOrders").document(orderId).delete()
                         }
+
+
             }
+
+
         //cancella ordine nel db delivery
         //rider torna disponibile
         val disponibile = hashMapOf<String, Any?>(
