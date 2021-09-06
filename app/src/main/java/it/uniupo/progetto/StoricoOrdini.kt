@@ -22,51 +22,16 @@ class StoricoOrdini : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         getUserType(object : MyCallback3{
             override fun onCallback(tipo: String) {
-
-//                if(tipo=="Cliente"){
-                    val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
-                    getAllCodes(mail, object : MyCallback2{
-
-                        override fun onCallback(cods: ArrayList<String>) {
-
-                            Log.d("history","cods vale : ${cods}")
-                            getHistoryCodes(cods, object : MyCallback2{
-
-                                override fun onCallback(cods: ArrayList<String>) {
-
-                                    Log.d("history","history_cods vale : ${cods}")
-                                    getOrdersByUser(mail,object : MyCallback{
-
-                                        override fun onCallback(ord : ArrayList<Order>){
-                                            Log.d("history","Ord vale ${ord}")
-                                            recyclerView.adapter = MyHistoryOrderAdapter(ord,tipo)
-                                        }
-                                    },cods)
-                                }
-                            })
-                        }
-                    })
-//                }
+                getOrdersByUser(object : MyCallback{
+                    override fun onCallback(ord : ArrayList<Order>){
+                            recyclerView.adapter = MyHistoryOrderAdapter(ord,tipo)
+                    }
+                })
             }
         })
     }
 
-    private fun getHistoryCodes(cods : ArrayList<String>, mycallback : MyCallback2){
-        var history_cods = arrayListOf<String>()
-        val db = FirebaseFirestore.getInstance()
-        db.collection("orders_history").get()
-            .addOnSuccessListener {
-                for(d in it){
-                    Log.d("history","oh - %{d.id}")
-                    cods.forEach{
-                        if(it==d.id)
-                        history_cods.add(it)
-                    }
-                }
-                mycallback.onCallback(history_cods)
-            }
 
-    }
     private fun getUserType(mycallback: MyCallback3){
         val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val db = FirebaseFirestore.getInstance()
@@ -80,69 +45,44 @@ class StoricoOrdini : AppCompatActivity() {
                 }
     }
 
-/*    private fun gettAllUsersWithOrders(mycallback: MyCallback2){
-        var users = arrayListOf<String>()
-        val db = FirebaseFirestore.getInstance()
-
-        db.collection("orders_history").get()
-                .addOnSuccessListener {
-                    for(doc in it){
-                        users.add(doc.id)
-                    }
-                    mycallback.onCallback(users)
-                }
-    }*/
-    private fun getAllCodes(mail : String , mycallback: MyCallback2){
-
-        val db = FirebaseFirestore.getInstance()
-        var cods = arrayListOf<String>()
-        var prod = arrayListOf<Prodotto>()
-        db.collection("orders").document(mail).collection("order").get()
-                .addOnSuccessListener { doc ->
-                    for (d in doc) {
-                        cods.add(d.id)
-                    }
-                    mycallback.onCallback(cods)
-                }
-
-    }
-    private fun getOrdersByUser(mail : String , mycallback : MyCallback, cods : ArrayList<String>) {
+    private fun getOrdersByUser(mycallback : MyCallback) {
         val db = FirebaseFirestore.getInstance()
         var prod = arrayListOf<Prodotto>()
         var ord : Order
         val ords = arrayListOf<Order>()
-        for(c in cods)
-        {
-            db.collection("orders_history").document(c).get()
-                    .addOnSuccessListener { d->
-                            val id = c
-                            val rider = d.getString("rider").toString()
-                            val tipo = d.getString("tipoPagamento").toString()
-                            val data = convertLongToTime(d.getTimestamp("data")!!.seconds)
-                            val ratingQ = d.getLong("ratingQ")!!.toInt()
-                            val ratingV = d.getLong("ratingV")!!.toInt()
-                            val ratingC = d.getLong("ratingC")!!.toInt()
-                        ord = Order(id,mail, rider , tipo, prod, ratingQ,ratingV,ratingC, -1,-1 , data, "0" )
-                        Log.d("history","dentro ord vale $ord")
-                        ords.add(ord)
+        val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
+            db.collection("orders_history").get()
+                    .addOnCompleteListener {
+                            for(d in it.result) {
+                                val id = d.id
+                                val rider = d.getString("rider").toString()
+                                val tipo = d.getString("tipoPagamento").toString()
+                                val data = convertLongToTime(d.getTimestamp("data")?.seconds)
+                                val ratingQ = d.getLong("ratingQ")?.toInt()
+                                val ratingV = d.getLong("ratingV")?.toInt()
+                                val ratingC = d.getLong("ratingC")?.toInt()
+                                val risultatoOrdine = d.getLong("risultatoOrdine")?.toInt()
+                                ord = Order(id, mail, rider, tipo, prod, ratingQ, ratingV, ratingC, -1, -1, data, "0",0, risultatoOrdine)
+                                Log.d("history2", "dentro ord vale $ord")
+                                ords.add(ord)
+                            }
+                        Log.d("history2", "dentro ords vale $ords")
             mycallback.onCallback(ords)
                     }
-        }
-
     }
-    fun convertLongToTime(time: Long): String {
+    fun convertLongToTime(time: Long?): String {
+        if(time!=null){
         val date = Date(time*1000)
         //  Log.d("mess","time vale $time date vale $date")
         val format = SimpleDateFormat("dd/MM/yyyy")
         return format.format(date)
+        }
+        return "err"
     }
     interface MyCallback {
         fun onCallback(ord: ArrayList<Order>)
     }
 
-    interface MyCallback2 {
-        fun onCallback(cods: ArrayList<String>)
-    }
     interface MyCallback3 {
         fun onCallback(tipo : String)
     }

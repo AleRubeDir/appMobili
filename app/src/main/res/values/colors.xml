@@ -24,6 +24,10 @@
     <!--<color name="new_comp">#6797f6</color>-->
     <color name="new_shade_comp">#bdd2fb</color>
     <color name="new_green">#DAD870</color>
+
+    <color name="green">#D08CDA70</color>
+    <color name="red">#CEDA5B5B</color>
+
     <color name="new_yellow">#f6c667</color>
     <color name="mimosa">#f6c667</color>
     <color name="new_orange">#FF9636</color>

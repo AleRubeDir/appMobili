@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.*
 import java.io.IOException
@@ -59,27 +60,31 @@ class OrderFragment  : Fragment() {
         }
         return myview
     }
-    private fun getOrderInfo(myCallback: MyCallback){
-    val db = FirebaseFirestore.getInstance()
-    val ords = arrayListOf<Order>()
+    private fun getOrderInfo(mycallback: MyCallback){
+        val db = FirebaseFirestore.getInstance()
+        var prod = arrayListOf<Prodotto>()
+        var ord : Order
+        val ords = arrayListOf<Order>()
+        val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
         db.collection("orders_history").get()
-                    .addOnCompleteListener {
-                        for (d in it.result) {
-                                    val u = d.getString("mail").toString()
-                                    val rider = d.getString("rider").toString()
-                                    val tipo = d.getString("tipo").toString()
-                                    val data = d.getTimestamp("data")!!.seconds
-                                    val ratingQ = d.getLong("ratingQ")!!.toInt()
-                                    val ratingV = d.getLong("ratingV")!!.toInt()
-                                    val ratingC = d.getLong("ratingC")!!.toInt()
-                                    val tot = d.getString("tot").toString()
-                                    val ord = Order(d.id, u, rider, tipo, arrayListOf(), ratingQ, ratingV, ratingC,-1,-1, convertLongToTime(data), tot, 0)
-                                    Log.d("history", "ord vale $ord")
-                                    ords.add(ord)
-                        }
-                    myCallback.onCallback(ords)
-                    }
-        }
+            .addOnCompleteListener {
+                for(d in it.result) {
+                    val id = d.id
+                    val rider = d.getString("rider").toString()
+                    val tipo = d.getString("tipoPagamento").toString()
+                    val data = convertLongToTime(d.getTimestamp("data")?.seconds)
+                    val ratingQ = d.getLong("ratingQ")?.toInt()
+                    val ratingV = d.getLong("ratingV")?.toInt()
+                    val ratingC = d.getLong("ratingC")?.toInt()
+                    val risultatoOrdine = d.getLong("risultatoOrdine")?.toInt()
+                    ord = Order(id, mail, rider, tipo, prod, ratingQ, ratingV, ratingC, -1, -1, data, "0",0, risultatoOrdine)
+                    Log.d("history2", "dentro ord vale $ord")
+                    ords.add(ord)
+                }
+                Log.d("history2", "dentro ords vale $ords")
+                mycallback.onCallback(ords)
+            }
+    }
 
     /*  ORDINI IN ARRIVO  */
     private fun getOrders(myCallbackOrders: MyCallbackConsegne) {
@@ -118,7 +123,8 @@ class OrderFragment  : Fragment() {
             }
           }
     /* FINE ORDINI IN ARRIVO */
-    fun convertLongToTime(time: Long): String {
+    fun convertLongToTime(time: Long?): String {
+        if(time==null) return "err"
         val date = Date(time*1000)
         //  Log.d("mess","time vale $time date vale $date")
         val format = SimpleDateFormat("dd/MM/yyyy")
@@ -130,9 +136,9 @@ class OrderFragment  : Fragment() {
     interface MyCallback {
         fun onCallback(ords: ArrayList<Order>)
     }
-    class Order(var id : String?,var cliente : String, var rider : String , var tipo : String, var arr : ArrayList<Prodotto>, var ratingQ : Int = -1, var ratingV : Int = -1, var ratingC : Int = -1,var ratingRC : Int = -1,var ratingRP : Int = -1, var date : String, var tot : String , var richiamato : Int = 0) {
+    class Order(var id : String?,var cliente : String, var rider : String , var tipo : String, var arr : ArrayList<Prodotto>, var ratingQ : Int? = -1, var ratingV : Int? = -1, var ratingC : Int? = -1,var ratingRC : Int? = -1,var ratingRP : Int? = -1, var date : String, var tot : String , var richiamato : Int = 0, var risultatoOrdine : Int?) {
         override fun toString(): String {
-            return "\n id : $id cliente : $cliente \n rider : $rider\n Tipo : $tipo \n ratingQ : $ratingQ \n ratingV : $ratingV \n ratingC : $ratingC \n date : $date \n arr : $arr "
+            return "\n id : $id cliente : $cliente \n rider : $rider\n Tipo : $tipo \n ratingQ : $ratingQ \n ratingV : $ratingV \n ratingC : $ratingC \n date : $date \n arr : $arr \n risultatoOrdine : $risultatoOrdine "
         }
     }
 }

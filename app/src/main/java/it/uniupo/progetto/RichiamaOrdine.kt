@@ -57,22 +57,6 @@ class RichiamaOrdine : AppCompatActivity() {
 
     }
 
-/*    private fun mandaNotifica() {
-        var pendInt = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        notificationManager =   getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        var builder = NotificationCompat.Builder(this)
-                .setContentTitle("Consegna in arrivo")
-                .setContentText("Hey! Il rider è partito con la tua consegna!")
-                .setContentIntent(pendInt)
-                .setSmallIcon(R.drawable.rider)
-                .setAutoCancel(true)
-                .build()
-            notificationManager.notify(0, builder)
-
-    }*/
-
     private fun richiamaOrdine(ord : Order) {
         val db = FirebaseFirestore.getInstance()
         val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
@@ -84,6 +68,7 @@ class RichiamaOrdine : AppCompatActivity() {
                     Toast.makeText(this,"Ordine annullato",Toast.LENGTH_SHORT).show()
                     //??????????? manda notifica a rider e gestore?
                 }
+
         for(p in ord.arr){
             db.collection("products").document(p.id.toString()).get()
                     .addOnSuccessListener {
@@ -139,7 +124,7 @@ class RichiamaOrdine : AppCompatActivity() {
                         var tot = 0.0
                         prod.forEach { tot += it.qta * it.prezzo.toDouble() }
                         Log.d("richiama","tot vale $tot")
-                        ordine = Order(c,email,"","",prod,-1,-1,-1,-1,-1,"",tot.toString())
+                        ordine = Order(c,email,"","",prod,-1,-1,-1,-1,-1,"",tot.toString(),0,0)
                         myCallback.onCallback(ordine)
                     }
 

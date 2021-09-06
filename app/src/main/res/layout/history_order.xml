@@ -30,6 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="13dp"
+        android:layout_alignParentEnd="true"
         android:paddingEnd="5dp"
         android:src="@drawable/rider"/>
     <TextView
@@ -46,119 +47,148 @@
         android:layout_below="@id/cliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/img_rider"
+        android:layout_toStartOf="@id/img_rider"
         android:text="rider@string.it"
         android:layout_marginTop="10dp"
         android:textColor="@color/black"
         android:textSize="20sp"
         />
-    <TextView
-        android:layout_marginTop="3dp"
-        android:id="@+id/qualita"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/qualit_merce"
-        android:layout_below="@id/rider"/>
-    <TextView
-        android:id="@+id/velocita"
+        android:id="@+id/val_cliente"
+        android:layout_below="@+id/rider"
+        android:layout_marginEnd="2dp"
+        >
+        <TextView
+            android:layout_marginTop="3dp"
+            android:id="@+id/qualita"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/qualit_merce" />
+        <TextView
+            android:id="@+id/velocita"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:text="@string/velocit_consegna"
+            android:layout_below="@id/rating_qualita"/>
+        <TextView
+            android:id="@+id/cortesia"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:text="@string/cortesia_rider"
+            android:layout_below="@id/rating_velocita"/>
+        <RatingBar
+            android:id="@+id/rating_qualita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_below="@id/qualita"
+            android:layout_marginTop="10dp"
+            android:isIndicator="true"
+            android:progressTint="@color/mimosa" />
+        <RatingBar
+            android:id="@+id/rating_velocita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_below="@id/velocita"
+            android:layout_marginTop="10dp"
+            android:isIndicator="true"
+            android:progressTint="@color/mimosa" />
+        <RatingBar
+            android:id="@+id/rating_cortesia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_below="@id/cortesia"
+            android:layout_marginTop="10dp"
+            android:isIndicator="true"
+            android:progressTint="@color/mimosa" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/velocit_consegna"
-        android:layout_below="@id/rating_qualita"/>
-    <TextView
-        android:id="@+id/cortesia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cortesia_rider"
-        android:layout_below="@id/rating_velocita"/>
-    <RatingBar
-        android:id="@+id/rating_qualita"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?android:attr/ratingBarStyleIndicator"
-        android:layout_below="@id/qualita"
-        android:layout_marginTop="10dp"
-        android:isIndicator="true"
-        android:progressTint="@color/mimosa" />
-    <RatingBar
-        android:id="@+id/rating_velocita"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?android:attr/ratingBarStyleIndicator"
-        android:layout_below="@id/velocita"
-        android:layout_marginTop="10dp"
-        android:isIndicator="true"
-        android:progressTint="@color/mimosa" />
-    <RatingBar
-        android:id="@+id/rating_cortesia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?android:attr/ratingBarStyleIndicator"
-        android:layout_below="@id/cortesia"
-        android:layout_marginTop="10dp"
-        android:isIndicator="true"
-        android:progressTint="@color/mimosa" />
-    <TextView
-        android:layout_marginTop="3dp"
-        android:id="@+id/presenza"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Presenza in casa"
-        android:layout_below="@id/rating_cortesia"/>
-    <TextView
-        android:id="@+id/cortesia_cliente"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cortesia cliente"
-        android:layout_below="@id/rating_presenza"/>
-    <RatingBar
-        android:id="@+id/rating_presenza"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?android:attr/ratingBarStyleIndicator"
-        android:layout_below="@id/presenza"
-        android:layout_marginTop="10dp"
-        android:isIndicator="true"
-        android:progressTint="@color/mimosa" />
-    <RatingBar
-        android:id="@+id/rating_cortesia_cliente"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?android:attr/ratingBarStyleIndicator"
-        android:layout_below="@id/cortesia_cliente"
-        android:layout_marginTop="10dp"
-        android:isIndicator="true"
-        android:progressTint="@color/mimosa" />
+        android:id="@+id/val_rider"
+        android:layout_below="@+id/rider"
+        android:layout_alignParentEnd="true"
+
+        >
+        <TextView
+            android:layout_marginTop="30dp"
+            android:id="@+id/presenza"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/presenza_in_casa" />
+        <TextView
+            android:id="@+id/cortesia_cliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cortesia_cliente"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/rating_presenza"/>
+        <RatingBar
+            android:id="@+id/rating_presenza"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_below="@id/presenza"
+            android:layout_marginTop="10dp"
+
+            android:isIndicator="true"
+            android:progressTint="@color/mimosa" />
+        <RatingBar
+            android:id="@+id/rating_cortesia_cliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleIndicator"
+
+            android:layout_below="@id/cortesia_cliente"
+            android:layout_marginTop="10dp"
+            android:isIndicator="true"
+            android:progressTint="@color/mimosa" />
+    </RelativeLayout>
+
+
+
+
     <RelativeLayout
         android:id="@+id/tipo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_alignParentEnd="true"
+        android:layout_toStartOf="@id/date"
+        android:layout_alignBottom="@id/val_cliente"
         >
-        <ImageView
-            android:id="@+id/cash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/money"
-            android:visibility="invisible"
-            />
         <ImageView
             android:id="@+id/card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:src="@drawable/ic_baseline_credit_card_24"
+            android:src="@drawable/money"
             />
     </RelativeLayout>
 
     <TextView
-        android:layout_below="@id/tipo"
+        android:layout_alignBottom="@id/val_cliente"
+        android:layout_alignParentEnd="true"
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="20 Ago 2021"
+        android:textColor="@color/black"
+        android:textSize="15sp"/>
+    <TextView
+
         android:layout_alignParentEnd="true"
+        android:layout_above="@id/date"
+        android:id="@+id/orderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="asf3ASdgsd"
         android:textColor="@color/black"
         android:textSize="15sp"/>
 

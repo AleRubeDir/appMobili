@@ -79,7 +79,7 @@ class NotificationService : Service() {
                                 if (snap != null) {
                                     Log.d(TAG,"dentro createNotification")
                                     val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                                    val mBuilder = NotificationCompat.Builder(applicationContext)
+                                    val mBuilder = Notification.Builder(applicationContext)
                                             .setContentTitle("Consegna in arrivo")
                                             .setContentText("Seleziona un rider per questa consegna ")
                                             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))

@@ -73,7 +73,6 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                 Toast.makeText(viewConsegne.context, "Pagamento rifiutato", Toast.LENGTH_SHORT).show()
                 consegnaRider.isLocked = false
                 consegnaRider.visibility = View.VISIBLE
-                Log.d("mattia", "Premuto rifiutaPagamento" + orderId)
             }
 
             consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
@@ -131,7 +130,6 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
         db.collection("delivery").document(rider!!).collection("orders").get()
                 .addOnCompleteListener {
                     for(d in it.result){
-                        orderId = d.id
                         db.collection("delivery").document(rider!!).collection("orders").document(d.id).set(
                                 det,
                                 SetOptions.merge()

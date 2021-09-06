@@ -124,5 +124,7 @@
     <string name="velocit_consegna">Velocità consegna</string>
     <string name="cortesia_rider">Cortesia rider</string>
     <string name="dati_personali">Dati personali</string>
+    <string name="presenza_in_casa">Presenza in casa</string>
+    <string name="cortesia_cliente">Cortesia cliente</string>
 
 </resources>
