@@ -48,35 +48,6 @@ class RiderActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.chat -> {
 
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        val name = getString(R.string.notificheRider)
-                        val descriptionText = "nuovoOrdine"
-                        val importance = NotificationManager.IMPORTANCE_DEFAULT
-                        val CHANNEL_ID = getString(R.string.notificheRider)
-                        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                            description = descriptionText
-                        }
-                        // Register the channel with the system
-                        val notificationManager: NotificationManager =
-                                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                        notificationManager.createNotificationChannel(channel)
-
-                        var builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-                                .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Ordine ASSEGNATO")
-                                .setContentText("Ti è stato assegnato un nuovo ordine.")
-//                                                .setStyle(NotificationCompat.BigTextStyle()
-//                                                        .bigText("Much longer text that cannot fit one line..."))
-
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-
-                        with(NotificationManagerCompat.from(applicationContext)) {
-                            // notificationId is a unique int for each notification that you must define
-                            notify(1234, builder.build())
-                        }
-                    }
                     makeCurrentFragment(chatFragment)
 
                 }
