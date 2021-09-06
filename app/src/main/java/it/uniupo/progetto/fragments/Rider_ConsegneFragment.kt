@@ -56,9 +56,11 @@ class Rider_ConsegneFragment(var address: String, var orderId: String, var userM
             //             super.onCreate(savedInstanceState)
             //           viewConsegne = inflater.inflate(R.layout.activity_rider_delivery_info, container, false)
             val confermaPagamento = viewConsegne.findViewById<Button>(R.id.RiderConfermaPagamento) //bottone
+            val rifiutaPagamento = viewConsegne.findViewById<Button>(R.id.RiderProblemiPagamento) //bottone
             val consegnaRider = viewConsegne.findViewById<SlideToActView>(R.id.ConsegnaRider) //slider
 
             confermaPagamento.visibility = View.VISIBLE
+            rifiutaPagamento.visibility = View.VISIBLE
             val mapFragment = childFragmentManager
                     .findFragmentById(R.id.map_rider) as SupportMapFragment
             mapFragment.getMapAsync(this)
@@ -69,6 +71,13 @@ class Rider_ConsegneFragment(var address: String, var orderId: String, var userM
                 consegnaRider.isLocked = false
                 consegnaRider.visibility = View.VISIBLE
                 Log.d("mattia", "Premuto confermaPagamento " + orderId)
+            }
+            rifiutaPagamento.setOnClickListener {
+                rifiutaPagamentofun()
+                Toast.makeText(viewConsegne.context, "Pagamento rifiutato", Toast.LENGTH_SHORT).show()
+                consegnaRider.isLocked = false
+                consegnaRider.visibility = View.VISIBLE
+                Log.d("mattia", "Premuto rifiutaPagamento" + orderId)
             }
 
             consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
@@ -117,6 +126,27 @@ class Rider_ConsegneFragment(var address: String, var orderId: String, var userM
             return viewConsegne
 
     }
+
+    private fun rifiutaPagamentofun() {
+
+        val db = FirebaseFirestore.getInstance()
+        var rider = FirebaseAuth.getInstance().currentUser!!.email
+        val det = hashMapOf<String, Any?>(
+                "statoPagamento" to 0,
+        )
+//        Log.d("DELIVERY - ",orderId)
+        db.collection("delivery").document(rider!!).collection("orders").get()
+                .addOnCompleteListener {
+                    for(d in it.result){
+                        orderId = d.id
+                        db.collection("delivery").document(rider!!).collection("orders").document(d.id).set(
+                                det,
+                                SetOptions.merge()
+                        )
+                    }
+                }
+    }
+
     override fun onMapReady(p0: GoogleMap) {
         var zoomLevel = 16.0f
         mMap = p0

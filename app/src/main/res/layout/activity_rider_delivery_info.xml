@@ -67,7 +67,7 @@
         android:textColor="@color/white"
         android:text="@string/ErrorePagamento"
         android:padding="5dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:clickable="true"
         android:focusable="true"/>
 
