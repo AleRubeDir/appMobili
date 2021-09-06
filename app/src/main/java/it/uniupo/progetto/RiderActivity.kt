@@ -19,16 +19,17 @@ class RiderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider)
         val chatFragment = Rider_chatFragment()
-        val deliveryFragment = Rider_ConsegneFragment("", "", "", 0)
+        val deliveryFragment = Rider_ConsegneFragment()
         val profileFragment = ProfileFragment()
         makeCurrentFragment(deliveryFragment)
         Log.d("notifications","start notification service ")
         startService(Intent(this,NotificationService::class.java))
         if(intent.getBooleanExtra("ordineAccettato",false)){
-            val ind = intent.getStringExtra("address")
-            val ordId = intent.getStringExtra("orderId")
-            val userMail = intent.getStringExtra("userMail")
-            makeCurrentFragment(Rider_ConsegneFragment(ind!!,ordId!!,userMail!!,1))
+            ind = intent.getStringExtra("address")
+            ordId = intent.getStringExtra("orderId")
+            userMail = intent.getStringExtra("userMail")
+            flag_consegna = 1
+            makeCurrentFragment(Rider_ConsegneFragment())
         }
 
 
@@ -59,6 +60,12 @@ class RiderActivity : AppCompatActivity() {
         intent.addCategory(Intent.CATEGORY_HOME)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
+    }
+    companion object {
+        var flag_consegna = 0
+        var ind : String? = null
+        var ordId : String? = null
+        var userMail : String? = null
     }
 
 }

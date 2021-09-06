@@ -42,19 +42,15 @@ import java.util.*
 /**
  * A fragment representing a list of Items.
  */
-class Rider_ConsegneFragment(var address: String, var orderId: String, var userMail: String, var i: Int) : Fragment(), OnMapReadyCallback {
+class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     lateinit var viewConsegne: View
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
-        Log.d("inizio","i vale $i")
-        if (i == 1) {
+        Log.d("inizio", RiderActivity.ind + RiderActivity.ordId + RiderActivity.userMail + RiderActivity.flag_consegna )
+        if (RiderActivity.flag_consegna == 1) {
             viewConsegne = inflater.inflate(R.layout.activity_rider_delivery_info, container, false)
-            //           class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
-            //           override fun onCreate(savedInstanceState: Bundle?) {
-            //             super.onCreate(savedInstanceState)
-            //           viewConsegne = inflater.inflate(R.layout.activity_rider_delivery_info, container, false)
             val confermaPagamento = viewConsegne.findViewById<Button>(R.id.RiderConfermaPagamento) //bottone
             val consegnaRider = viewConsegne.findViewById<SlideToActView>(R.id.ConsegnaRider) //slider
 
@@ -68,17 +64,14 @@ class Rider_ConsegneFragment(var address: String, var orderId: String, var userM
                 Toast.makeText(viewConsegne.context, "Pagamento confermato", Toast.LENGTH_SHORT).show()
                 consegnaRider.isLocked = false
                 consegnaRider.visibility = View.VISIBLE
-                Log.d("mattia", "Premuto confermaPagamento " + orderId)
+                Log.d("mattia", "Premuto confermaPagamento " + RiderActivity.ordId!!)
             }
 
             consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
                 override fun onSlideComplete(view: SlideToActView) {
                     // devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
-                    Log.d("mattia", "Premuto terminaConsegna " + orderId)
-                    terminaConsegnaFun(orderId)
-                    var int = Intent(viewConsegne.context, RiderActivity::class.java)
-                    int.putExtra("ordineAccettato",false)
-                    startActivity(int)
+                    Log.d("mattia", "Premuto terminaConsegna " + RiderActivity.ordId!!)
+                    terminaConsegnaFun()
                 }
             }
 
@@ -130,19 +123,8 @@ class Rider_ConsegneFragment(var address: String, var orderId: String, var userM
             return
         }
         mMap.isMyLocationEnabled = true;
-        /*   val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-           fusedLocationClient.lastLocation
-               .addOnSuccessListener { location: Location? ->
-                   // Got last known location. In some rare situations this can be null.
-                   if (location != null) {
-                       val cliente = LatLng(location.latitude, location.longitude)
-                       mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
-                       mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
-                   }
-               }*/
         try {
-            Log.d("indirizzo","address vale $address")
-            geocodeMatches = Geocoder(viewConsegne.context).getFromLocationName("circonvallazione ovest 35 valenza 15048", 1)
+            geocodeMatches = Geocoder(viewConsegne.context).getFromLocationName(RiderActivity.ind, 1)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -169,7 +151,6 @@ class Rider_ConsegneFragment(var address: String, var orderId: String, var userM
         db.collection("delivery").document(rider!!).collection("orders").get()
                 .addOnCompleteListener {
                     for(d in it.result){
-                        orderId = d.id
                         db.collection("delivery").document(rider!!).collection("orders").document(d.id).set(
                                 det,
                                 SetOptions.merge()
@@ -178,31 +159,23 @@ class Rider_ConsegneFragment(var address: String, var orderId: String, var userM
                 }
     }
 
-    private fun terminaConsegnaFun(orderId: String) {
+    private fun terminaConsegnaFun() {
         val db = FirebaseFirestore.getInstance()
         var rider = FirebaseAuth.getInstance().currentUser!!.email
 
-        db.collection("delivery").document(rider!!).collection("orders").document(orderId).get()
+        db.collection("delivery").document(rider!!).collection("orders").document(RiderActivity.ordId!!).get()
                 .addOnSuccessListener { doc ->
 
                     //la consegna può terminare solo se il pagamento è stato confermato( accettato/rifiutato)
                     if (doc.getLong("statoPagamento")!!.toInt() == -1) {
-                        Log.d("mattia", "dentro if, non pagato " + doc.getLong("statoPagamento")!!.toInt())
+                        //Log.d("mattia", "dentro if, non pagato " + doc.getLong("statoPagamento")!!.toInt())
                         Toast.makeText(viewConsegne.context, "Prima conferma il pagamento!!!!!", Toast.LENGTH_SHORT).show()
 
                     } else {
-                        Log.d("mattia", "dentro else, pagato")
-                        // termina consegna
-                        val det = hashMapOf<String, Any?>(
-                                "stato" to 1,
-                        )
-                        db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(
-                                det,
-                                SetOptions.merge()
-                        )
+                       // Log.d("mattia", "dentro else, pagato")
                         //rende di nuovo disponibile rider
                         val occ = hashMapOf<String, Any?>(
-                                "disponibile" to false,
+                                "disponibile" to true,
                         )
                         db.collection("riders").document(rider!!).set(occ, SetOptions.merge())
                         Log.d("mattia", "dopo azioni che funzionano ")
@@ -227,10 +200,18 @@ class Rider_ConsegneFragment(var address: String, var orderId: String, var userM
                                 "ratingC" to -1,
 
                                 )
-                        Log.d("mattia", "prima di aggiunta in order history: " + orderId + newOrderHistory)
-                        db.collection("orders_history").document(orderId).set(newOrderHistory)
-                        db.collection("delivery").document(rider!!).collection("orders").document(orderId).delete()
-                        db.collection("toAssignOrders").document(rider!!).collection("orders").document(orderId).delete()
+                        Log.d("mattia", "prima di aggiunta in order history: " + RiderActivity.ordId!! + newOrderHistory)
+                        db.collection("orders_history").document(RiderActivity.ordId!!).set(newOrderHistory).addOnSuccessListener {
+                            var int = Intent(viewConsegne.context, RiderActivity::class.java)
+                            int.putExtra("ordineAccettato",false)
+                            RiderActivity.ind = ""
+                            RiderActivity.ordId = ""
+                            RiderActivity.userMail = ""
+                            RiderActivity.flag_consegna = 0
+                            startActivity(int)
+                        }
+                        db.collection("delivery").document(rider!!).collection("orders").document(RiderActivity.ordId!!).delete()
+                        db.collection("toAssignOrders").document(rider!!).collection("orders").document(RiderActivity.ordId!!).delete()
 
                         //cambiare  activity
                     }
@@ -272,7 +253,7 @@ class Rider_ConsegneFragment(var address: String, var orderId: String, var userM
                         Log.d("mattia","riempimento liste: " + ordId)
                         val client = order.getString("client").toString()
                         val stato = order.getLong("stato")!!.toInt()
-                        val distanza = order.getDouble("distanza")!!
+                        val distanza = order.getDouble("distanza")
                         val tipo_pagamento = order.getString("tipo_pagamento").toString()
                         var posizione = ""
                         db.collection("users").document(client).get()

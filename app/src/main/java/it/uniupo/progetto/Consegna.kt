@@ -8,7 +8,7 @@ class Consegna(
     var stato: Int,
 //    var statoPagamento: Int,
     var orderId: String,
-    var distanza: Double,
+    var distanza: Double?,
     var rider : String ,
 ) {
    override fun toString(): String {
