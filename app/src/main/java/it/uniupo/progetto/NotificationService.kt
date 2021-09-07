@@ -94,7 +94,7 @@ class NotificationService : Service() {
                                                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                                         notificationManager.createNotificationChannel(channel)
 
-                                        var builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+                                        val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
                                                 .setSmallIcon(R.mipmap.ic_launcher)
                                                 .setContentTitle("Consegna in arrivo")
                                                 .setContentText("Seleziona un rider per questa consegna ")
@@ -109,7 +109,7 @@ class NotificationService : Service() {
                                         }
                                     }else {
                                         Log.d("NOTIFICA","<oreo")
-                                        var mBuilder = Notification.Builder(applicationContext)
+                                        val mBuilder = Notification.Builder(applicationContext)
                                                 .setContentTitle("Consegna in arrivo")
                                                 .setContentText("Seleziona un rider per questa consegna ")
                                                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
@@ -118,6 +118,7 @@ class NotificationService : Service() {
                                         mNotificationManager.notify(0, mBuilder.build())
                                     }
                                 }
+                                e?.printStackTrace()
                             }
                         }
                     }
@@ -130,13 +131,14 @@ class NotificationService : Service() {
                         for(rider in ris){
                             db.collection("delivery").document(rider).collection("orders").get()
                                     .addOnCompleteListener {
-                                        for(ord in it.result!!){
-                                            db.collection("delivery").document(rider).collection("orders").document(ord.id).addSnapshotListener{ d, e ->
-                                                    Log.d(TAG,"------$rider----${ord.id}-----${d!!.getString("client").toString()}-----\n")
-                                                  //  Log.d(TAG,"user = $user cliente =  ${d!!.getString("client").toString()} left = ${d.getBoolean("leftMM")}")
-                                                  //  Log.d(TAG,"dentro --- ${user == d.getString("client").toString()} - ${d.getBoolean("leftMM")}")
-                                                    if ((user == d.getString("client").toString()) && d.getBoolean("leftMM")==true) {
-                                                   //     Log.d(TAG,"--- ${user == d.getString("client").toString()} - ${d.getBoolean("leftMM")}")
+                                        for(ord in it.result!!) {
+                                            db.collection("delivery").document(rider).collection("orders").document(ord.id).addSnapshotListener { d, e ->
+                                                if (d != null) {
+                                                    Log.d(TAG, "------$rider----${ord.id}-----${d!!.getString("client").toString()}-----\n")
+                                                    //  Log.d(TAG,"user = $user cliente =  ${d!!.getString("client").toString()} left = ${d.getBoolean("leftMM")}")
+                                                    //  Log.d(TAG,"dentro --- ${user == d.getString("client").toString()} - ${d.getBoolean("leftMM")}")
+                                                    if ((user == d.getString("client").toString()) && d.getBoolean("leftMM") == true) {
+                                                        //     Log.d(TAG,"--- ${user == d.getString("client").toString()} - ${d.getBoolean("leftMM")}")
                                                         val intent = Intent(applicationContext, ChatActivity::class.java)
                                                         intent.putExtra("mail", rider)
                                                         val resultIntent = TaskStackBuilder.create(applicationContext).run {
@@ -160,7 +162,7 @@ class NotificationService : Service() {
                                                                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                                                             notificationManager.createNotificationChannel(channel)
 
-                                                            var builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+                                                            val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
                                                                     .setSmallIcon(R.mipmap.ic_launcher)
                                                                     .setContentTitle("Rider partito")
                                                                     .setContentText("Il rider ha appena lasciato il market, ora puoi chattare con lui")
@@ -173,9 +175,9 @@ class NotificationService : Service() {
                                                                 // notificationId is a unique int for each notification that you must define
                                                                 notify(1234, builder.build())
                                                             }
-                                                        }else {
-                                                            Log.d("NOTIFICA","<oreo")
-                                                            var mBuilder = Notification.Builder(applicationContext)
+                                                        } else {
+                                                            Log.d("NOTIFICA", "<oreo")
+                                                            val mBuilder = Notification.Builder(applicationContext)
                                                                     .setContentTitle("Rider partito")
                                                                     .setContentText("Il rider ha appena lasciato il market, ora puoi chattare con lui")
                                                                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
@@ -185,9 +187,10 @@ class NotificationService : Service() {
                                                         }
 
                                                     }
-                                                }
+                                                } else e?.printStackTrace()
                                             }
                                         }
+                                    }
                         }
                     }
                 })
@@ -221,7 +224,7 @@ class NotificationService : Service() {
                                                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                                         notificationManager.createNotificationChannel(channel)
 
-                                        var builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+                                        val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
                                                 .setSmallIcon(R.mipmap.ic_launcher)
                                                 .setContentTitle("Ordine ASSEGNATO")
                                                 .setContentText("Ti è stato assegnato un nuovo ordine.")
@@ -236,7 +239,7 @@ class NotificationService : Service() {
                                         }
                                     }else {
                                         Log.d("NOTIFICA","<oreo")
-                                        var mBuilder = Notification.Builder(applicationContext)
+                                        val mBuilder = Notification.Builder(applicationContext)
                                                 .setContentTitle("Ordine ASSEGNATO")
                                                 .setContentText("Ti è stato assegnato un nuovo ordine.")
                                                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
@@ -247,6 +250,7 @@ class NotificationService : Service() {
 
 
                                 }
+                                else e?.printStackTrace()
                             }
                         }
                     }
@@ -257,7 +261,7 @@ class NotificationService : Service() {
 
     private fun getClients(myCallback: MyCallback) {
         val db = FirebaseFirestore.getInstance()
-        var ris = mutableListOf<String>()
+        val ris = mutableListOf<String>()
         db.collection("orders").get()
                 .addOnSuccessListener {
                     for (d in it){
@@ -268,7 +272,7 @@ class NotificationService : Service() {
     }
     private fun getRiders(myCallback: MyCallback) {
         val db = FirebaseFirestore.getInstance()
-        var ris = mutableListOf<String>()
+        val ris = mutableListOf<String>()
         db.collection("riders").get()
                 .addOnSuccessListener {
                     for (d in it){
@@ -280,9 +284,5 @@ class NotificationService : Service() {
 
     interface MyCallback{
         fun onCallback(ris: List<String>)
-    }
-    companion object {
-        const val NOTIFICATION_CHANNEL_ID = "10001"
-        private const val default_notification_channel_id = "default"
     }
 }

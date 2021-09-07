@@ -97,6 +97,8 @@
     <string name="richiama_ordine">Richiama ordine</string>
     <string name="storico_degli_ordini">Storico degli ordini</string>
     <string name="i_miei_ordini">I miei ordini</string>
+    <string name="orario">%1$s : %2$s</string>
+    <string name="nomeChat">%1$s %2$s</string>
 
     <string name="scegli_il_rider_con_cui_iniziare_una_chat">Scegli il rider con cui iniziare una chat</string>
     <string name="elimina_prodotto">Elimina prodotto</string>
@@ -124,7 +126,12 @@
     <string name="velocit_consegna">Velocità consegna</string>
     <string name="cortesia_rider">Cortesia rider</string>
     <string name="dati_personali">Dati personali</string>
+
+    <string name="presenza_in_casa">Presenza in casa</string>
+    <string name="cortesia_cliente">Cortesia cliente</string>
+
     <string name="partenza_da_mm">Partenza</string>
+
 
 
 <!--    NOTIFICHE-->

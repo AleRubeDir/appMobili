@@ -126,8 +126,7 @@ class OrderFragment  : Fragment() {
     fun convertLongToTime(time: Long?): String {
         if(time==null) return "err"
         val date = Date(time*1000)
-        //  Log.d("mess","time vale $time date vale $date")
-        val format = SimpleDateFormat("dd/MM/yyyy")
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.ITALY)
         return format.format(date)
     }
     interface MyCallbackConsegne{

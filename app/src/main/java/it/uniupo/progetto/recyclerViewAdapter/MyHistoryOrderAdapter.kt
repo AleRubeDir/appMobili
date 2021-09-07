@@ -28,19 +28,10 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val item = ord[position]
-        if(tipo=="Cliente"){
- /*           checkRatings(item.id!!, holder.ratingQ, item.ratingQ, 1)
-            checkRatings(item.id!!, holder.ratingV, item.ratingV, 2)
-            checkRatings(item.id!!, holder.ratingC, item.ratingC, 3)*/
-            holder.rl_rider.visibility = View.INVISIBLE
-        }
-        else if(tipo=="Rider"){
-      /*      checkRatings(item.id!!, holder.ratingRC, item.ratingRC, 4)
-            checkRatings(item.id!!, holder.ratingRP, item.ratingRP, 5)
-            */
-            holder.rl_cliente.visibility = View.INVISIBLE
-        }
+        val item = ord[position]
+        if(tipo=="Cliente") holder.rl_rider.visibility = View.INVISIBLE
+        else if(tipo=="Rider") holder.rl_cliente.visibility = View.INVISIBLE
+
             checkRatings(item.id!!, holder.ratingQ, item.ratingQ, 1)
             checkRatings(item.id!!, holder.ratingV, item.ratingV, 2)
             checkRatings(item.id!!, holder.ratingC, item.ratingC, 3)
@@ -61,10 +52,10 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
         if(rating==-1 && tipo != "Gestore")
         {
             holder.setIsIndicator(false)
-            holder.setOnRatingBarChangeListener{ ratingBar: RatingBar, fl: Float, b: Boolean ->
+            holder.setOnRatingBarChangeListener{ ratingBar: RatingBar, _, _ ->
 
                 AlertDialog.Builder(view.context)
-                        .setPositiveButton("Conferma"){ dialog, which ->
+                        .setPositiveButton("Conferma"){ _, _ ->
                             var newrat = "ratingQ"
                             if(type==2) newrat = "ratingV"
                             else if(type==3) newrat = "ratingC"
@@ -74,7 +65,6 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
                                     newrat to ratingBar.progress,
                             )
 
-                            val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
                             val db = FirebaseFirestore.getInstance()
                             db.collection("orders_history").document(id)
                                     .set(entry, SetOptions.merge())

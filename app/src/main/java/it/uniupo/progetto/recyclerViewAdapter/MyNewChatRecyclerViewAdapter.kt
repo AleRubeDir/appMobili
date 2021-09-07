@@ -17,8 +17,8 @@ class MyNewChatRecyclerViewAdapter(private var riders: ArrayList<Utente>) : Recy
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.contact_row, parent, false)
         val mail = view.findViewById<TextView>(R.id.mail)
-        val contact_element = view.findViewById<RelativeLayout>(R.id.contact_element)
-        contact_element.setOnClickListener{
+        val contactElement = view.findViewById<RelativeLayout>(R.id.contact_element)
+        contactElement.setOnClickListener{
             Toast.makeText(parent.context,"${mail.text}",Toast.LENGTH_SHORT).show()
             val intent = Intent(parent.context,ChatActivity::class.java)
             intent.putExtra("mail",mail.text.toString())

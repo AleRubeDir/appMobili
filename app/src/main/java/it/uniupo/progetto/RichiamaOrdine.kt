@@ -19,9 +19,7 @@ class RichiamaOrdine : AppCompatActivity() {
     lateinit var rider: String
     lateinit var email: String
     lateinit var recyclerView : RecyclerView
-
     lateinit var notificationManager : NotificationManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.richiama_ordine)
@@ -34,19 +32,14 @@ class RichiamaOrdine : AppCompatActivity() {
                 hasOrderPending(cods,object : MyCallback2 {
                    override fun onCallback(ord: Order) {
                        Log.d("richiama","ord -> $ord")
-
                        tot.text = getString(R.string.tot,"%.2f".format(ord.tot.toDouble()))
                        ordine.text = getString(R.string.ord,ord.id)
-
                         var prods = ""
-                       for(p in ord.arr){
-                           prods += p.titolo + " x " + p.qta + "\n"
-                       }
+                       for(p in ord.arr) prods += p.titolo + " x " + p.qta + "\n"
                        lista_prodotti.text = prods
                        val richiama = findViewById<Button>(R.id.richiama)
                        richiama.setOnClickListener{
                            richiamaOrdine(ord)
-                         // v    mandaNotifica()
                        }
                     }
 
@@ -66,7 +59,6 @@ class RichiamaOrdine : AppCompatActivity() {
         db.collection("orders").document(mail).collection("order").document(ord.id.toString()).delete()
                 .addOnSuccessListener {
                     Toast.makeText(this,"Ordine annullato",Toast.LENGTH_SHORT).show()
-                    //??????????? manda notifica a rider e gestore?
                 }
 
         for(p in ord.arr){

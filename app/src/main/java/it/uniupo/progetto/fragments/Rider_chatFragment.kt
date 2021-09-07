@@ -11,28 +11,22 @@ import android.view.ViewGroup
 import it.uniupo.progetto.R
 import it.uniupo.progetto.recyclerViewAdapter.*
 class Rider_chatFragment : Fragment() {
-
     private var columnCount = 1
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_chat_rider_list, container, false)
-
-        // Set the adapter
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-               // adapter = MyItemRecyclerViewAdapter3(DummyContent.ITEMS)
             }
         }
         return view

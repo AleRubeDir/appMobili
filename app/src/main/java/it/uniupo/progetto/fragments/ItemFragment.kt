@@ -86,7 +86,6 @@ class ItemFragment : Fragment() {
 
                         }
                     }
-
                     .addOnFailureListener { err->
                         Log.d("---", "Error getting document - ALL PRODUCTS() $err")
                     }

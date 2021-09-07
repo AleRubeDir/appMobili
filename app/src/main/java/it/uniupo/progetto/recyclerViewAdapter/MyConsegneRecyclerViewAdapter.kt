@@ -21,16 +21,10 @@ import it.uniupo.progetto.R
 import java.io.IOException
 import java.util.*
 
-
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem].
- * TODO: Replace the implementation with code for your data type.
- */
 class MyConsegneRecyclerViewAdapter(
     private val values: MutableList<Consegna>
 ) : RecyclerView.Adapter<MyConsegneRecyclerViewAdapter.ViewHolder>() {
     lateinit var view : View
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_consegne, parent, false)
@@ -50,21 +44,8 @@ class MyConsegneRecyclerViewAdapter(
             val userMail = view.findViewById<TextView>(R.id.userMail).text.toString()
             val orderId = view.findViewById<TextView>(R.id.orderId).text.toString()
             val address = view.findViewById<TextView>(R.id.indirizzo).text.toString()
-            var geocodeMatches: List<Address>? = null
-
-            try {
-                geocodeMatches = Geocoder(view.context).getFromLocationName(address, 1)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            var zoomLevel = 11.0f
-            var coord =LatLng(0.0, 0.0)
-            for (mat in geocodeMatches!!) {
-                coord = LatLng(mat.latitude, mat.longitude)
-            }
-            acceptOrder(userMail,orderId,coord.latitude,coord.longitude)
-            //var intent = Intent(parent.context, Rider_delivery_info::class.java)
-            var intent = Intent(parent.context, RiderActivity::class.java)
+            acceptOrder(orderId)
+            val intent = Intent(parent.context, RiderActivity::class.java)
             intent.putExtra("address",address)
             intent.putExtra("orderId",orderId)
             intent.putExtra("userMail",userMail)
@@ -77,7 +58,7 @@ class MyConsegneRecyclerViewAdapter(
         refuse_order_button.setOnClickListener{
             val userMail = view.findViewById<TextView>(R.id.userMail).text.toString()
             val orderId = view.findViewById<TextView>(R.id.orderId).text.toString()
-            refuseOrder(userMail,orderId)
+            refuseOrder(orderId)
         }
 
         return ViewHolder(view)
@@ -106,7 +87,7 @@ class MyConsegneRecyclerViewAdapter(
 
     }
 
-    fun acceptOrder(user: String, orderId: String, latitude: Double, longitude: Double){
+    fun acceptOrder(orderId: String){
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
          val det = hashMapOf<String, Any?>(
@@ -117,19 +98,9 @@ class MyConsegneRecyclerViewAdapter(
     }
 
 //        refuse order:
-    fun refuseOrder(user: String,orderId: String){
+    fun refuseOrder(orderId: String){
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
- /*       //        cambia stato in rifiutato
-        val det = hashMapOf<String, Any?>(
-            // 1 terminato
-            // 0 rifiutato
-            // -1 pending
-                "stato" to 0
-        )
-        db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
-        //        cambia stato in rifiutato
-*/
 //      toglie da assignedOrders, mette in toassignOrders
         Log.d("DELIVERY - ",orderId)
         db.collection("assignedOrders").document(orderId).get()
@@ -161,22 +132,10 @@ class MyConsegneRecyclerViewAdapter(
         db.collection("delivery").document(rider).collection("orders").document(orderId).get()
             .addOnCompleteListener {
 
-
-//                data 6 settembre 2021 17:20:29 UTC+2
-//                mail "20029064@studenti.uniupo.it"
-//                ratingC -1
-//                ratingQ -1
-//                ratingV -1
-//                rider "iltennistafolle@gmail.com"
-//                risultatoOrdine 1
-//                statoPagamento 0
-//                tipoPagamento "Carta"
-
-                var cliente = it.result.getString("client").toString()
-                var distanza = it.result.getDouble("distanza")
-                var orderId = it.result.getString("orderId").toString()
-                var statoOrdine = it.result.getLong("stato")!!.toInt()
-                var tipo_pagamento = it.result.getString("tipo_pagamento").toString()
+                val cliente = it.result.getString("client").toString()
+                val distanza = it.result.getDouble("distanza")
+                val statoOrdine = it.result.getLong("stato")!!.toInt()
+                val tipo_pagamento = it.result.getString("tipo_pagamento").toString()
                 val entry = hashMapOf<String, Any?>(
                     "data" to  Date(),
                     "tipoPagamento" to tipo_pagamento,
@@ -204,7 +163,6 @@ class MyConsegneRecyclerViewAdapter(
          "disponibile" to true
         )
         db.collection("riders").document(rider).set(disponibile, SetOptions.merge())
-        //rider torna disponibile
     }
 
 }

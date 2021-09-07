@@ -15,26 +15,23 @@ class PaginaProdotto  : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pagina_prodotto)
         val id = intent.getStringExtra("id-prodotto")!!
-        var p: Prodotto
-
         getProdottoFromDB(id.toInt(), object: MyCallback {
-            override fun onCallback(p: Prodotto) {
+            override fun onCallback(value: Prodotto) {
                 val tvTitolo = findViewById<TextView>(R.id.titolo)
-                tvTitolo.text = p.titolo
+                tvTitolo.text = value.titolo
                 val desc = findViewById<TextView>(R.id.desc)
-                desc.text = p.desc
+                desc.text = value.desc
                 val prezzo = findViewById<TextView>(R.id.prezzo)
-                prezzo.text = getString(R.string.cash,p.prezzo)
+                prezzo.text = getString(R.string.cash,value.prezzo)
                 val np = findViewById<com.shawnlin.numberpicker.NumberPicker>(R.id.number_picker)
                 np.minValue = 1
-                np.maxValue = p.qta
+                np.maxValue = value.qta
                 val img = findViewById<ImageView>(R.id.img)
-                Picasso.get().load(p.img).into(img)
+                Picasso.get().load(value.img).into(img)
                 val cart = findViewById<Button>(R.id.cart)
                 cart.setOnClickListener{
                     Log.d("pprod","np value ${np.value}")
-                    addToCart(p,np.value)
-
+                    addToCart(value,np.value)
                     val home = Intent(applicationContext,ClienteActivity::class.java)
                     home.putExtra("cart","vai")
                     startActivity(home)
@@ -45,7 +42,7 @@ class PaginaProdotto  : AppCompatActivity() {
 
     fun addToCart(p : Prodotto, qta : Int) {
         val db = FirebaseFirestore.getInstance()
-        var auth = FirebaseAuth.getInstance();
+        val auth = FirebaseAuth.getInstance();
         val user = auth.currentUser!!.email
         val prod: MutableMap<String, Any> = HashMap()
         prod["id"] = p.id
@@ -57,12 +54,11 @@ class PaginaProdotto  : AppCompatActivity() {
         db.collection("products").document(p.id.toString()).get()
                 .addOnSuccessListener {
                     Log.d("qta", "$it")
-
-                    var max = it.getLong("qta")!!.toInt()
+                    val max = it.getLong("qta")!!.toInt()
                     db.collection("carts").document(user!!).collection("products").document(p.id.toString())
                             .get()
                             .addOnSuccessListener { result ->
-                                Log.d("qta", "$result \n ${result.get("qta")} - ${result.get("qta").toString().isNullOrBlank()} / ${result.get("titolo")} / ${result.get("id")} / ${result.get("prezzo")}")
+                                Log.d("qta", "$result \n ${result.get("qta")} - ${result.get("qta").toString().isBlank()} / ${result.get("titolo")} / ${result.get("id")} / ${result.get("prezzo")}")
                                 if (result.get("qta") != null) {
                                     oldqta = result.get("qta").toString().toInt()
                                     if (oldqta + qta > max) {
@@ -101,7 +97,7 @@ class PaginaProdotto  : AppCompatActivity() {
                 for (document in result) {
                     Log.d("pprod", "id vale ${document.get("id").toString()} cerco $id")
                     if (document.get("id").toString() == id.toString()) {
-                        var p= Prodotto(document.getLong("id")!!.toInt(), document.get("img")!!.toString(), document.get("titolo").toString(), document.get("desc").toString(), document.get("prezzo").toString(), document.getLong("qta")!!.toInt())
+                        val p= Prodotto(document.getLong("id")!!.toInt(), document.get("img")!!.toString(), document.get("titolo").toString(), document.get("desc").toString(), document.get("prezzo").toString(), document.getLong("qta")!!.toInt())
                         Log.d("pprod", "Prodotto vale $p")
                         myCallback.onCallback(p)
                     }

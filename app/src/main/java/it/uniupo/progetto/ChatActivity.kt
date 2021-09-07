@@ -60,21 +60,20 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun createChat(contatto: TextView, user: String?, mail: String) {
-        //user è il cliente
+    private fun createChat(contatto: TextView, cliente: String?, mail: String) {
         //mail è il rider
         val db = FirebaseFirestore.getInstance()
         var check = 0
                getUserData(mail, object: DatiPersonali.MyCallback {
             override fun onCallback(u: DatiPersonali.Utente) {
-                db.collection("chats").document(user.toString()).collection("contacts").get()
+                db.collection("chats").document(cliente.toString()).collection("contacts").get()
                     .addOnSuccessListener {
                         it.forEach { doc ->
-                            Log.d("mymess","${doc.id} == $user???")
+                            Log.d("mymess","${doc.id} == $cliente???")
                             if (doc.id == mail) check = 1
 
                         Log.d("mymess","$check")
-                        contatto.text=u.nome + " " + u.cognome
+                        contatto.text=applicationContext.getString(R.string.nomeChat,u.nome,u.cognome)
                         if (check == 0) {
                             Log.d("mymess","check vale $check")
                             val entry = hashMapOf<String, Any?>(
@@ -84,7 +83,7 @@ class ChatActivity : AppCompatActivity() {
                                 "tipo" to u.tipo
                             )
                             Log.d("mymess","$entry")
-                            db.collection("chats").document(user!!).collection("contacts").document(mail)
+                            db.collection("chats").document(cliente!!).collection("contacts").document(mail)
                                 .set(
                                     entry,
                                     SetOptions.merge()
@@ -157,14 +156,10 @@ class ChatActivity : AppCompatActivity() {
         )
         db.collection("chats").document(user!!).collection("contacts").document(you).set(entry,SetOptions.merge())
 
-        db.collection("chats").document(user!!).collection("contacts").document(you).collection("messages")
+        db.collection("chats").document(user).collection("contacts").document(you).collection("messages")
                 .get()
                 .addOnSuccessListener { result ->
                     for(document in result){
-                       /* val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-                        var ora = Calendar.getInstance().time
-                        ora = sdf.parse(document.get("ora").toString())*/
-
                         val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
                         Log.d("Chats", "mess $mess")
                         messages.add(mess)

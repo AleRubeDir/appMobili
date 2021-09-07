@@ -29,9 +29,7 @@ class GestoreProdotto  : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gestore_prodotto)
-
         codPhoto = (System.currentTimeMillis() / 1000).toString()
-
         val id = intent.getStringExtra("id-prodotto")!!
         lateinit var p: Prodotto
         val tvTitolo = findViewById<EditText>(R.id.titolo)
@@ -41,20 +39,18 @@ class GestoreProdotto  : AppCompatActivity() {
         img = findViewById(R.id.img)
         val salva = findViewById<Button>(R.id.save_edit)
         val cancella = findViewById<Button>(R.id.delete)
-
         cancella.setOnClickListener {
             eliminaProdotto(id)
         }
         getProdottoFromDB(id.toInt(), object : MyCallback {
-            override fun onCallback(np: Prodotto) {
-                p = np
-                tvTitolo.setText(np.titolo)
-                desc.setText(np.desc)
-                prezzo.setText(np.prezzo)
-                qta.setText(np.qta.toString())
-                Picasso.get().load(np.img).into(img)
-                // img.setImageURI(np.img.toUri())
-                nome = np.titolo
+            override fun onCallback(value: Prodotto) {
+                p = value
+                tvTitolo.setText(value.titolo)
+                desc.setText(value.desc)
+                prezzo.setText(value.prezzo)
+                qta.setText(value.qta.toString())
+                Picasso.get().load(value.img).into(img)
+                nome = value.titolo
 
             }
         })
@@ -66,18 +62,15 @@ class GestoreProdotto  : AppCompatActivity() {
             if (p.qta.toString() != qta.text.toString()) p.qta = qta.text.toString().toInt()
 
             if (imgUri != null){
-              //  uploadPhoto(imgUri!!)
                   p.img = imgUri.toString()
                 updatePhotoProdotto(object : MyCallbackProd {
                     override fun onCallback(newP: Prodotto) {
-                        //     updatePhoto(p)
                         Log.d("aggiorna", "newp = ${newP.img}, \n p = ${p.img}")
                         Log.d("photo", "$p")
                         updateProdotto(p)
 
                     }
                 }, p)
-              //  var img = updatePhotoProdotto(p)
                 Log.d("photo","Return = $img")
             }
             updateProdotto(p)
@@ -87,11 +80,6 @@ class GestoreProdotto  : AppCompatActivity() {
         img.setOnClickListener {
             chooseMethod()
         }
-        /*  val storage = FirebaseStorage.getInstance().reference.child("products/$nome")
-        val localfile = File.createTempFile("temp","jpg")
-        storage.getFile(localfile).addOnSuccessListener {
-
-        }*/
     }
 
 
@@ -107,14 +95,13 @@ class GestoreProdotto  : AppCompatActivity() {
                 "desc" to p.desc
         )
             db.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
-                    .addOnSuccessListener { documentReference ->
+                    .addOnSuccessListener {
                         Log.d("photo", "Prodotto modificato correttamente ")
                     }
                     .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
 
     }
     private fun updatePhotoProdotto(myCallback: MyCallbackProd, p: Prodotto) {
-   // private fun updatePhotoProdotto(p: Prodotto) : String {
         val imageFileName = "products/$codPhoto"
         val storage = FirebaseStorage.getInstance().reference
         val newphoto = storage.child(imageFileName)
@@ -122,7 +109,7 @@ class GestoreProdotto  : AppCompatActivity() {
                 .addOnSuccessListener {
                     Log.d("photo", "up -> $it \n")
                     val downloadTask = storage.child(imageFileName).downloadUrl
-                    Log.d("photo", "downloadTask ${downloadTask}")
+                    Log.d("photo", "downloadTask $downloadTask")
                     downloadTask.addOnSuccessListener {
                         Log.d("photo", "dtask ${storage.child(imageFileName).downloadUrl}")
                         Log.d("photo", "downloadurl $it")
@@ -135,50 +122,7 @@ class GestoreProdotto  : AppCompatActivity() {
                 }
 
         }
-        //return p.img
-        /*  downloadTask.addOnSuccessListener {
-            Log.d("photo","dtask ${fs.child(imageFileName).downloadUrl}")
-            Log.d("photo","downloadurl $it")
-            p.img = it.toString()
-            updateProdotto(p)
-        }*/
     }
-/*    private fun updatePhoto(p: Prodotto) {
-        val fs = FirebaseStorage.getInstance().reference
-        val imageFileName = "products/$codPhoto"
-        val downloadTask = fs.child(imageFileName).downloadUrl
-        downloadTask.addOnSuccessListener {
-            Log.d("photo", "downloadurl $it")
-            val entry = hashMapOf<String, Any?>(
-                    "img" to it.toString(),
-            )
-            Log.d("photo", "entry vale = $entry")
-            var fb = FirebaseFirestore.getInstance()
-            fb.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Foto caricata correttamente FD", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Errore caricamento foto FD", Toast.LENGTH_SHORT).show()
-                        e.printStackTrace()
-                    }
-        }
-    }*/
-
-/*    private fun uploadPhoto(imgUri: Uri) {
-
-        val storage = FirebaseStorage.getInstance().reference
-        val newphoto = storage.child("products/$codPhoto")
-        newphoto.putFile(imgUri!!)
-                .addOnSuccessListener {
-                    Log.d("photo", "up -> $it \n")
-                    Toast.makeText(this, "Foto caricata correttamente", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Errore caricamento foto", Toast.LENGTH_SHORT).show()
-                    e.printStackTrace()
-                }
-    }*/
 
     private fun eliminaProdotto(id: String) {
         val db = FirebaseFirestore.getInstance()
@@ -194,28 +138,22 @@ class GestoreProdotto  : AppCompatActivity() {
     }
 
     private fun chooseMethod() {
-        var builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle("Scegli come proseguire")
-        var inflater = layoutInflater
-        var dialogView = inflater.inflate(R.layout.dialog_camera, null)
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_camera, null)
         builder.setCancelable(true)
         builder.setView(dialogView)
 
-        var camera = dialogView.findViewById<ImageView>(R.id.camera)
-        var gallery = dialogView.findViewById<ImageView>(R.id.gallery)
+        val camera = dialogView.findViewById<ImageView>(R.id.camera)
+        val gallery = dialogView.findViewById<ImageView>(R.id.gallery)
 
-
-        var choose = builder.create()
+        val choose = builder.create()
         choose.show()
-
 
         camera.setOnClickListener {
             checkPermissionForCamera()
             choose.cancel()
-            /*if(checkAndRequestPermission()){
-                takePhoto()
-                choose.cancel()
-            }*/
         }
         gallery.setOnClickListener {
             checkPermissionForImage()

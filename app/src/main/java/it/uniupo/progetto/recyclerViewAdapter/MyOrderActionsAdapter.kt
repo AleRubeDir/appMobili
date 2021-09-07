@@ -28,7 +28,6 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
             if(id.text=="0"){
                 // Traccia il tuo ordine
                 val intent = Intent(view.context, RiderPosition::class.java)
-                /*intent.putExtra("id-prodotto", id.text )*/
                 view.context.startActivity(intent)
             }
             if(id.text=="1"){
@@ -40,9 +39,7 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
                             intent.putExtra("mail", rider )
                             view.context.startActivity(intent)
                         }
-
                     })
-
             }
             if(id.text=="2"){
                 //Richiama ordine
@@ -50,12 +47,9 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
                     override fun onCallback(ris: Boolean) {
                         if (ris) {
                             val intent = Intent(view.context, RichiamaOrdine::class.java)
-                            /*intent.putExtra("id-prodotto", id.text )*/
                             view.context.startActivity(intent)
                             }
-                        else{
-                            Toast.makeText(view.context,"Non hai ordini attivi",Toast.LENGTH_SHORT).show()
-                        }
+                        else Toast.makeText(view.context,"Non hai ordini attivi",Toast.LENGTH_SHORT).show()
                         }
                     })
                 }
@@ -63,17 +57,6 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
                 //Storico degli ordini
                 val intent = Intent(view.context, StoricoOrdini::class.java)
                 view.context.startActivity(intent)
-                /*parent.context.getSharedPreferences("login",0).edit().remove("login").apply()
-                FirebaseAuth.getInstance().signOut()
-                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(view.context.getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build()
-
-                val googleSignInClient = GoogleSignIn.getClient(parent.context, gso)
-                googleSignInClient.signOut()
-                view.context.startActivity(Intent(view.context, MainActivity::class.java))
-                Toast.makeText(view.context,"Logout effettuato", Toast.LENGTH_SHORT).show()*/
             }
         }
         return ViewHolder(view)
@@ -89,7 +72,6 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
                                         myCallback.onCallback(true)
                                     }
                                 }
-
                             }
                             .addOnFailureListener{e->
                                 e.printStackTrace()
@@ -97,7 +79,7 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
                 }
     private fun getRiderForUser(mail: String, myCallback: MyCallback) {
         val db = FirebaseFirestore.getInstance()
-        Log.d("chat","$mail")
+        Log.d("chat", mail)
         db.collection("client-rider").document(mail).collection("rider").get()
             .addOnSuccessListener {
                 for(d in it)    myCallback.onCallback(d.id)

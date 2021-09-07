@@ -65,8 +65,6 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         //geocoding da nome via a coordinate
-
-
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -120,24 +118,19 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                         e.printStackTrace()
                     }
 
-                    for (mat in geocodeMatches!!) {
-                        cliente = LatLng(mat.latitude, mat.longitude)
+                    for (mat2 in geocodeMatches!!) {
+                        cliente = LatLng(mat2.latitude, mat2.longitude)
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
-                        if (cliente != null) {
-                            var x = Geocoder(this).getFromLocationName(address.text.toString(), 1)
-                            for (mat in x) {
-                                val cliente = LatLng(cliente.latitude, cliente.longitude)
-
-                                marker?.remove()
-                                marker = mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
-                                var loc = Location(address.text.toString())
-                                loc.latitude = cliente.latitude
-                                loc.longitude = cliente.longitude
-                                //Log.d("indirizzo","${Location(address.text.toString())}")
-                                isInside(loc, circle)
-
-                            }
+                        val x = Geocoder(this).getFromLocationName(address.text.toString(), 1)
+                        for (mat3 in x) {
+                            val clienteLatLng = LatLng(cliente.latitude, cliente.longitude)
+                            marker?.remove()
+                            marker = mMap.addMarker(MarkerOptions().position(clienteLatLng).title("Me"))
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(clienteLatLng, zoomLevel))
+                            var loc = Location(address.text.toString())
+                            loc.latitude = clienteLatLng.latitude
+                            loc.longitude = clienteLatLng.longitude
+                            isInside(loc, circle)
                         }
                     }
                 }
@@ -148,10 +141,10 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                             .addOnSuccessListener { location: Location? ->
                                 // Got last known location. In some rare situations this can be null.
                                 if (location != null) {
-                                    val cliente = LatLng(location.latitude, location.longitude)
+                                    val cliente2 = LatLng(location.latitude, location.longitude)
                                     marker?.remove()
-                                    marker = mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
+                                    marker = mMap.addMarker(MarkerOptions().position(cliente2).title("Me"))
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente2, zoomLevel))
                                     isInside(location, circle)
                                 }
                             }
@@ -163,38 +156,34 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
         var geocodeMatches: List<Address>? = null
         var indirizzo = ""
             try {
-                geocodeMatches = Geocoder(this).getFromLocation(location!!.latitude, location.longitude, 1)
+                geocodeMatches = Geocoder(this).getFromLocation(location.latitude, location.longitude, 1)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
             if (geocodeMatches != null) {
                 indirizzo += geocodeMatches[0].getAddressLine(0) + " " + geocodeMatches[0].adminArea + " " + geocodeMatches[0].postalCode + " " + geocodeMatches[0].countryName
             }
-        var currentUser : String
-        if(intent.getStringExtra("mail").isNullOrBlank()) {
-            currentUser=FirebaseAuth.getInstance().currentUser!!.email!!
+        val currentUser = if(intent.getStringExtra("mail").isNullOrBlank()) {
+            FirebaseAuth.getInstance().currentUser!!.email!!
         }else {
-            currentUser = intent.getStringExtra("mail")!!
+            intent.getStringExtra("mail")!!
         }
                 Log.d("google", "se aggiorno ora vale $currentUser")
             val entry = hashMapOf<String, Any?>(
                     "address" to indirizzo,
             )
-            var db: FirebaseFirestore = FirebaseFirestore.getInstance()
+            val db: FirebaseFirestore = FirebaseFirestore.getInstance()
             db.collection("users").document(currentUser)
                     .set(entry, SetOptions.merge())
-                    .addOnSuccessListener { documentReference ->
-                        Log.d(
-                                "indirizzo",
-                                "indirizzo : $indirizzo "
-                        )
+                    .addOnSuccessListener {
+                        Log.d("indirizzo", "indirizzo : $indirizzo ")
                     }
                     .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
     }
     private fun isInside(location: Location?, circle: Circle) {
-        var distance = FloatArray(2)
+        val distance = FloatArray(2)
         if (location != null) {
-            Location.distanceBetween(location!!.latitude, location.longitude, circle.center.latitude, circle.center.longitude, distance)
+            Location.distanceBetween(location.latitude, location.longitude, circle.center.latitude, circle.center.longitude, distance)
             if (distance[0] > circle.radius) {
                 Toast.makeText(this, "Troppo distante", Toast.LENGTH_SHORT).show()
             } else {

@@ -1,10 +1,8 @@
 package it.uniupo.progetto
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
@@ -13,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import it.uniupo.progetto.fragments.Gestore
-import kotlin.system.exitProcess
 
 class ChooseActivity : AppCompatActivity() {
 
@@ -33,9 +29,9 @@ class ChooseActivity : AppCompatActivity() {
                 Toast.makeText(this, "${rg.checkedRadioButtonId}", Toast.LENGTH_SHORT).show()
             } else {
                 //salva dati su DB
-                var n = name.text.toString()
-                var s = surname.text.toString()
-                var type = getUserType(rg.checkedRadioButtonId)
+                val n = name.text.toString()
+                val s = surname.text.toString()
+                val type = getUserType(rg.checkedRadioButtonId)
                 addToFirestore(n, s, type, mail!!)
                 if (rg.checkedRadioButtonId == R.id.scelta_customer) {
                     val intent = Intent(this, ClientMappa::class.java)
@@ -69,8 +65,7 @@ class ChooseActivity : AppCompatActivity() {
     }
 
     private fun addToFirestore(name: String, surname: String, type: String, mail: String) {
-        var db: FirebaseFirestore = FirebaseFirestore.getInstance()
-        var auth = FirebaseAuth.getInstance()
+        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
         val entry = hashMapOf<String, Any?>(
                 "name" to name,
                 "surname" to surname,
@@ -78,9 +73,9 @@ class ChooseActivity : AppCompatActivity() {
                 "mail" to mail,
         )
         Log.d("google", "mail in choose vale $mail")
-        db.collection("users").document(mail!!)
+        db.collection("users").document(mail)
                 .set(entry, SetOptions.merge())
-                .addOnSuccessListener { documentReference ->
+                .addOnSuccessListener {
                     Log.d("user", "Aggiornati campi name = $name e surname = $surname")
                 }
                 .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }

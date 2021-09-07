@@ -30,7 +30,7 @@ class NewChatActivity : AppCompatActivity() {
 
     private fun getRiders(mycallback: MyCallback) {
         val db = FirebaseFirestore.getInstance()
-        var arr = ArrayList<Utente>()
+        val arr = ArrayList<Utente>()
         db.collection("users").get()
                 .addOnSuccessListener {
                     for(user in it){

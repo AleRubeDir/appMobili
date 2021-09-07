@@ -28,8 +28,6 @@ class ClienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
 
-        val chat = findViewById<ImageButton>(R.id.chat)
-
         val cartFragment = CartListFragment()
         val profileFragment = ProfileFragment()
         val shopFragment = ItemFragment()
@@ -43,7 +41,7 @@ class ClienteActivity : AppCompatActivity() {
         makeCurrentFragment(shopFragment)
 
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
-        nav.setOnNavigationItemSelectedListener {
+        nav.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.carrello -> makeCurrentFragment(cartFragment)
                 R.id.profilo -> makeCurrentFragment(profileFragment)

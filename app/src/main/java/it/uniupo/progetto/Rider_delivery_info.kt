@@ -53,11 +53,8 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
 
         val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
 
-      /*  if(consegnaRider.isLocked)
-            Toast.makeText(applicationContext,"Conferma il pagamento prima di terminare la corsa",Toast.LENGTH_SHORT).show()*/
         consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener{
             override fun onSlideComplete(view: SlideToActView) {
-//            devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
                 val orderId = intent.getStringExtra("orderId")!!
                 Log.d("mattia", "Premuto terminaConsegna " + orderId)
                 terminaConsegnaFun(orderId)
@@ -96,17 +93,15 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
 
     private fun errorePagamentofun(orderId: String) {
             val db = FirebaseFirestore.getInstance()
-            var rider = FirebaseAuth.getInstance().currentUser!!.email
+            val rider = FirebaseAuth.getInstance().currentUser!!.email
             val det = hashMapOf<String, Any?>(
                     "statoPagamento" to 0,
                     "stato" to 0,
             )
-//        Log.d("DELIVERY - ",orderId)
             db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(
                     det,
                     SetOptions.merge()
             )
-
     }
 
     override fun onMapReady(p0: GoogleMap) {
@@ -114,7 +109,6 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
         mMap = p0
         mMap.uiSettings.isMyLocationButtonEnabled = false
         var geocodeMatches: List<Address>? = null
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
@@ -122,16 +116,6 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
             return
         }
         mMap.isMyLocationEnabled = true;
-     /*   val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                // Got last known location. In some rare situations this can be null.
-                if (location != null) {
-                    val cliente = LatLng(location.latitude, location.longitude)
-                    mMap.addMarker(MarkerOptions().position(cliente).title("Me"))
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cliente, zoomLevel))
-                }
-            }*/
         val address = intent.getStringExtra("address")!!
         try {
             geocodeMatches = Geocoder(applicationContext).getFromLocationName(address, 1)
@@ -158,7 +142,6 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
         val det = hashMapOf<String, Any?>(
                 "statoPagamento" to 1,
         )
-//        Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(
                 det,
                 SetOptions.merge()
@@ -183,7 +166,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                         val det = hashMapOf<String, Any?>(
                                 "stato" to 1,
                         )
-                        db.collection("delivery").document(rider!!).collection("orders").document(orderId).set(
+                        db.collection("delivery").document(rider).collection("orders").document(orderId).set(
                                 det,
                                 SetOptions.merge()
                         )
@@ -191,7 +174,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                         val occ = hashMapOf<String, Any?>(
                                 "disponibile" to false,
                         )
-                        db.collection("riders").document(rider!!).set(occ, SetOptions.merge())
+                        db.collection("riders").document(rider).set(occ, SetOptions.merge())
                         Log.d("mattia", "dopo azioni che funzionano ")
 
                         //salva in order_history
@@ -205,7 +188,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                         val newOrderHistory = hashMapOf<String, Any?>(
                                 "data" to  Date(),
                                 "mail" to client,
-                                "rider" to rider!!,
+                                "rider" to rider,
                                 "tipoPagamento" to tipoPagamento,
                                 "statoPagamento" to statoPagamento,
                                 "risultatoOrdine" to 1,
@@ -218,20 +201,11 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                        )
                         Log.d("mattia", "prima di aggiunta in order history: " + orderId + newOrderHistory)
                         db.collection("orders_history").document(orderId).set(newOrderHistory)
-                        db.collection("delivery").document(rider!!).collection("orders").document(orderId).delete()
-                        db.collection("toAssignOrders").document(rider!!).collection("orders").document(orderId).delete()
+                        db.collection("delivery").document(rider).collection("orders").document(orderId).delete()
+                        db.collection("toAssignOrders").document(rider).collection("orders").document(orderId).delete()
 
-                        //cambiare  activity
                     }
                 }
-    }
-
-    fun convertLongToTime(time: Long): String {
-        //passare i secondi a questa funzione
-        val date = Date(time*1000)
-        //  Log.d("mess","time vale $time date vale $date")
-        val format = SimpleDateFormat("dd/MM/yyyy")
-        return format.format(date)
     }
 
 }
