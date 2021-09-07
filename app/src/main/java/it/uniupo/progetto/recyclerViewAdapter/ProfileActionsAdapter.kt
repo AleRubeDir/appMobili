@@ -1,7 +1,6 @@
-package it.uniupo.progetto
+package it.uniupo.progetto.recyclerViewAdapter
 
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,12 +9,11 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.firebase.auth.FirebaseAuth
+import it.uniupo.progetto.*
 import it.uniupo.progetto.fragments.ProfileFragment
 
  class ProfileActionsAdapter (

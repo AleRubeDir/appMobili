@@ -54,7 +54,6 @@ class MyConsegneRecyclerViewAdapter(
             view.context.startActivity(intent)
         }
 
-
         val  refuse_order_button = view.findViewById<ImageButton>(R.id.deny)
         refuse_order_button.setOnClickListener{
             val orderId = view.findViewById<TextView>(R.id.orderId).text.toString()

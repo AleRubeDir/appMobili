@@ -4,10 +4,12 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,7 +28,10 @@ class RichiamaOrdine : AppCompatActivity() {
         val tot = findViewById<TextView>(R.id.tot)
         val ordine = findViewById<TextView>(R.id.ordine)
         val lista_prodotti = findViewById<TextView>(R.id.lista_prodotti)
-
+        val order = findViewById<CardView>(R.id.order)
+        val prodotti = findViewById<TextView>(R.id.prodotti)
+        order.visibility = View.INVISIBLE
+        prodotti.visibility = View.INVISIBLE
         tot.text = ""
         ordine.text = ""
         lista_prodotti.text = ""
@@ -35,15 +40,19 @@ class RichiamaOrdine : AppCompatActivity() {
                 Log.d("richiama","cods -> $cods")
                 hasOrderPending(cods,object : MyCallback2 {
                    override fun onCallback(ord: Order) {
-                       Log.d("richiama","ord -> $ord")
-                       tot.text = getString(R.string.tot,"%.2f".format(ord.tot.toDouble()))
-                       ordine.text = getString(R.string.ord,ord.id)
-                        var prods = ""
-                       for(p in ord.arr) prods += p.titolo + " x " + p.qta + "\n"
-                       lista_prodotti.text = prods
-                       val richiama = findViewById<Button>(R.id.richiama)
-                       richiama.setOnClickListener{
-                           richiamaOrdine(ord)
+                       if(ordine!=null) {
+                           Log.d("richiama", "ord -> $ord")
+                           tot.text = getString(R.string.tot, "%.2f".format(ord.tot.toDouble()))
+                           ordine.text = getString(R.string.ord, ord.id)
+                           order.visibility = View.VISIBLE
+                           prodotti.visibility = View.VISIBLE
+                           var prods = ""
+                           for (p in ord.arr) prods += p.titolo + " x " + p.qta + "\n"
+                           lista_prodotti.text = prods
+                           val richiama = findViewById<Button>(R.id.richiama)
+                           richiama.setOnClickListener {
+                               richiamaOrdine(ord)
+                           }
                        }
                     }
 
@@ -88,13 +97,24 @@ class RichiamaOrdine : AppCompatActivity() {
 
         db.collection("orders").document(email).collection("order").get()
                 .addOnSuccessListener {
-                    Log.d("richiama", "it = ${it.documents.forEach{it.id}}")
                     for (d in it){
-                        Log.d("richiama", "d.id = ${d.id}")
-                        cods.add(d.id)
-                    }
+                        db.collection("delivery").get()
+                                .addOnSuccessListener{
+                                    for( rider in it){
+                                        db.collection("delivery").document(rider.id).collection("orders").get()
+                                                .addOnSuccessListener {
+                                                    for(ord in it){
+                                                        Log.d("richiama","ord id vale ${ord.id} e d.id vale ${d.id} == vale ${ord.id==d.id}")
+                                                        if(ord.id==d.id){
+                                                            cods.add(d.id)
+                                                        }
                     Log.d("richiama","cods vale $cods")
                     myCallback.onCallback(cods)
+                                                    }
+                                                }
+                                    }
+                                }
+                    }
                 }
     }
     interface MyCallback{
@@ -107,20 +127,13 @@ class RichiamaOrdine : AppCompatActivity() {
     private fun hasOrderPending(cods:  ArrayList<String>, myCallback: MyCallback2) {
         val db = FirebaseFirestore.getInstance()
         val email = FirebaseAuth.getInstance().currentUser!!.email.toString()
-        var prod = ArrayList<Prodotto>()
+
         var ordine : Order
         for(c in cods){
-
+            val prod = ArrayList<Prodotto>()
 //            controllare se tra tutti i delivery c'è n'è qualcuno appartenente al cliente
 
-//            db.collection("delivery").get()
-//                    .addOnSuccessListener{ res ->{
-//                        for( i in res){
-//                          devo scorrere per ogni rider il documento interno "orders" e poi per ogni documento controllare la email
-//                        }
-//                    }
-//
-//            }
+
             db.collection("orders").document(email).collection("order").document(c).collection("products").get()
                     .addOnSuccessListener {
                         for ( document in it) {
