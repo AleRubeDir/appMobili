@@ -49,7 +49,13 @@ class Rider_chatFragment : Fragment() {
                 if(value.size > 0 ){
                 Log.d("chatRider", "valore " + (value.size) + value)
                 notifiche.text = notifications.toString()
-                ora.text = (value.last().ora).toString()
+
+                    val vora = value.last().ora.toDate().hours.toString()
+                    var vminuti = value.last().ora.toDate().minutes.toString()
+                    if(vminuti.length==1) vminuti = "0"+  value.last().ora.toDate().minutes.toString()
+                    ora.text = view.context.getString(R.string.orario,vora,vminuti)
+
+
                 data.text = convertLongToTime(value.last().ora.seconds)
                 anteprima.text = value.last().testo
                 }
@@ -70,30 +76,32 @@ class Rider_chatFragment : Fragment() {
         val db = FirebaseFirestore.getInstance()
         val usr = FirebaseAuth.getInstance().currentUser!!.email.toString()
 
-        db.collection("rider-cliente_chat").document(usr).get()
+        db.collection("chats").document(usr).collection("contacts").get()
                 .addOnCompleteListener {
-                    val clientMail = it.result.getString("mailClient")!!
-                    Log.d("chat_rider","clientMail vale $clientMail")
-                    db.collection("chats").document(clientMail).collection("contacts").document(usr).collection("messages").get()
-                            .addOnSuccessListener { result ->
-                                var messages = arrayListOf<Messaggio>()
-                                for (document in result) {
-                                    val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
-                                    messages.add(mess)
+                    for (d in it.result) {
+                        val clientMail = d.id
+                        Log.d("chat_rider", "clientMail vale $clientMail")
+                        db.collection("chats").document(clientMail).collection("contacts").document(usr).collection("messages").get()
+                                .addOnSuccessListener { result ->
+                                    var messages = arrayListOf<Messaggio>()
+                                    for (document in result) {
+                                        val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
+                                        messages.add(mess)
+                                    }
+                                    var notifications = 0
+                                    var surname = ""
+                                    var name = ""
+                                    var tipo = ""
+                                    FirebaseFirestore.getInstance().collection("chats").document(usr).collection("contacts").document(clientMail).get().addOnSuccessListener {
+                                        notifications = it.getLong("notifications")!!.toInt()
+                                        name = it.getString("name")!!
+                                        surname = it.getString("surname")!!
+                                        tipo = it.getString("tipo")!!
+                                        val contatto = Contatto(clientMail, name, surname, tipo)
+                                        myCallback.onCallback(messages, notifications, contatto)
+                                    }
                                 }
-                                var notifications = 0
-                                var surname = ""
-                                var name = ""
-                                var tipo = ""
-                                FirebaseFirestore.getInstance().collection("chats").document(clientMail).collection("contacts").document(usr).get().addOnSuccessListener {
-                                    notifications = it.getLong("notifications")!!.toInt()
-                                    name = it.getString("name")!!
-                                    surname = it.getString("surname")!!
-                                    tipo = it.getString("tipo")!!
-                                }
-                                val contatto = Contatto(clientMail,name,surname,tipo)
-                                myCallback.onCallback(messages, notifications,contatto)
-                            }
+                    }
                 }
     }
 
