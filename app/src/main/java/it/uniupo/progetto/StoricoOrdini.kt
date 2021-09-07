@@ -36,7 +36,7 @@ class StoricoOrdini : AppCompatActivity() {
         val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val db = FirebaseFirestore.getInstance()
         var t = "null"
-        db.collection("users").document(user!!)
+        db.collection("users").document(user)
                 .get()
                 .addOnSuccessListener { result ->
                     if(!result.getString("type").isNullOrBlank())
@@ -74,7 +74,7 @@ class StoricoOrdini : AppCompatActivity() {
         if(time!=null){
         val date = Date(time*1000)
         //  Log.d("mess","time vale $time date vale $date")
-        val format = SimpleDateFormat("dd/MM/yyyy")
+        val format = SimpleDateFormat("dd/MM/yyyy",Locale.ITALY)
         return format.format(date)
         }
         return "err"

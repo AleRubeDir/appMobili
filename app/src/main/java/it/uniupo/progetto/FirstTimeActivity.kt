@@ -35,7 +35,7 @@ class FirstTimeActivity : AppCompatActivity() {
         }
         end.setOnClickListener {
             val intent = Intent(this, ChooseActivity::class.java)
-            intent.putExtra("mail", mail!! )
+            intent.putExtra("mail", mail)
             startActivity(intent)
         }
 

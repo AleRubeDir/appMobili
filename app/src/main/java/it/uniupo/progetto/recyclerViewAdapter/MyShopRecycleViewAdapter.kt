@@ -1,15 +1,6 @@
 package it.uniupo.progetto.recyclerViewAdapter
 
-import android.content.ContentResolver
-import android.content.ContentUris
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.provider.ContactsContract
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,14 +8,11 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import it.uniupo.progetto.GestoreProdotto
 import it.uniupo.progetto.Prodotto
 import it.uniupo.progetto.R
-import java.io.File
 
 
 class MyShopRecycleViewAdapter(private val values: ArrayList<Prodotto>) : RecyclerView.Adapter<MyShopRecycleViewAdapter.ViewHolder>() {

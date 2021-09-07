@@ -40,7 +40,6 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 check.text = getText(R.string.mostra_password)
                 pwd.transformationMethod = HideReturnsTransformationMethod.getInstance()
-
             }
         }
         ggl.setOnClickListener{
@@ -49,10 +48,7 @@ class LoginActivity : AppCompatActivity() {
                     .requestIdToken(getString(R.string.default_web_client_id))
                     .requestEmail()
                     .build()
-            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-            val account = GoogleSignIn.getLastSignedInAccount(this)
-
-            //updateUI(account)
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
             signIn()
         }
         mail.setOnClickListener{
@@ -67,9 +63,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-       // updateUI(currentUser)
     }
     private fun signIn() {
         Log.d("login", "sei in signIn")
@@ -79,7 +72,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -191,7 +183,7 @@ class LoginActivity : AppCompatActivity() {
             "Rider" -> startActivity(Intent(this, RiderActivity::class.java))
             "Gestore" -> startActivity(Intent(this, GestoreActivity::class.java))
             else -> {
-                var i = Intent(this,FirstTimeActivity::class.java)
+                val i = Intent(this,FirstTimeActivity::class.java)
                 i.putExtra("mail",mail)
                 startActivity(i)
             }

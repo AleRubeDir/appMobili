@@ -27,7 +27,7 @@ class AssegnaOrdine : AppCompatActivity() {
 
     }
     interface MyCallback{
-        fun onCallback(rider: ArrayList<Rider>)
+        fun onCallback(riders: ArrayList<Rider>)
     }
     private fun getRiders(mycallback : MyCallback){
         val db = FirebaseFirestore.getInstance()

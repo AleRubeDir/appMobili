@@ -132,8 +132,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
         db.collection("delivery").document(rider!!).collection("orders").get()
                 .addOnCompleteListener {
                     for(d in it.result){
-//                        var orderId = d.id
-                        db.collection("delivery").document(rider!!).collection("orders").document(d.id).set(
+                        db.collection("delivery").document(rider).collection("orders").document(d.id).set(
                                 det,
                                 SetOptions.merge()
                         )
@@ -146,7 +145,6 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
         mMap = p0
         mMap.uiSettings.isMyLocationButtonEnabled = false
         var geocodeMatches: List<Address>? = null
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(viewConsegne.context)
         if (ActivityCompat.checkSelfPermission(viewConsegne.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                         viewConsegne.context,
                         Manifest.permission.ACCESS_COARSE_LOCATION
@@ -182,7 +180,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
         db.collection("delivery").document(rider!!).collection("orders").get()
                 .addOnCompleteListener {
                     for(d in it.result){
-                        db.collection("delivery").document(rider!!).collection("orders").document(d.id).set(
+                        db.collection("delivery").document(rider).collection("orders").document(d.id).set(
                                 det,
                                 SetOptions.merge()
                         )
@@ -208,7 +206,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         val occ = hashMapOf<String, Any?>(
                                 "disponibile" to true,
                         )
-                        db.collection("riders").document(rider!!).set(occ, SetOptions.merge())
+                        db.collection("riders").document(rider).set(occ, SetOptions.merge())
                         Log.d("mattia", "dopo azioni che funzionano ")
 
                         //salva in order_history
@@ -222,7 +220,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         val newOrderHistory = hashMapOf<String, Any?>(
                                 "data" to Date(),
                                 "mail" to client,
-                                "rider" to rider!!,
+                                "rider" to rider,
                                 "tipoPagamento" to tipoPagamento,
                                 "statoPagamento" to statoPagamento,
                                 "risultatoOrdine" to stato,
@@ -241,8 +239,8 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                             RiderActivity.flag_consegna = 0
                             startActivity(int)
                         }
-                        db.collection("delivery").document(rider!!).collection("orders").document(RiderActivity.ordId!!).delete()
-                        db.collection("toAssignOrders").document(rider!!).collection("orders").document(RiderActivity.ordId!!).delete()
+                        db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
+                        db.collection("toAssignOrders").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
 
                         db.collection("orders").document(client!!).collection("order").document(RiderActivity.ordId!!).collection("products").get()
                                 .addOnSuccessListener { result ->
@@ -330,7 +328,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         val stato = order.getLong("stato")!!.toInt()
                         val distanza = order.getDouble("distanza")
                         val tipo_pagamento = order.getString("tipo_pagamento").toString()
-                        var posizione = ""
+                        var posizione : String
                         db.collection("users").document(client).get()
                                 .addOnSuccessListener {
                                     posizione = it.getString("address").toString()

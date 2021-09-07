@@ -20,7 +20,7 @@ class PagamentoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pagamento)
 
-        var ord_id = intent.getStringExtra("ord_id")!!
+        val ordId = intent.getStringExtra("ord_id")!!
         val btn = findViewById<Button>(R.id.btn)
         val rg = findViewById<RadioGroup>(R.id.group)
         val tot = findViewById<TextView>(R.id.tot)
@@ -38,7 +38,7 @@ class PagamentoActivity : AppCompatActivity() {
                     else {
                         var i = 1
                         if(rg.checkedRadioButtonId==R.id.carta) i =0
-                        selezionaMetodo(cliente!!,indirizzo, ord_id,i)
+                        selezionaMetodo(cliente!!,indirizzo, ordId,i)
                         showAlert()
                     }
                 }
@@ -52,7 +52,7 @@ class PagamentoActivity : AppCompatActivity() {
 
     private fun getIndirizzo(myCallback: MyCallback,email: String?) {
         val db = FirebaseFirestore.getInstance()
-        var add=""
+        var add : String
         db.collection("users").document(email!!).get()
                 .addOnSuccessListener { document->
                     add = document.getString("address").toString()
@@ -70,7 +70,6 @@ class PagamentoActivity : AppCompatActivity() {
                 .setMessage("Riceverai una notifica appena il rider partirà con il tuo ordine")
                 .setNeutralButton("Chiudi")
                 { _: DialogInterface, _: Int ->
-//                    for(p in ClienteActivity.carrello) diminuisciQtaDB(p)
                     svuotaCarrello()
                     startActivity(Intent(this,ClienteActivity::class.java))
 
@@ -102,18 +101,10 @@ class PagamentoActivity : AppCompatActivity() {
         ClienteActivity.tot=0.0
     }
 
-
-
-    fun getRandomString() : String {
-        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-        return (1..8)
-                .map { allowedChars.random() }
-                .joinToString("")
-    }
-    private fun selezionaMetodo(cliente : String ,indirizzo : String , ord_id : String, i: Int) {
+    private fun selezionaMetodo(cliente : String ,indirizzo : String , ordId : String, i: Int) {
         val db = FirebaseFirestore.getInstance()
         val user = FirebaseAuth.getInstance().currentUser?.email.toString()
-        var tipo = ""
+        var tipo : String
         if(i==0) tipo = "Carta"
         else tipo="Contanti"
         val entry = hashMapOf<String,Any>(
@@ -122,12 +113,9 @@ class PagamentoActivity : AppCompatActivity() {
             "indirizzo" to indirizzo,
             "cliente" to cliente
         )
-        val dummy = hashMapOf<String,Any>(
-                " " to " "
-        )
-        db.collection("toassignOrders").document(ord_id).set(entry)
-        db.collection("orders").document(user).collection("order").document(ord_id).collection("details").document("dett").set(entry)
-            .addOnSuccessListener { document->
+        db.collection("toassignOrders").document(ordId).set(entry)
+        db.collection("orders").document(user).collection("order").document(ordId).collection("details").document("dett").set(entry)
+            .addOnSuccessListener {
                 Log.d("myscelta","Selezionato metodo di pagamento")
             }
                 .addOnFailureListener{e->

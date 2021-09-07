@@ -36,24 +36,20 @@ import it.uniupo.progetto.fragments.ProfileFragment
              if(id.text=="0"){
                 //dati personali
                  val intent = Intent(view.context, DatiPersonali::class.java)
-                 /*intent.putExtra("id-prodotto", id.text )*/
                  view.context.startActivity(intent)
              }
              else if(id.text=="1"){
                  //mappa
                  val intent = Intent(view.context, ClientMappa::class.java)
-                 /*intent.putExtra("id-prodotto", id.text )*/
                  view.context.startActivity(intent)
              }
              else if(id.text=="2"){
                 //i miei ordini
                  val intent = Intent(view.context, Ordini::class.java)
-                 /*intent.putExtra("id-prodotto", id.text )*/
                  view.context.startActivity(intent)
              }
              else if(id.text=="3"){
                  val intent = Intent(view.context, GestoreMappaRider::class.java)
-                 /*intent.putExtra("id-prodotto", id.text )*/
                  view.context.startActivity(intent)
              }
              else if(id.text=="4"){
@@ -76,8 +72,6 @@ import it.uniupo.progetto.fragments.ProfileFragment
          }
          return ViewHolder(view)
      }
-
-
 
     override fun getItemCount(): Int = array.size
 

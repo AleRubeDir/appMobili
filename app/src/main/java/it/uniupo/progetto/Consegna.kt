@@ -6,7 +6,6 @@ class Consegna(
     val posizione: String,
     val tipo_pagamento: String,
     var stato: Int,
-//    var statoPagamento: Int,
     var orderId: String,
     var distanza: Double?,
     var rider : String ,

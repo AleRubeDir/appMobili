@@ -72,9 +72,9 @@ class MyCartListRecyclerViewAdapter(
 
 
         minus.setOnClickListener {
-            var id = idtv.text.toString().toInt()
-            var nqta = qta.text.toString().toInt() - 1
-            var p = Prodotto.getProdotto(id)
+            val id = idtv.text.toString().toInt()
+            val nqta = qta.text.toString().toInt() - 1
+            val p = Prodotto.getProdotto(id)
             if (nqta <= 0) {
                 rimuoviProdotto(id)
                 notifyDataSetChanged()
@@ -87,9 +87,9 @@ class MyCartListRecyclerViewAdapter(
         }
         //tieni premuto toglie 10 qta
         minus.setOnLongClickListener {
-            var id = idtv.text.toString().toInt()
-            var nqta = qta.text.toString().toInt() - 10
-            var p = Prodotto.getProdotto(id)
+            val id = idtv.text.toString().toInt()
+            val nqta = qta.text.toString().toInt() - 10
+            val p = Prodotto.getProdotto(id)
             if (qta.text.toString().toInt() < 10) {
                 rimuoviProdotto(id)
                 notifyDataSetChanged()
@@ -129,7 +129,7 @@ class MyCartListRecyclerViewAdapter(
         )
         db.collection("carts").document(user).collection("products").document(p.id.toString())
                 .set(entry, SetOptions.merge())
-                .addOnSuccessListener { documentReference ->
+                .addOnSuccessListener {
                     Log.d("qta", "Aggiornata qta carrello del prodotto ${p.id} : $qta ")
                 }
                 .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
@@ -179,9 +179,6 @@ class MyCartListRecyclerViewAdapter(
         var qta: TextView = view.findViewById(R.id.qta)
         var prezzo: TextView = view.findViewById(R.id.prezzo)
         var id : TextView = view.findViewById(R.id.id)
-        override fun toString(): String {
-            return super.toString() + " text : ${text.text} ||| qta : ${qta .text}||| prezzo : ${prezzo.text} ||| id : ${id.text}"
-        }
     }
 
 }

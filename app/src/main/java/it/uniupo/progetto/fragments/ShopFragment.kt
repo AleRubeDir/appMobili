@@ -20,15 +20,12 @@ class ShopFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_shop_list, container, false)
-
-        // Set the adapter
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-
                 ItemFragment.getAllProducts((object : ItemFragment.Companion.MyCallback {
                     override fun onCallback(value: List<Prodotto>) {
                         array.sortBy{it.id}

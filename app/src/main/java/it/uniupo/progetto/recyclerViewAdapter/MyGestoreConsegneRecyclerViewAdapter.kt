@@ -1,30 +1,20 @@
 package it.uniupo.progetto.recyclerViewAdapter
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat.startActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.*
-import it.uniupo.progetto.ChooseActivity
 import it.uniupo.progetto.Consegna
 import it.uniupo.progetto.R
 
-
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem].
- * TODO: Replace the implementation with code for your data type.
- */
 class MyGestoreConsegneRecyclerViewAdapter(
         private val values: ArrayList<Consegna>
 ) : RecyclerView.Adapter<MyGestoreConsegneRecyclerViewAdapter.ViewHolder>() {
@@ -54,9 +44,6 @@ class MyGestoreConsegneRecyclerViewAdapter(
                 intent.putExtra("distanza",item.distanza)
                 view.context.startActivity(intent)
             }
-     //   }else {
-    //        holder.cv.visibility = View.INVISIBLE
-     //   }
     }
 
     override fun getItemCount(): Int = values.size
@@ -68,34 +55,7 @@ class MyGestoreConsegneRecyclerViewAdapter(
         val distanza: TextView = view.findViewById(R.id.distanza)
         val userId: TextView = view.findViewById(R.id.userMail)
         val orderId: TextView = view.findViewById(R.id.orderId)
-        val cv : CardView = view.findViewById(R.id.order)
 
     }
 
-    fun acceptOrder(user: String,orderId: String){
-        val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
-        val db = FirebaseFirestore.getInstance()
-        val det = hashMapOf<String, Any?>(
-            //stato in pending
-            "stato" to -1
-        )
-        Log.d("DELIVERY - ",orderId)
-        db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
-
-        // corrispondenza rider-client
-
-
-
-    }
-
-    fun refuseOrder(user: String,orderId: String){
-        val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
-        val db = FirebaseFirestore.getInstance()
-        val det = hashMapOf<String, Any?>(
-            // stato in rifiutato
-                "stato" to 0
-        )
-        Log.d("DELIVERY - ",orderId)
-        db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
-    }
 }

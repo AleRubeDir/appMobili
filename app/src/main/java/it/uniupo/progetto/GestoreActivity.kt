@@ -27,16 +27,15 @@ class GestoreActivity : AppCompatActivity() {
         val shopFragment = ShopFragment()
         val profileFragment = ProfileFragment()
         makeCurrentFragment(shopFragment)
-
         Log.d("notifications","start notification service ")
         startService(Intent(this,NotificationService::class.java))
 
-        val from_notification = intent.getStringExtra("from_notification")
-        if(from_notification!=null){
+        val fromNotification = intent.getStringExtra("from_notification")
+        if(fromNotification!=null){
             makeCurrentFragment(orderFragment)
         }
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
-        nav.setOnNavigationItemSelectedListener {
+        nav.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.order -> {
                     makeCurrentFragment(orderFragment)

@@ -44,12 +44,10 @@ class RiderActivity : AppCompatActivity() {
 
 
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
-        nav.setOnNavigationItemSelectedListener {
+        nav.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.chat -> {
-
                     makeCurrentFragment(chatFragment)
-
                 }
                 R.id.consegne -> {
                     makeCurrentFragment(deliveryFragment)

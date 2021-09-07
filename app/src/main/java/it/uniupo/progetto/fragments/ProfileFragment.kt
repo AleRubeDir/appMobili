@@ -22,8 +22,6 @@ class ProfileFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val fb = FirebaseAuth.getInstance()
-        val user = fb.currentUser?.email
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         Log.d("login", "---- ${requireActivity().getSharedPreferences("login", 0).getString("login", "")}")
         val recyclerView = view.findViewById<RecyclerView>(R.id.profile_actions)
@@ -45,9 +43,6 @@ class ProfileFragment : Fragment() {
         recyclerView.adapter = ProfileActionsAdapter(array)
 
         return view
-
-
-
     }
 
     private fun getUserType(user: String?, fc: LoginActivity.FirestoreCallback){

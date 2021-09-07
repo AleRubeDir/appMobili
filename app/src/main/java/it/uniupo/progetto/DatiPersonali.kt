@@ -1,16 +1,12 @@
 package it.uniupo.progetto
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.concurrent.thread
 
 class DatiPersonali  : AppCompatActivity() {
     interface MyCallback{
@@ -58,8 +54,6 @@ class DatiPersonali  : AppCompatActivity() {
                 }
                 .addOnFailureListener{ e -> Log.w("---","Error getting user info - DatiPersonali",e)}
     }
-
-
 
     class Utente(val email : String, val nome : String, val cognome : String, val tipo : String, val indirizzo : String ){
         override fun toString() :String{

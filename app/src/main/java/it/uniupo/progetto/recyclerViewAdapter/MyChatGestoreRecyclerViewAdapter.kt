@@ -19,8 +19,9 @@ import kotlin.collections.ArrayList
 class MyChatGestoreRecyclerViewAdapter(
     private val chats: ArrayList<Chat>
 ) : RecyclerView.Adapter<MyChatGestoreRecyclerViewAdapter.ViewHolder>() {
+    lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.chat_element, parent, false)
         val el = view.findViewById<RelativeLayout>(R.id.chat_element)
         val mail = view.findViewById<TextView>(R.id.mail)
@@ -49,14 +50,14 @@ class MyChatGestoreRecyclerViewAdapter(
         val item = chats[position]
         Log.d("mymess","${item.contatto}")
         item.messaggio.sortBy{it.ora}
-        var ora = item.messaggio.last().ora.toDate().hours.toString()
+        val ora = item.messaggio.last().ora.toDate().hours.toString()
         var minuti = item.messaggio.last().ora.toDate().minutes.toString()
         if(minuti.length==1) minuti = "0"+ item.messaggio.last().ora.toDate().minutes.toString()
 
         holder.mail.text = item.contatto.mail
         holder.nome.text = item.contatto.nome
         holder.cognome.text = item.contatto.cognome
-        holder.ora.text = "$ora:$minuti"
+        holder.ora.text = view.context.getString(R.string.orario,ora,minuti)
         Log.d("anteprima","ultimo messaggio => ${item.messaggio.last().testo} \n\n")
         holder.anteprima.text = item.messaggio.last().testo
         holder.data.text =convertLongToTime(item.messaggio.last().ora.seconds)
@@ -64,10 +65,9 @@ class MyChatGestoreRecyclerViewAdapter(
         holder.notifiche.text = item.notifications.toString()
     }
 
-    fun convertLongToTime(time: Long): String {
+    private fun convertLongToTime(time: Long): String {
         val date = Date(time*1000)
-        //  Log.d("mess","time vale $time date vale $date")
-        val format = SimpleDateFormat("dd/MM/yyyy")
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.ITALY)
         return format.format(date)
     }
 }

@@ -39,7 +39,7 @@ class AddProduct : AppCompatActivity() {
             val titolo = findViewById<EditText>(R.id.titolo).text.toString()
             val desc = findViewById<EditText>(R.id.desc).text.toString()
             val prezzo = findViewById<EditText>(R.id.prezzo).text.toString()
-            var qta = findViewById<EditText>(R.id.qta).text.toString()
+            val qta = findViewById<EditText>(R.id.qta).text.toString()
      
             getLastID(object : MyCallback {
                 override fun onCallback(id: Int) {
@@ -61,7 +61,6 @@ class AddProduct : AppCompatActivity() {
                         caricaProdotto(p)
                         updatePhoto(p)
                         startActivity(Intent(applicationContext, GestoreActivity::class.java))
-
                     }
                 }
             })
@@ -91,18 +90,18 @@ class AddProduct : AppCompatActivity() {
         Toast.makeText(this, "Errore $campo", Toast.LENGTH_SHORT).show()
     }
     private fun chooseMethod(){
-        var builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle("Scegli come proseguire")
-        var inflater = layoutInflater
-        var dialogView = inflater.inflate(R.layout.dialog_camera, null)
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_camera, null)
         builder.setCancelable(true)
         builder.setView(dialogView)
 
-        var camera = dialogView.findViewById<ImageView>(R.id.camera)
-        var gallery = dialogView.findViewById<ImageView>(R.id.gallery)
+        val camera = dialogView.findViewById<ImageView>(R.id.camera)
+        val gallery = dialogView.findViewById<ImageView>(R.id.gallery)
 
 
-        var choose = builder.create()
+        val choose = builder.create()
         choose.show()
 
 
@@ -166,7 +165,7 @@ class AddProduct : AppCompatActivity() {
             img.setImageURI(imgUri)
             val storage = FirebaseStorage.getInstance().reference.child("products/$codphoto")
 
-            storage.putFile(imgUri!!).addOnSuccessListener {
+            storage.putFile(imgUri).addOnSuccessListener {
                 Toast.makeText(this, "Foto caricata correttamente", Toast.LENGTH_SHORT).show()
             }
                     .addOnFailureListener { e ->
@@ -177,9 +176,8 @@ class AddProduct : AppCompatActivity() {
         }
         if (resultCode == RESULT_OK && requestCode == 1003) {
             Log.d("add", "Scatto foto")
-            var bundle = data!!.extras
-            var imgbit = bundle!!.get("data") as Bitmap
-
+            val bundle = data!!.extras
+            val imgbit = bundle!!.get("data") as Bitmap
             val file = File(cacheDir, codphoto) //Get Access to a local file.
             file.delete() // svuota
             file.createNewFile() //crea
@@ -194,7 +192,7 @@ class AddProduct : AppCompatActivity() {
             byteArrayOutputStream.close()
             val URI = file.toUri()
             img.setImageBitmap(imgbit)
-            var storage = FirebaseStorage.getInstance().reference.child("products/$codphoto")
+            val storage = FirebaseStorage.getInstance().reference.child("products/$codphoto")
             storage.putFile(URI).addOnSuccessListener {
                 Toast.makeText(this, "Foto caricata correttamente", Toast.LENGTH_SHORT).show()
             }

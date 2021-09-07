@@ -24,12 +24,10 @@ class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: Array
 
         return ViewHolder(view)
     }
-
     private fun scegliRiderPerOrdine(ordId: String?, rider : String) {
         val db = FirebaseFirestore.getInstance()
         val entry = hashMapOf<String,Any?>(
                 "distanza" to distanza,
-                //stato pending
                 "stato" to -1,
                 "statoPagamento" to -1,
                 "orderId" to ordId,

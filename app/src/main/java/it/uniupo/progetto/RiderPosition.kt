@@ -35,8 +35,6 @@ class RiderPosition : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.rider_position)
-
-
         email = FirebaseAuth.getInstance().currentUser!!.email.toString()
         getRiderFromClient(object : MyCallback {
             override fun onCallback(rid: String) {
@@ -67,7 +65,7 @@ class RiderPosition : AppCompatActivity(), OnMapReadyCallback {
     }
     private fun getRidersPositions(mycallback: GestoreMappaRider.MyCallback){
         val db = FirebaseFirestore.getInstance()
-        var positions  = hashMapOf<String, LatLng>()
+        val positions  = hashMapOf<String, LatLng>()
         db.collection("riders").get()
                 .addOnSuccessListener {
                     for(doc in it){
@@ -85,13 +83,11 @@ class RiderPosition : AppCompatActivity(), OnMapReadyCallback {
                 }
     }
     interface MyCallback {
-        fun onCallback(rider: String)
+        fun onCallback(rid: String)
     }
     override fun onMapReady(p0: GoogleMap) {
         mMap = p0
         mMap.uiSettings.isMyLocationButtonEnabled = false
-        var geocodeMatches: List<Address>? = null
-
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return
@@ -132,13 +128,13 @@ class RiderPosition : AppCompatActivity(), OnMapReadyCallback {
         val vectorDrawable= ContextCompat.getDrawable(applicationContext!!, vectorResID)
 
         val left = (background.intrinsicWidth - vectorDrawable!!.intrinsicWidth) / 2
-        val top = (background.intrinsicHeight - vectorDrawable!!.intrinsicHeight) / 3
-        vectorDrawable!!.setBounds(left, top, left + vectorDrawable.intrinsicWidth, top + vectorDrawable.intrinsicHeight)
+        val top = (background.intrinsicHeight - vectorDrawable.intrinsicHeight) / 3
+        vectorDrawable.setBounds(left, top, left + vectorDrawable.intrinsicWidth, top + vectorDrawable.intrinsicHeight)
 
-        val bitmap= Bitmap.createBitmap(background!!.intrinsicWidth, background.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val bitmap= Bitmap.createBitmap(background.intrinsicWidth, background.intrinsicHeight, Bitmap.Config.ARGB_8888)
         val canvas= Canvas(bitmap)
         background.draw(canvas)
-        vectorDrawable!!.draw(canvas)
+        vectorDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 

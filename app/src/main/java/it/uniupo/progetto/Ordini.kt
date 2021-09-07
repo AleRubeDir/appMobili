@@ -1,9 +1,6 @@
 package it.uniupo.progetto
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +12,6 @@ class Ordini : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_my_orders)
-        //       // Log.d("login", "---- ${requireActivity().getSharedPreferences("login", 0).getString("login", "")}")
         val recyclerView = findViewById<RecyclerView>(R.id.profile_actions)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         var array = ArrayList<Azione>()

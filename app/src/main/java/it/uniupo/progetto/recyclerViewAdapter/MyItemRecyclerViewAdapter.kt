@@ -20,7 +20,7 @@ class MyItemRecyclerViewAdapter(private val values: ArrayList<Prodotto>) : Recyc
                 .inflate(R.layout.fragment_item, parent, false)
 
         val rel = view.findViewById<CardView>(R.id.rel)
-        var id = view.findViewById<TextView>(R.id.id)
+        val id = view.findViewById<TextView>(R.id.id)
         rel.setOnClickListener{
             val intent = Intent(view.context, PaginaProdotto::class.java)
             intent.putExtra("id-prodotto", id.text )

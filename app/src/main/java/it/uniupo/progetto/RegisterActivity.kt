@@ -64,7 +64,7 @@ class RegisterActivity  : AppCompatActivity() {
                     db.collection("users").document(mail!!).set(entry)
                             .addOnSuccessListener { Log.d("register","Dati salvati su DB")
                                 val intent = Intent(this, FirstTimeActivity::class.java)
-                                intent.putExtra("mail", mail!!)
+                                intent.putExtra("mail", mail)
                                 startActivity(intent)}
                             .addOnFailureListener{e-> Log.d("register","Errore salvataggio dati : $e")}
                 }
@@ -101,14 +101,12 @@ class RegisterActivity  : AppCompatActivity() {
                         val user = auth.currentUser
                         Log.d("google","-------- user email ${user!!.email}")
                         selectActivity(user.email)
-                        //  updateUI(user)
                         /*
                         Se la chiamata a signInWithCredential riesce, puoi utilizzare il metodo getCurrentUser per ottenere i dati dell'account dell'utente.
                          */
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("google", "signInWithCredential:failure", task.exception)
-                        //  updateUI(null)
                     }
                 }
     }
@@ -139,7 +137,7 @@ class RegisterActivity  : AppCompatActivity() {
         val entry = hashMapOf<String, Any?>(
                 "mail" to usr.text.toString(),
         )
-        var db = FirebaseFirestore.getInstance()
+        val db = FirebaseFirestore.getInstance()
         Log.d("google", "--++++--+++---- user email ${usr.text.toString()}")
         db.collection("users").document(usr.text.toString()).set(entry)
                 .addOnSuccessListener { Log.d("register","Dati salvati su DB") }
