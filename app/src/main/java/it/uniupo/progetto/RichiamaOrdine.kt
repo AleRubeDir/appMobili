@@ -28,6 +28,10 @@ class RichiamaOrdine : AppCompatActivity() {
         val tot = findViewById<TextView>(R.id.tot)
         val ordine = findViewById<TextView>(R.id.ordine)
         val lista_prodotti = findViewById<TextView>(R.id.lista_prodotti)
+
+        tot.text = ""
+        ordine.text = ""
+        lista_prodotti.text = ""
         getOrderCodes(object : MyCallback {
             override fun onCallback(cods: ArrayList<String>) {
                 Log.d("richiama","cods -> $cods")
@@ -114,6 +118,17 @@ class RichiamaOrdine : AppCompatActivity() {
         var prod = ArrayList<Prodotto>()
         var ordine : Order
         for(c in cods){
+
+//            controllare se tra tutti i delivery c'è n'è qualcuno appartenente al cliente
+
+//            db.collection("delivery").get()
+//                    .addOnSuccessListener{ res ->{
+//                        for( i in res){
+//                          devo scorrere per ogni rider il documento interno "orders" e poi per ogni documento controllare la email
+//                        }
+//                    }
+//
+//            }
             db.collection("orders").document(email).collection("order").document(c).collection("products").get()
                     .addOnSuccessListener {
                         for ( document in it) {
