@@ -14,7 +14,6 @@ import it.uniupo.progetto.fragments.ChatGestoreFragment
 import it.uniupo.progetto.recyclerViewAdapter.*
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.SetOptions
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,7 +30,7 @@ class ChatActivity : AppCompatActivity() {
         val mail = intent.getStringExtra("mail")!!.toString()
         Log.d("chats", mail)
         getMessageFromChat((object : ChatGestoreFragment.MyCallbackMessages {
-            override fun onCallback(value: ArrayList<Messaggio>,notifications: Int ) {
+            override fun onCallback(value: ArrayList<Messaggio>,notifications: Int, c:Contatto? ) {
                 Log.d("Chats", "Dentro la chat $messages")
                 val user = FirebaseAuth.getInstance().currentUser!!.email
                 createChat(contatto,user,mail)
@@ -164,7 +163,7 @@ class ChatActivity : AppCompatActivity() {
                         Log.d("Chats", "mess $mess")
                         messages.add(mess)
                     }
-                    myCallback.onCallback(messages,0)
+                    myCallback.onCallback(messages,0,null)
                 }
     }
 }

@@ -31,7 +31,7 @@ class RichiamaOrdine : AppCompatActivity() {
         val order = findViewById<CardView>(R.id.order)
         val prodotti = findViewById<TextView>(R.id.prodotti)
         order.visibility = View.INVISIBLE
-        prodotti.visibility = View.INVISIBLE
+        prodotti.visibility = View.INVISIBLE 
         tot.text = ""
         ordine.text = ""
         lista_prodotti.text = ""

@@ -94,6 +94,13 @@ class MyConsegneRecyclerViewAdapter(
          )
         Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
+        //corrispondenza client-rider
+
+//        val dummy = hashMapOf<String, Any?>(
+//                " " to " "
+//        )
+//        db.collection("client-rider").document(user).collection(orderId).document(rider).set(dummy, SetOptions.merge())
+
     }
 
 //        refuse order:

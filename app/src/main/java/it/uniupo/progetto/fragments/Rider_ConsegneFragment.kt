@@ -250,16 +250,19 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
 
                                         val prod = Prodotto(id,"","","","",qta)
                                         diminuisciQtaDB(prod,stato,statoPagamento)
-
                                     }
                                 }
+
+                        Log.d("mattia", "sto per cancellare corrispondenza " + client)
+                       //db.collection("client-rider").document(client).collection("rider").document(rider).delete()
+//                        db.collection("client-rider").document(client).collection(RiderActivity.ordId!!).delete()
                         }
                     }
                 }
 
 
     public fun diminuisciQtaDB(p: Prodotto, stato: Int, statoPagamento: Int) {
-// si diminuiscono le quantità solo se l'ordine è stato accettato e pagato
+        // si diminuiscono le quantità solo se l'ordine è stato accettato e pagato
         if(stato == 1 && statoPagamento==1){
 
 

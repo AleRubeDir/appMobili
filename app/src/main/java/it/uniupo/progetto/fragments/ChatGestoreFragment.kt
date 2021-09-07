@@ -14,8 +14,6 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 import it.uniupo.progetto.recyclerViewAdapter.*
 
@@ -32,11 +30,15 @@ class ChatGestoreFragment : Fragment() {
             startActivity(Intent(view.context,NewChatActivity::class.java))
         }
         getUserContacts((object: MyCallbackContact{
+
             override fun onCallback(value: ArrayList<Contatto>) {
+
                 contacts = value
                 for (c in contacts) {
+
                     getMessageFromChat((object: MyCallbackMessages{
-                        override fun onCallback(value: ArrayList<Messaggio>,notifications: Int) {
+
+                        override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, clientMail: Contatto?) {
                             val chatUtente = Chat(c,value,notifications)
                             chats.add(chatUtente)
                             chats.sortByDescending { it.messaggio.last().ora.seconds }
@@ -67,7 +69,7 @@ class ChatGestoreFragment : Fragment() {
                     FirebaseFirestore.getInstance().collection("chats").document(user.toString()).collection("contacts").document(you).get().addOnSuccessListener {
                         notifications = it.getLong("notifications")!!.toInt()
                     }
-                    myCallback.onCallback(messages, notifications)
+                    myCallback.onCallback(messages, notifications,null)
                 }
     }
     private fun getUserContacts(myCallback: MyCallbackContact) {
@@ -91,6 +93,6 @@ class ChatGestoreFragment : Fragment() {
         fun onCallback(value: ArrayList<Contatto>)
     }
     interface MyCallbackMessages{
-        fun onCallback(value: ArrayList<Messaggio>, notifications: Int)
+        fun onCallback(value: ArrayList<Messaggio>, notifications: Int, clientMail: Contatto? )
     }
 }
