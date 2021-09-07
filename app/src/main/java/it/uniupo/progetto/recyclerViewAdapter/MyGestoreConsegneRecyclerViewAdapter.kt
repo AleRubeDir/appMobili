@@ -82,6 +82,10 @@ class MyGestoreConsegneRecyclerViewAdapter(
         Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
 
+        // corrispondenza rider-client
+
+
+
     }
 
     fun refuseOrder(user: String,orderId: String){

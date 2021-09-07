@@ -105,7 +105,7 @@ class NotificationService : Service() {
 
                                         with(NotificationManagerCompat.from(applicationContext)) {
                                             // notificationId is a unique int for each notification that you must define
-                                            notify(1234, builder.build())
+                                            notify(1, builder.build())
                                         }
                                     }else {
                                         Log.d("NOTIFICA","<oreo")
@@ -171,7 +171,7 @@ class NotificationService : Service() {
 
                                                             with(NotificationManagerCompat.from(applicationContext)) {
                                                                 // notificationId is a unique int for each notification that you must define
-                                                                notify(1234, builder.build())
+                                                                notify(2, builder.build())
                                                             }
                                                         }else {
                                                             Log.d("NOTIFICA","<oreo")
@@ -232,7 +232,7 @@ class NotificationService : Service() {
 
                                         with(NotificationManagerCompat.from(applicationContext)) {
                                             // notificationId is a unique int for each notification that you must define
-                                            notify(1234, builder.build())
+                                            notify(3, builder.build())
                                         }
                                     }else {
                                         Log.d("NOTIFICA","<oreo")
