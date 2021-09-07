@@ -14,10 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.LocationServices
@@ -34,7 +32,6 @@ import com.ncorti.slidetoact.SlideToActView
 import it.uniupo.progetto.*
 import it.uniupo.progetto.recyclerViewAdapter.*
 import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -213,7 +210,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         Log.d("mattia", "dopo azioni che funzionano ")
 
                         //salva in order_history
-                        val client = doc.getString("client")
+                        var client = doc.getString("client")
                         val stato = doc.getLong("stato")!!.toInt()
                         val statoPagamento = doc.getLong("statoPagamento")!!.toInt()
                         val tipoPagamento = doc.getString("tipo_pagamento")
@@ -226,7 +223,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                 "rider" to rider,
                                 "tipoPagamento" to tipoPagamento,
                                 "statoPagamento" to statoPagamento,
-                                "risultatoOrdine" to 1,
+                                "risultatoOrdine" to stato,
                                 "ratingQ" to -1,
                                 "ratingV" to -1,
                                 "ratingC" to -1,
@@ -245,14 +242,26 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
                         db.collection("toAssignOrders").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
 
+                        db.collection("orders").document(client!!).collection("order").document(RiderActivity.ordId!!).collection("products").get()
+                                .addOnSuccessListener { result ->
+                                    for (document in result) {
+                                        val id = document.getLong("id")!!.toInt()
+                                        val qta = document.getLong("qta")!!.toInt()
+
+                                        val prod = Prodotto(id,"","","","",qta)
+                                        diminuisciQtaDB(prod,stato,statoPagamento)
+
+                                    }
+                                }
+                        }
                     }
                 }
-        for(p in ClienteActivity.carrello) {
-            diminuisciQtaDB(p)
-        }
-    }
 
-    private fun diminuisciQtaDB(p: Prodotto) {
+
+    public fun diminuisciQtaDB(p: Prodotto, stato: Int, statoPagamento: Int) {
+// si diminuiscono le quantità solo se l'ordine è stato accettato e pagato
+        if(stato == 1 && statoPagamento==1){
+
 
         val db = FirebaseFirestore.getInstance()
         db.collection("products").document(p.id.toString()).get()
@@ -276,6 +285,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                     Log.w("qta","Errore ottenimento qtaDB $it")
                     it.printStackTrace()
                 }
+        }
     }
 
     private fun getDisponibilita(mycallback: myCallbackBoolean) {
@@ -357,3 +367,4 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
 
 
 }
+

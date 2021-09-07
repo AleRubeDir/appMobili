@@ -18,6 +18,7 @@ import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.*
 import it.uniupo.progetto.Consegna
 import it.uniupo.progetto.R
+import it.uniupo.progetto.fragments.Rider_ConsegneFragment
 import java.io.IOException
 import java.util.*
 
@@ -118,7 +119,6 @@ class MyConsegneRecyclerViewAdapter(
             }
         db.collection("assignedOrders").document(orderId).delete()
 //      toglie da assignedOrders, mette in toassignOrders
-
 //        cancella nel fragment l'ordine
         for(p in values){
             if(p.orderId==orderId){
@@ -131,19 +131,16 @@ class MyConsegneRecyclerViewAdapter(
         //cancella ordine nel db delivery
         db.collection("delivery").document(rider).collection("orders").document(orderId).get()
             .addOnCompleteListener {
-
                 val cliente = it.result.getString("client").toString()
                 val distanza = it.result.getDouble("distanza")
-                val statoOrdine = it.result.getLong("stato")!!.toInt()
+                /*var statoOrdine = it.result.getLong("stato")!!.toInt()*/
                 val tipo_pagamento = it.result.getString("tipo_pagamento").toString()
                 val entry = hashMapOf<String, Any?>(
                     "data" to  Date(),
                     "tipoPagamento" to tipo_pagamento,
-                    //indirizzo ordine
                     "distanza" to distanza,
                     "cliente" to cliente,
                     "orderId" to orderId,
-                    "statoOrdine" to statoOrdine,
                     "ratingC" to -1,
                     "ratingQ" to-1,
                     "ratingV" to -1,
@@ -157,6 +154,7 @@ class MyConsegneRecyclerViewAdapter(
                             db.collection("toassignOrders").document(orderId).delete()
                         }
             }
+
         //cancella ordine nel db delivery
         //rider torna disponibile
         val disponibile = hashMapOf<String, Any?>(
