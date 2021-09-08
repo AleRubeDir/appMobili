@@ -2,9 +2,7 @@ package it.uniupo.progetto
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,36 +24,55 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.chat_activity)
 
         val contatto = findViewById<TextView>(R.id.contatto)
-
+        val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val mail = intent.getStringExtra("mail")!!.toString()
         Log.d("chats", mail)
-        getMessageFromChat((object : ChatGestoreFragment.MyCallbackMessages {
-            override fun onCallback(value: ArrayList<Messaggio>,notifications: Int, c:Contatto? ) {
-                Log.d("Chats", "Dentro la chat $messages")
-                val user = FirebaseAuth.getInstance().currentUser!!.email
-                createChat(contatto,user,mail)
-                recyclerView = findViewById(R.id.messages)
-                recyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
-                Log.d("mymess", "$messages")
-                recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages)
-            }
-        }), mail)
+        var flag_inviato = 1
+        val back = findViewById<ImageView>(R.id.back)
+        back.setOnClickListener {
+            finish()
+        }
 
-        var user = FirebaseAuth.getInstance().currentUser!!.email
+        val flag = intent.getBooleanExtra("fromRider", false)
 
-        val send = findViewById<Button>(R.id.send)
-        val mess = findViewById<EditText>(R.id.write_message)
-        send.setOnClickListener{
-            if(!mess.text.toString().isNullOrBlank()){
-                var ora  = Timestamp(Date())
-                val messaggio = Messaggio(1, ora, mess.text.toString())
-                if (user != null) {
+        Log.d("mymess","flag vale $flag")
+        if (flag) {
+            flag_inviato=0
+            getMessageFromChat((object:ChatGestoreFragment.MyCallbackMessages{
+                override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, clientMail: Contatto?) {
+                    Log.d("Chats", "Dentro la chat $messages")
+                    Log.d("mymess", "user $user , mail $mail,")
+                    createChat(contatto, user, mail)
+                    recyclerView = findViewById(R.id.messages)
+                    recyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
+                    recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages,flag_inviato)
+                }
+            }),mail ,user)
+        } else {
+            getMessageFromChat((object : ChatGestoreFragment.MyCallbackMessages {
+                override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, clientMail: Contatto?) {
+                    Log.d("Chats", "Dentro la chat $messages")
+                    Log.d("mymess", "mail $mail, user $user")
+                    createChat(contatto, user, mail)
+                    recyclerView = findViewById(R.id.messages)
+                    recyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
+                    recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages,flag_inviato)
+                }
+            }),user , mail)
+
+
+            val send = findViewById<Button>(R.id.send)
+            val mess = findViewById<EditText>(R.id.write_message)
+            send.setOnClickListener {
+                if (mess.text.toString().isNotBlank()) {
+                    val ora = Timestamp(Date())
+                    val messaggio = Messaggio(1, ora, mess.text.toString())
                     sendMessage(messaggio, mail, user)
                     messages.add(messaggio)
                 }
+                mess.text.clear()
+                recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages,flag_inviato)
             }
-            mess.text.clear()
-            recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages)
         }
     }
 
@@ -95,7 +112,6 @@ class ChatActivity : AppCompatActivity() {
     }
     private fun getUserData(user : String ,myCallback: DatiPersonali.MyCallback){
         val db = FirebaseFirestore.getInstance()
-
         db.collection("users")
             .get()
             .addOnSuccessListener { result->
@@ -145,9 +161,7 @@ class ChatActivity : AppCompatActivity() {
                     Log.d("Chat", "Errore invio messaggio $e")
                 }
     }
-    private fun getMessageFromChat(myCallback: ChatGestoreFragment.MyCallbackMessages, you: String){
-        val user = FirebaseAuth.getInstance().currentUser!!.email
-
+    private fun getMessageFromChat(myCallback: ChatGestoreFragment.MyCallbackMessages, user : String , you: String){
         val db = FirebaseFirestore.getInstance()
         messages.clear()
         val entry = hashMapOf<String, Any?>(

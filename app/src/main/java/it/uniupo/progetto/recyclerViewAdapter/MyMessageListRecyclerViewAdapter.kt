@@ -12,7 +12,7 @@ import it.uniupo.progetto.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyMessageListRecyclerViewAdapter(val values: ArrayList<Messaggio>) : RecyclerView.Adapter<MyMessageListRecyclerViewAdapter.ViewHolder> () {
+class MyMessageListRecyclerViewAdapter(val values: ArrayList<Messaggio>, val inviato : Int) : RecyclerView.Adapter<MyMessageListRecyclerViewAdapter.ViewHolder> () {
     lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyMessageListRecyclerViewAdapter.ViewHolder {
         values.sort()
@@ -45,29 +45,40 @@ class MyMessageListRecyclerViewAdapter(val values: ArrayList<Messaggio>) : Recyc
         val item = values[position]
         val ora = item.ora.toDate().hours.toString()
         var minuti = item.ora.toDate().minutes.toString()
-        val mexDate2 = item.ora
 
-        Log.d("mess","----- ${convertLongToTime(next.ora.seconds)} !=  ${convertLongToTime(mexDate2.seconds)} =  ${convertLongToTime(next.ora.seconds) != convertLongToTime(mexDate2.seconds)}")
-        val output: String = convertLongToTime(item.ora.seconds)
-        holder.date.visibility = View.VISIBLE
-        holder.date_container.text = output
-        if(convertLongToTime(next.ora.seconds) != convertLongToTime(mexDate2.seconds)) {
+        Log.d("mess","----- ${convertLongToTime(next.ora.seconds)} ==  ${convertLongToTime(item.ora.seconds)} =  ${convertLongToTime(next.ora.seconds) == convertLongToTime(item.ora.seconds)}")
+        if(next.ora.seconds == item.ora.seconds) {
                 holder.date.visibility = View.INVISIBLE
-        }
+        }else holder.date.visibility = View.VISIBLE
+        holder.date_container.text = convertLongToTime(item.ora.seconds)
         if(minuti.length==1) minuti = "0"+ item.ora.toDate().minutes.toString()
 
-        if(item.inviato==1) { //inviato
-            Log.d("Chats", "Messaggio ${item.testo} è stato inviato")
-            holder.rcvd.visibility = View.INVISIBLE
-            holder.testoS.text = item.testo
-            holder.oraS.text = view.context.getString(R.string.orario,ora,minuti)
-        }else if(item.inviato==0) { //ricevuto
-            Log.d("Chats", "Messaggio ${item.testo} è stato ricevuto \n $holder")
-            holder.send.visibility = View.INVISIBLE
-            holder.testo.text = item.testo
-            holder.ora.text = view.context.getString(R.string.orario,ora,minuti)
-        }
+        if(inviato==0){
+            if(item.inviato==0) { //inviato
+                Log.d("Chats", "Messaggio ${item.testo} è stato inviato")
+                holder.rcvd.visibility = View.INVISIBLE
+                holder.testoS.text = item.testo
+                holder.oraS.text = view.context.getString(R.string.orario,ora,minuti)
+            }else if(item.inviato==1) { //ricevuto
+                Log.d("Chats", "Messaggio ${item.testo} è stato ricevuto \n $holder")
+                holder.send.visibility = View.INVISIBLE
+                holder.testo.text = item.testo
+                holder.ora.text = view.context.getString(R.string.orario,ora,minuti)
+            }
+        }else {
+            if (item.inviato == 1) { //inviato
+                Log.d("Chats", "Messaggio ${item.testo} è stato inviato")
+                holder.rcvd.visibility = View.INVISIBLE
+                holder.testoS.text = item.testo
+                holder.oraS.text = view.context.getString(R.string.orario, ora, minuti)
+            } else if (item.inviato == 0) { //ricevuto
+                Log.d("Chats", "Messaggio ${item.testo} è stato ricevuto \n $holder")
+                holder.send.visibility = View.INVISIBLE
+                holder.testo.text = item.testo
+                holder.ora.text = view.context.getString(R.string.orario, ora, minuti)
+            }
 
+        }
     }
 
     fun convertLongToTime(time: Long): String {

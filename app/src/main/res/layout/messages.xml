@@ -14,17 +14,16 @@
         android:layout_centerHorizontal="true"
         android:visibility="invisible"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="15dp"
         >
+
         <TextView
             android:id="@+id/date_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:text="20 Luglio 2021"
-            android:textSize="15sp"
             android:textColor="@color/black"
-            />
+            android:textSize="15sp" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="wrap_content"

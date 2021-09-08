@@ -7,11 +7,11 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tipo"
-        android:padding="10dp"
-        android:src="@drawable/rider"/>
+        android:id="@+id/back"
+
+        android:src="@drawable/arrow_back"/>
     <TextView
-        android:layout_toEndOf="@id/tipo"
+        android:layout_toEndOf="@id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/contatto"
@@ -19,13 +19,13 @@
         android:textSize="30sp"
         />
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-
         android:background="@color/menu"
-        android:layout_below="@id/contatto"/>
+        android:layout_below="@id/back"/>
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/contatto"
+        android:layout_below="@id/view"
         android:focusable="true"
         android:clickable="true"
         android:id="@+id/messages"

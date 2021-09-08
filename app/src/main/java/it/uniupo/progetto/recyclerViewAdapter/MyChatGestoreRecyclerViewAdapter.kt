@@ -48,7 +48,7 @@ class MyChatGestoreRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = chats[position]
-        Log.d("mymess","${item.contatto}")
+        Log.d("mymess","chats vale $chats")
         item.messaggio.sortBy{it.ora}
         val ora = item.messaggio.last().ora.toDate().hours.toString()
         var minuti = item.messaggio.last().ora.toDate().minutes.toString()

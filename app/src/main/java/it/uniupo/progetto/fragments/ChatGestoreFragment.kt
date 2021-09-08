@@ -30,15 +30,13 @@ class ChatGestoreFragment : Fragment() {
             startActivity(Intent(view.context,NewChatActivity::class.java))
         }
         getUserContacts((object: MyCallbackContact{
-
             override fun onCallback(value: ArrayList<Contatto>) {
-
                 contacts = value
+                Log.d("mymess","contacts $contacts")
                 for (c in contacts) {
-
                     getMessageFromChat((object: MyCallbackMessages{
-
                         override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, clientMail: Contatto?) {
+                            Log.d("mymess","value $value, notifications $notifications, clientMail $clientMail")
                             val chatUtente = Chat(c,value,notifications)
                             chats.add(chatUtente)
                             chats.sortByDescending { it.messaggio.last().ora.seconds }
@@ -80,12 +78,39 @@ class ChatGestoreFragment : Fragment() {
             .get()
             .addOnSuccessListener { result->
                 for(document in result){
-                    contacts.add(Contatto(document.get("mail").toString(), document.get("name").toString(), document.get("surname").toString(), document.get("tipo").toString()))
+                    contacts.add(Contatto(document.id, document.get("name").toString(), document.get("surname").toString(), document.get("tipo").toString()))
                 }
                 myCallback.onCallback(contacts)
                 Log.d("chats","Contatti recuperati con successo")
             }
     }
+
+    private fun getUserData(user : String ,myCallback: DatiPersonali.MyCallback){
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users")
+                .get()
+                .addOnSuccessListener { result->
+                    Log.d("prof","$result")
+                    for (document in result) {
+                        lateinit var u : DatiPersonali.Utente
+                        if(document.id == user){
+                            //utente ha già scelto il tipo di account
+                            u = DatiPersonali.Utente(
+                                    document.get("mail").toString(),
+                                    document.get("name").toString(),
+                                    document.get("surname").toString(),
+                                    document.get("type").toString(),
+                                    document.get("address").toString()
+                            )
+                            Log.d("prof","$u")
+                            myCallback.onCallback(u)
+                        }
+
+                    }
+                }
+                .addOnFailureListener{ e -> Log.w("---","Error getting user info - DatiPersonali",e)}
+    }
+
     interface MyCallback {
         fun onCallback(value: List<Chat>)
     }

@@ -118,6 +118,7 @@ class Rider_chatFragment : Fragment() {
 //            Toast.makeText(parent.context,"${mail.text}", Toast.LENGTH_SHORT).show()
             val intent = Intent(view.context,ChatActivity::class.java)
             intent.putExtra("mail","gestore@gmail.com")
+            intent.putExtra("fromRider", true)
 //            intent.putExtra("mail",mail.text.toString())
             view.context.startActivity(intent)
         }
@@ -189,14 +190,19 @@ class Rider_chatFragment : Fragment() {
                                     var surname = ""
                                     var name = ""
                                     var tipo = ""
+                            db.collection("chats").document(gestoreMail).get()
+                                    .addOnSuccessListener {
+                                        name = it.getString("name")!!
+                                        surname = it.getString("surname")!!
+                                        tipo = it.getString("tipo")!!
+                                        val contatto = Contatto(gestoreMail, name, surname, tipo)
                                         db.collection("chats").document(gestoreMail).collection("contacts").document(usr).get().addOnSuccessListener {
                                             notifications = it.getLong("notifications")!!.toInt()
-                                            name = it.getString("name")!!
-                                            surname = it.getString("surname")!!
-                                            tipo = it.getString("tipo")!!
-                                            val contatto = Contatto(gestoreMail, "Mirco", "Rossi", "Gestore")
+
                                             myCallback.onCallback(messages, notifications, contatto)
                                         }
+                                    }
+
                                 }
                     }
                 }
