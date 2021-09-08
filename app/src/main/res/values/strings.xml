@@ -134,4 +134,8 @@
 
 <!--    NOTIFICHE-->
     <string name="notificheRider">Nuovo ordine</string>
+    <string name="notificheGestore">Ordine appena aggiunto</string>
+    <string name="notificheCliente">In attesa</string>
+    <string name="chat_gestore">CHAT GESTORE</string>
+    <string name="chat_cliente">CHAT CLIENTE</string>
 </resources>

@@ -85,7 +85,7 @@ class NotificationService : Service() {
                                         val name = getString(R.string.notificheRider)
                                         val descriptionText = "nuovoOrdine"
                                         val importance = NotificationManager.IMPORTANCE_DEFAULT
-                                        val CHANNEL_ID = getString(R.string.notificheRider)
+                                        val CHANNEL_ID = getString(R.string.notificheGestore)
                                         val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                                             description = descriptionText
                                         }
@@ -153,7 +153,7 @@ class NotificationService : Service() {
                                                             val name = getString(R.string.notificheRider)
                                                             val descriptionText = "nuovoOrdine"
                                                             val importance = NotificationManager.IMPORTANCE_DEFAULT
-                                                            val CHANNEL_ID = getString(R.string.notificheRider)
+                                                            val CHANNEL_ID = getString(R.string.notificheCliente)
                                                             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                                                                 description = descriptionText
                                                             }

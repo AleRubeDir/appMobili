@@ -254,6 +254,9 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                 }
 
                         Log.d("mattia", "sto per cancellare corrispondenza " + client)
+
+
+                        db.collection("chats").document(rider).delete()
                        //db.collection("client-rider").document(client).collection("rider").document(rider).delete()
 //                        db.collection("client-rider").document(client).collection(RiderActivity.ordId!!).delete()
                         }

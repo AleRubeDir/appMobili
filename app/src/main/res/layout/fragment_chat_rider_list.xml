@@ -5,12 +5,24 @@
     android:padding="5dp"
     android:layout_height="wrap_content"
         >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chat_gestore"
+        android:id="@id/chat_rider_gestore_info"
+        android:background="@color/new_green"
+
+        />
     <RelativeLayout
+        android:layout_below="@+id/chat_rider_gestore_info"
         android:layout_width="match_parent"
         android:padding="5dp"
         android:layout_height="wrap_content"
         android:id="@+id/chat_rider_gestore"
         >
+
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,13 +96,24 @@
             android:background="@color/menu"/>
     </RelativeLayout>
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chat_cliente"
+        android:id="@+id/chat_rider_cliente_info"
+        android:background="@color/new_green"
+        android:layout_below="@id/chat_rider_gestore"
+
+        />
     <RelativeLayout
 
         android:layout_width="match_parent"
         android:padding="5dp"
         android:layout_height="wrap_content"
         android:id="@+id/chat_rider_cliente"
-        android:layout_below="@id/chat_rider_gestore"
+        android:layout_below="@id/chat_rider_cliente_info"
+        android:visibility="invisible"
         >
         <TextView
             android:layout_width="wrap_content"

@@ -35,7 +35,7 @@ class GestoreActivity : AppCompatActivity() {
             makeCurrentFragment(orderFragment)
         }
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
-        nav.setOnItemSelectedListener {
+        nav.setOnNavigationItemReselectedListener {
             when(it.itemId){
                 R.id.order -> {
                     makeCurrentFragment(orderFragment)

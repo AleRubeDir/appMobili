@@ -1,25 +1,19 @@
 package it.uniupo.progetto.recyclerViewAdapter
 
 import android.content.Intent
-import android.location.Address
-import android.location.Geocoder
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.*
 import it.uniupo.progetto.Consegna
 import it.uniupo.progetto.R
-import it.uniupo.progetto.fragments.Rider_ConsegneFragment
-import java.io.IOException
 import java.util.*
 
 class MyConsegneRecyclerViewAdapter(
@@ -45,7 +39,7 @@ class MyConsegneRecyclerViewAdapter(
             val userMail = view.findViewById<TextView>(R.id.userMail).text.toString()
             val orderId = view.findViewById<TextView>(R.id.orderId).text.toString()
             val address = view.findViewById<TextView>(R.id.indirizzo).text.toString()
-            acceptOrder(orderId)
+            acceptOrder(orderId,userMail)
             val intent = Intent(parent.context, RiderActivity::class.java)
             intent.putExtra("address",address)
             intent.putExtra("orderId",orderId)
@@ -86,7 +80,7 @@ class MyConsegneRecyclerViewAdapter(
 
     }
 
-    fun acceptOrder(orderId: String){
+    fun acceptOrder(orderId: String, userMail: String){
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
          val det = hashMapOf<String, Any?>(
@@ -94,12 +88,12 @@ class MyConsegneRecyclerViewAdapter(
          )
         Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
-        //corrispondenza client-rider
+        //corrispondenza rider-client
 
-//        val dummy = hashMapOf<String, Any?>(
-//                " " to " "
-//        )
-//        db.collection("client-rider").document(user).collection(orderId).document(rider).set(dummy, SetOptions.merge())
+        val chat = hashMapOf<String, Any?>(
+                "mailClient" to userMail,
+        )
+        db.collection("chats").document(rider).collection("contacts").document(userMail).set(chat, SetOptions.merge())
 
     }
 
