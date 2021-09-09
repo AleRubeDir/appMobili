@@ -44,7 +44,6 @@ class ChatActivity : AppCompatActivity() {
                     Log.d("mymess", "user $user , mail $mail,")
                     createChat(contatto, user, mail)
                     recyclerView = findViewById(R.id.messages)
-                    recyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
                     recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages,flag_inviato)
                 }
             }),mail ,user)
@@ -55,7 +54,6 @@ class ChatActivity : AppCompatActivity() {
                     Log.d("mymess", "mail $mail, user $user")
                     createChat(contatto, user, mail)
                     recyclerView = findViewById(R.id.messages)
-                    recyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
                     recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages,flag_inviato)
                 }
             }),user , mail)
@@ -64,9 +62,11 @@ class ChatActivity : AppCompatActivity() {
             val send = findViewById<Button>(R.id.send)
             val mess = findViewById<EditText>(R.id.write_message)
             send.setOnClickListener {
+                Log.d("mymess","cliccato send")
                 if (mess.text.toString().isNotBlank()) {
+                    Log.d("mymess","dentro if send")
                     val ora = Timestamp(Date())
-                    val messaggio = Messaggio(1, ora, mess.text.toString())
+                    val messaggio = Messaggio(flag_inviato, ora, mess.text.toString())
                     sendMessage(messaggio, mail, user)
                     messages.add(messaggio)
                 }
@@ -136,6 +136,7 @@ class ChatActivity : AppCompatActivity() {
             .addOnFailureListener{ e -> Log.w("---","Error getting user info - DatiPersonali",e)}
     }
     private fun sendMessage(messaggio: Messaggio, you: String, me: String){
+        Log.d("mymess","$me ha inviato $messaggio a $you")
         val db = FirebaseFirestore.getInstance()
         val entry = hashMapOf<String, Any>(
                 "inviato" to messaggio.inviato,
@@ -163,21 +164,23 @@ class ChatActivity : AppCompatActivity() {
     }
     private fun getMessageFromChat(myCallback: ChatGestoreFragment.MyCallbackMessages, user : String , you: String){
         val db = FirebaseFirestore.getInstance()
-        messages.clear()
         val entry = hashMapOf<String, Any?>(
                 "notifications" to 0
         )
         db.collection("chats").document(user!!).collection("contacts").document(you).set(entry,SetOptions.merge())
 
         db.collection("chats").document(user).collection("contacts").document(you).collection("messages")
-                .get()
-                .addOnSuccessListener { result ->
-                    for(document in result){
-                        val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
-                        Log.d("Chats", "mess $mess")
-                        messages.add(mess)
+                .addSnapshotListener { result, err ->
+                    messages.clear()
+                    err?.printStackTrace()
+                    if (result != null) {
+                        for (document in result.documents) {
+                            val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
+                            Log.d("Chats", "mess $mess")
+                            messages.add(mess)
+                        }
+                        myCallback.onCallback(messages, 0, null)
                     }
-                    myCallback.onCallback(messages,0,null)
                 }
     }
 }
