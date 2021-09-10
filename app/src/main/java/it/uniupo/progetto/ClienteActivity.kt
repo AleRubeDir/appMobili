@@ -41,7 +41,7 @@ class ClienteActivity : AppCompatActivity() {
         makeCurrentFragment(shopFragment)
 
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
-        nav.setOnItemSelectedListener {
+        nav.setOnNavigationItemReselectedListener {
             when(it.itemId){
                 R.id.carrello -> makeCurrentFragment(cartFragment)
                 R.id.profilo -> makeCurrentFragment(profileFragment)
