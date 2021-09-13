@@ -12,7 +12,7 @@ import it.uniupo.progetto.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyMessageListRecyclerViewAdapter(val values: ArrayList<Messaggio>, val inviato : Int) : RecyclerView.Adapter<MyMessageListRecyclerViewAdapter.ViewHolder> () {
+class MyMessageListRecyclerViewAdapter(val values: ArrayList<Messaggio>, val rider : Int) : RecyclerView.Adapter<MyMessageListRecyclerViewAdapter.ViewHolder> () {
     lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyMessageListRecyclerViewAdapter.ViewHolder {
         values.sort()
@@ -23,6 +23,13 @@ class MyMessageListRecyclerViewAdapter(val values: ArrayList<Messaggio>, val inv
     override fun getItemViewType(position: Int): Int {
         return values[position].inviato
     }
+
+    /*
+    * A - rider
+    * A -> rider inviato = 1
+    * rider <- A inviato = 1 -> inviato = 0
+    * */
+
 
     inner class ViewHolder(view: View) :  RecyclerView.ViewHolder(view){
         var testo : TextView = view.findViewById(R.id.messaggio)
@@ -38,22 +45,23 @@ class MyMessageListRecyclerViewAdapter(val values: ArrayList<Messaggio>, val inv
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var next = values[position]
         Log.d("mess"," ${values[position]}  pos = $position values.size = ${values.size} next = ${position+1}")
-       if(position+1<values.size) {
-           next = values[position + 1]
-       }
+        if(position+1<values.size) {
+            next = values[position + 1]
+        }
 
         val item = values[position]
         val ora = item.ora.toDate().hours.toString()
         var minuti = item.ora.toDate().minutes.toString()
+        Log.d("ora","${next.ora.seconds} != ${item.ora.seconds}??")
+        if(next.ora.seconds != item.ora.seconds) {
+            Log.d("ora","${next.ora.seconds} != ${item.ora.seconds}?? ${next.ora.seconds!=item.ora.seconds}")
+            holder.date_container.text = convertLongToTime(item.ora.seconds)
+        }
 
-        Log.d("mess","----- ${convertLongToTime(next.ora.seconds)} ==  ${convertLongToTime(item.ora.seconds)} =  ${convertLongToTime(next.ora.seconds) == convertLongToTime(item.ora.seconds)}")
-        if(next.ora.seconds == item.ora.seconds) {
-                holder.date.visibility = View.INVISIBLE
-        }else holder.date.visibility = View.VISIBLE
-        holder.date_container.text = convertLongToTime(item.ora.seconds)
+      //  holder.date_container.text = convertLongToTime(item.ora.seconds)
         if(minuti.length==1) minuti = "0"+ item.ora.toDate().minutes.toString()
 
-        if(inviato==0){
+        if(rider==1){
             if(item.inviato==0) { //inviato
                 Log.d("Chats", "Messaggio ${item.testo} è stato inviato")
                 holder.rcvd.visibility = View.INVISIBLE
@@ -83,11 +91,10 @@ class MyMessageListRecyclerViewAdapter(val values: ArrayList<Messaggio>, val inv
 
     fun convertLongToTime(time: Long): String {
         val date = Date(time*1000)
-      //  Log.d("mess","time vale $time date vale $date")
+        //  Log.d("mess","time vale $time date vale $date")
         val format = SimpleDateFormat("dd/MM/yyyy",Locale.ITALY)
         return format.format(date)
     }
 
     override fun getItemCount(): Int = values.size
 }
-

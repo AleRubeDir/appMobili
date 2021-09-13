@@ -138,4 +138,5 @@
     <string name="notificheCliente">In attesa</string>
     <string name="chat_gestore">CHAT GESTORE</string>
     <string name="chat_cliente">CHAT CLIENTE</string>
+    <string name="scrivi_un_messaggio">Scrivi un messaggio...</string>
 </resources>

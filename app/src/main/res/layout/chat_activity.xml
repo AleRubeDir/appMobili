@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/back"
-
+        android:padding="5dp"
         android:src="@drawable/arrow_back"/>
     <TextView
         android:layout_toEndOf="@id/back"
@@ -17,11 +19,12 @@
         android:id="@+id/contatto"
         android:textColor="@color/black"
         android:textSize="30sp"
+        android:padding="5dp"
         />
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="3dp"
         android:background="@color/menu"
         android:layout_below="@id/back"/>
     <androidx.recyclerview.widget.RecyclerView
@@ -34,32 +37,64 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        android:layout_above="@+id/write_message"
-        tools:context=".ChatActivity" />
-
-    <EditText
-        android:layout_marginStart="16dp"
-        android:id="@+id/write_message"
+        tools:context=".ChatActivity"
+        app:reverseLayout="true"
+        app:stackFromEnd="true"
+        tools:listitem="@layout/messages"
+        android:layout_above="@id/create"
+        android:layout_marginBottom="20dp"
+        />
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/send"
-        android:background="@android:color/transparent"
-        android:hint="Enter Message"
-        android:inputType="text"
-        android:maxLines="6"
+        android:id="@+id/create"
+        android:layout_margin="5dp"
+        card_view:cardBackgroundColor="@color/mimosa"
+        card_view:cardCornerRadius="30dp"
+        card_view:cardElevation="3dp"
+        card_view:contentPadding="4dp"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        />
+        android:focusable="true">
+        <androidx.cardview.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            card_view:cardBackgroundColor="@color/white"
+            card_view:cardCornerRadius="30dp"
+            card_view:cardElevation="3dp"
+            card_view:contentPadding="4dp"
+            android:foreground="?selectableItemBackground"
+            android:clickable="true"
+            android:layout_alignParentBottom="true"
+            android:focusable="true">
+            <EditText
+                android:layout_marginStart="16dp"
+                android:id="@+id/write_message"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="@string/scrivi_un_messaggio"
+                android:padding="5dp"
+                android:layout_gravity="center_vertical"
+                android:inputType="text"
+                android:maxLines="6"
+                />
+        </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/send"
-        android:layout_width="64dp"
-        android:layout_height="48dp"
-        android:layout_alignParentEnd="true"
-        android:background="@color/mimosa"
-        android:text="Send"
-        android:textColor="@color/black"
-        android:layout_alignParentBottom="true"
-     />
+
+            <ImageButton
+                android:id="@+id/send"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+
+                android:background="@drawable/btn_chat"
+                android:layout_gravity="end|center_vertical"
+                android:src="@drawable/send"
+                />
+
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

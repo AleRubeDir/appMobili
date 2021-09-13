@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-class Messaggio(val inviato: Int, val ora: Timestamp, val testo: String) : Comparable<Any> {
+class Messaggio(val inviato: Int, var ora: Timestamp, val testo: String) : Comparable<Any> {
     override fun toString(): String {
         return testo
     }

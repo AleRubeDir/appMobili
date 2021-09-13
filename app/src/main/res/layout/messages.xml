@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/date"
         android:layout_centerHorizontal="true"
-        android:visibility="invisible"
         android:layout_marginTop="5dp"
         >
 
@@ -21,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="20 Luglio 2021"
             android:textColor="@color/black"
             android:textSize="15sp" />
     </RelativeLayout>
