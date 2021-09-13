@@ -203,6 +203,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                         db.collection("orders_history").document(orderId).set(newOrderHistory)
                         db.collection("delivery").document(rider).collection("orders").document(orderId).delete()
                         db.collection("toAssignOrders").document(rider).collection("orders").document(orderId).delete()
+                        db.collection("chats").document(rider).collection("orders").document(orderId).delete()
 
                     }
                 }

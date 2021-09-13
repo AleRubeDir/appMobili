@@ -38,6 +38,7 @@ class Rider_chatFragment : Fragment() {
             Log.d("chatRider", "valore flag :" + RiderActivity.flag_consegna)
         var chatClient = view.findViewById<RelativeLayout>(R.id.chat_rider_cliente)
         var chatGestore = view.findViewById<RelativeLayout>(R.id.chat_rider_gestore)
+
         if(RiderActivity.flag_consegna==1){
             chatClient.visibility = View.VISIBLE
 //            val mail = TextView(this)
@@ -66,14 +67,12 @@ class Rider_chatFragment : Fragment() {
                         if(vminuti.length==1) vminuti = "0"+  value.last().ora.toDate().minutes.toString()
                         ora.text = view.context.getString(R.string.orario,vora,vminuti)
 
-
                     data.text = convertLongToTime(value.last().ora.seconds)
                     anteprima.text = value.last().testo
                     }
 
                 }
-
-            })
+             })
         }
         getGestoreChats(object : ChatGestoreFragment.MyCallbackMessages {
             override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, contatto: Contatto?) {
@@ -107,13 +106,15 @@ class Rider_chatFragment : Fragment() {
             }
 
         })
+        val mail = view.findViewById<TextView>(R.id.mail)
 
-//        chatClient.setOnClickListener{
-////            Toast.makeText(parent.context,"${mail.text}", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(view.context,ChatActivity::class.java)
-//            intent.putExtra("mail",mail.text.toString())
-//            view.context.startActivity(intent)
-//        }
+        chatClient.setOnClickListener{
+//            Toast.makeText(view.context,"${mail.text}", Toast.LENGTH_SHORT).show()
+            val intent = Intent(view.context,ChatActivity::class.java)
+            intent.putExtra("mail",mail.text.toString())
+            view.context.startActivity(intent)
+        }
+
         chatGestore.setOnClickListener{
 //            Toast.makeText(parent.context,"${mail.text}", Toast.LENGTH_SHORT).show()
             val intent = Intent(view.context,ChatActivity::class.java)
