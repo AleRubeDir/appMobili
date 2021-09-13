@@ -180,22 +180,22 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                     }
                     .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
     }
-    private fun isInside(location: Location?, circle: Circle) {
+    public fun isInside(location: Location?, circle: Circle) {
         val distance = FloatArray(2)
         if (location != null) {
             Location.distanceBetween(location.latitude, location.longitude, circle.center.latitude, circle.center.longitude, distance)
             if (distance[0] > circle.radius) {
                 Toast.makeText(this, "Troppo distante", Toast.LENGTH_SHORT).show()
-            } else {
 
+            } else {
                 Toast.makeText(this, "Indirizzo valido", Toast.LENGTH_SHORT).show()
                 val go = findViewById<Button>(R.id.go)
+                setAddressFirebase(location)
                 go.visibility = View.VISIBLE
                 go.setOnClickListener {
                     startActivity(Intent(this, ClienteActivity::class.java))
                 }
             }
-            setAddressFirebase(location)
         }
     }
 }
