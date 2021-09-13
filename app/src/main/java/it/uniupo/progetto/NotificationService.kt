@@ -70,7 +70,6 @@ class NotificationService : Service() {
                     // Get the PendingIntent containing the entire back stack
                     getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
                 }
-
                 getClients(object : MyCallback {
                     override fun onCallback(ris: List<String>) {
                         for(cliente in ris) {
@@ -98,13 +97,10 @@ class NotificationService : Service() {
                                                 .setSmallIcon(R.mipmap.ic_launcher)
                                                 .setContentTitle("Consegna in arrivo")
                                                 .setContentText("Seleziona un rider per questa consegna ")
-//                                                .setStyle(NotificationCompat.BigTextStyle()
-//                                                        .bigText("Much longer text that cannot fit one line..."))
                                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                                 .setContentIntent(resultIntent)
 
                                         with(NotificationManagerCompat.from(applicationContext)) {
-                                            // notificationId is a unique int for each notification that you must define
                                             notify(1, builder.build())
                                         }
                                     }else {
@@ -134,11 +130,7 @@ class NotificationService : Service() {
                                         for(ord in it.result!!) {
                                             db.collection("delivery").document(rider).collection("orders").document(ord.id).addSnapshotListener { d, e ->
                                                 if (d != null) {
-                                                    Log.d(TAG, "------$rider----${ord.id}-----${d!!.getString("client").toString()}-----\n")
-                                                    //  Log.d(TAG,"user = $user cliente =  ${d!!.getString("client").toString()} left = ${d.getBoolean("leftMM")}")
-                                                    //  Log.d(TAG,"dentro --- ${user == d.getString("client").toString()} - ${d.getBoolean("leftMM")}")
                                                     if ((user == d.getString("client").toString()) && d.getBoolean("leftMM") == true) {
-                                                        //     Log.d(TAG,"--- ${user == d.getString("client").toString()} - ${d.getBoolean("leftMM")}")
                                                         val intent = Intent(applicationContext, ChatActivity::class.java)
                                                         intent.putExtra("mail", rider)
                                                         val resultIntent = TaskStackBuilder.create(applicationContext).run {
@@ -166,13 +158,9 @@ class NotificationService : Service() {
                                                                     .setSmallIcon(R.mipmap.ic_launcher)
                                                                     .setContentTitle("Rider partito")
                                                                     .setContentText("Il rider ha appena lasciato il market, ora puoi chattare con lui")
-//                                                .setStyle(NotificationCompat.BigTextStyle()
-//                                                        .bigText("Much longer text that cannot fit one line..."))
                                                                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                                                     .setContentIntent(resultIntent)
-
                                                             with(NotificationManagerCompat.from(applicationContext)) {
-                                                                // notificationId is a unique int for each notification that you must define
                                                                 notify(2, builder.build())
                                                             }
                                                         } else {

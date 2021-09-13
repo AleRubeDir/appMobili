@@ -21,10 +21,9 @@ import kotlin.collections.ArrayList
 
 
 class Rider_chatFragment : Fragment() {
-    private var columnCount = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -35,12 +34,12 @@ class Rider_chatFragment : Fragment() {
         // prendere le chat db
         //popolare fragment_chat_rider_list
         // chat con cliente esiste solo e soltanto se c'è una consegna
-            Log.d("chatRider", "valore flag :" + RiderActivity.flag_consegna)
+        Log.d("chatRider", "valore flag :" + RiderActivity.flag_consegna)
         var chatClient = view.findViewById<RelativeLayout>(R.id.chat_rider_cliente)
         var chatGestore = view.findViewById<RelativeLayout>(R.id.chat_rider_gestore)
         if(RiderActivity.flag_consegna==1){
             chatClient.visibility = View.VISIBLE
-//            val mail = TextView(this)
+
             getChats(object : ChatGestoreFragment.MyCallbackMessages {
                 override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, contatto: Contatto?) {
 
@@ -198,7 +197,6 @@ class Rider_chatFragment : Fragment() {
                                         val contatto = Contatto(gestoreMail, name, surname, tipo)
                                         db.collection("chats").document(gestoreMail).collection("contacts").document(usr).get().addOnSuccessListener {
                                             notifications = it.getLong("notifications")!!.toInt()
-
                                             myCallback.onCallback(messages, notifications, contatto)
                                         }
                                     }

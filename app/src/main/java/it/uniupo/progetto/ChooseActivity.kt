@@ -53,7 +53,6 @@ class ChooseActivity : AppCompatActivity() {
         }
     }
 
-
     private fun getUserType(id: Int): String {
         if (id == R.id.scelta_customer)
             return "Cliente"
@@ -79,5 +78,15 @@ class ChooseActivity : AppCompatActivity() {
                     Log.d("user", "Aggiornati campi name = $name e surname = $surname")
                 }
                 .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
+        if (type == "Rider") {
+            //setup chat gestore-rider
+            val entry2 = hashMapOf<String, Any>(
+                    "name" to name,
+                    "notifications" to 0,
+                    "surname" to surname,
+                    "tipo" to "Rider",
+            )
+            db.collection("chats").document(R.string.EMAIL_GESTORE.toString()).collection("contacts").document(mail).set(entry2, SetOptions.merge())
+        }
     }
 }

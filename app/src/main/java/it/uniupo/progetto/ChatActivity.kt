@@ -90,14 +90,12 @@ class ChatActivity : AppCompatActivity() {
         var check = 0
         getUserData(mail, object: DatiPersonali.MyCallback {
             override fun onCallback(u: DatiPersonali.Utente) {
+                Log.d("prof","u vale $u")
+                contatto.text=applicationContext.getString(R.string.nomeChat,u.nome,u.cognome)
                 db.collection("chats").document(cliente.toString()).collection("contacts").get()
                         .addOnSuccessListener {
                             it.forEach { doc ->
-                                Log.d("mymess","${doc.id} == $cliente???")
                                 if (doc.id == mail) check = 1
-
-                                Log.d("mymess","$check")
-                                contatto.text=applicationContext.getString(R.string.nomeChat,u.nome,u.cognome)
                                 if (check == 0) {
                                     Log.d("mymess","check vale $check")
                                     val entry = hashMapOf<String, Any?>(

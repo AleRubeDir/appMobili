@@ -117,6 +117,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
         }
         mMap.isMyLocationEnabled = true;
         val address = intent.getStringExtra("address")!!
+        Log.d("posizioneRider","address vale $address")
         try {
             geocodeMatches = Geocoder(applicationContext).getFromLocationName(address, 1)
         } catch (e: IOException) {

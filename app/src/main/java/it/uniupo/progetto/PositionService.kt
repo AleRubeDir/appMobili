@@ -41,14 +41,12 @@ class PositionService : Service() {
         Log.d(TAG, "onStartCommand")
         super.onStartCommand(intent, flags, startId)
         Log.d(TAG,"onStart")
-        return START_STICKY
+        return START_NOT_STICKY //servizio si stoppa quando si chiude l'app
     }
 
     override fun onCreate() {
         Log.d(TAG, "onCreate")
-        //tipo utente attivo
         startLocationUpdates()
-        getLocationUpdate()
              }
 
     override fun onDestroy() {
@@ -56,19 +54,13 @@ class PositionService : Service() {
         stopLocationUpdates()
         super.onDestroy()
     }
-
-        private fun getLocationUpdate() {
-
-            }
-
         // Start location updates
         private fun startLocationUpdates() {
             Log.d("position","1 ")
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             locationRequest = LocationRequest.create()
-            locationRequest.interval = 5000 //ms -> 50sec
-            locationRequest.fastestInterval = 5000 //setta max intervallo cpu
-            locationRequest.smallestDisplacement = 170f //170 m = 0.1 mile
+            locationRequest.interval = 300000 //ms -> 5min
+            locationRequest.fastestInterval = 300000 //setta max intervallo cpu
             locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY //according to your app
             Log.d("position","Dentro getLocationUpdate")
             val db = FirebaseFirestore.getInstance()
@@ -88,13 +80,10 @@ class PositionService : Service() {
                         db.collection("riders").document(user).set(toSend, SetOptions.merge())                            }
                 }
             }
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 Log.d("position","startLocationUpdates")
-                fusedLocationClient.requestLocationUpdates(
-                        locationRequest,
-                        locationCallback,
-                        Looper.getMainLooper()
-                )
+                fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
             }
 
         }

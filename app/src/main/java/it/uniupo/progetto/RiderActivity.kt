@@ -20,9 +20,6 @@ import it.uniupo.progetto.fragments.Rider_chatFragment
 
 
 class RiderActivity : AppCompatActivity() {
- fun stampaArray(array: ArrayList<Prodotto>){
-        Log.d("totale", "RiderActivity- array -> $array")
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider)

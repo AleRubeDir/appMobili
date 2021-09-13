@@ -131,6 +131,8 @@
     <string name="cortesia_cliente">Cortesia cliente</string>
 
     <string name="partenza_da_mm">Partenza</string>
+    <string name="EMAIL_GESTORE">gestore@gmail.com</string>
+
 
 <!--    NOTIFICHE-->
     <string name="notificheRider">Nuovo ordine</string>

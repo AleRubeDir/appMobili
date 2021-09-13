@@ -24,8 +24,6 @@ class RegisterActivity  : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register)
         auth = FirebaseAuth.getInstance()
-
-
         val ggl = findViewById<ImageView>(R.id.ggl)
         val mail = findViewById<ImageView>(R.id.mail)
         ggl.setOnClickListener{
@@ -148,7 +146,8 @@ class RegisterActivity  : AppCompatActivity() {
                     if (task.isSuccessful) {
                         Toast.makeText(baseContext, "Utente creato! Esegui l'accesso.",
                                 Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this,LoginActivity::class.java))
+                        val login = Intent(this,LoginActivity::class.java)
+                        startActivity(login)
                         finish()
                     } else {
                         Toast.makeText(baseContext, "Registrazione fallita, riprova tra poco",
