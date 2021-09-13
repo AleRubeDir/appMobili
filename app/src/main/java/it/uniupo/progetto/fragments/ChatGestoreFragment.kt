@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import it.uniupo.progetto.*
 import kotlin.collections.ArrayList
 import it.uniupo.progetto.recyclerViewAdapter.*
+import java.lang.Exception
 
 class ChatGestoreFragment : Fragment() {
     var contacts = ArrayList<Contatto>()
@@ -39,10 +40,13 @@ class ChatGestoreFragment : Fragment() {
                             Log.d("mymess","value $value, notifications $notifications, clientMail $clientMail")
                             val chatUtente = Chat(c,value,notifications)
                             chats.add(chatUtente)
-                            chats.sortByDescending { it.messaggio.last().ora.seconds }
-                            recyclerView.adapter = MyChatGestoreRecyclerViewAdapter(chats)
                         }
                     }),c.mail)
+                }
+                if(chats.size>0){
+
+                chats.sortByDescending { it.messaggio.last().ora.seconds }
+                recyclerView.adapter = MyChatGestoreRecyclerViewAdapter(chats)
                 }
 
             }
@@ -61,7 +65,9 @@ class ChatGestoreFragment : Fragment() {
                     var messages = arrayListOf<Messaggio>()
                     for(document in result){
                     val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp,document.get("testo").toString())
-                        messages.add(mess)
+                        if (mess.testo.isNotBlank()){
+                                messages.add(mess)
+                            }
                         }
                     var notifications = 0
                     FirebaseFirestore.getInstance().collection("chats").document(user.toString()).collection("contacts").document(you).get().addOnSuccessListener {
@@ -69,6 +75,7 @@ class ChatGestoreFragment : Fragment() {
                     }
                     myCallback.onCallback(messages, notifications,null)
                 }
+
     }
     private fun getUserContacts(myCallback: MyCallbackContact) {
         val user = FirebaseAuth.getInstance().currentUser!!.email
@@ -78,7 +85,7 @@ class ChatGestoreFragment : Fragment() {
             .get()
             .addOnSuccessListener { result->
                 for(document in result){
-                    contacts.add(Contatto(document.id, document.get("name").toString(), document.get("surname").toString(), document.get("tipo").toString()))
+                    contacts.add(Contatto(document.id, document.get("name").toString(), document.get("surname").toString()))
                 }
                 myCallback.onCallback(contacts)
                 Log.d("chats","Contatti recuperati con successo")

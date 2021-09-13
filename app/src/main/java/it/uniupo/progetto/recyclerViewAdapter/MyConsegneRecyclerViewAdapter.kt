@@ -79,21 +79,60 @@ class MyConsegneRecyclerViewAdapter(
         val orderId: TextView = view.findViewById(R.id.orderId)
 
     }
+    private fun getUserData(user : String ,myCallback: DatiPersonali.MyCallback){
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users").document(user)
+                .get()
+                .addOnSuccessListener { result->
+                    Log.d("prof","$result")
+                    lateinit var u : DatiPersonali.Utente
+                    if(result.id == user){
+                        u = DatiPersonali.Utente(
+                                result.get("mail").toString(),
+                                result.get("name").toString(),
+                                result.get("surname").toString(),
+                                result.get("type").toString(),
+                                result.get("address").toString()
+                        )
+                        Log.d("prof","$u")
+                        myCallback.onCallback(u)
+                    }
+                }
+                .addOnFailureListener{ e -> Log.w("---","Error getting user info - DatiPersonali",e)}
+    }
 
     fun acceptOrder(orderId: String, userMail: String){
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
+
          val det = hashMapOf<String, Any?>(
                 "stato" to -1,
          )
         Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider).collection("orders").document(orderId).set(det, SetOptions.merge())
         //corrispondenza rider-client
+        getUserData(userMail, object : DatiPersonali.MyCallback {
+            override fun onCallback(u: DatiPersonali.Utente) {
+                val chat = hashMapOf<String, Any?>(
+                        "name" to u.nome,
+                        "surname" to u.cognome,
+                        "mail" to userMail,
+                        "notifications" to 0
+                )
+                db.collection("chats").document(rider).collection("contacts").document(userMail).set(chat, SetOptions.merge())
+            }
 
-        val chat = hashMapOf<String, Any?>(
-                "mailClient" to userMail,
+        })
+
+        val dummy = hashMapOf<String, Any?>(
+                " " to " ",
         )
-        db.collection("chats").document(rider).collection("contacts").document(userMail).set(chat, SetOptions.merge())
+        db.collection("chats").document(rider)
+                .set(
+                        dummy,
+                        SetOptions.merge()
+                )
+
 
     }
 

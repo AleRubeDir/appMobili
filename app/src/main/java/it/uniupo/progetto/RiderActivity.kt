@@ -9,6 +9,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -77,6 +78,10 @@ class RiderActivity : AppCompatActivity() {
         var ind : String? = null
         var ordId : String? = null
         var userMail : String? = null
+        var partenzaMMVisibility = View.VISIBLE
+        var confermaPagamentovisibility = View.INVISIBLE
+        var rifiutaPagamentovisibility = View.INVISIBLE
+
     }
 
 }

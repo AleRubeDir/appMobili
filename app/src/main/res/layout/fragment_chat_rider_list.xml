@@ -5,23 +5,32 @@
     android:padding="5dp"
     android:layout_height="wrap_content"
         >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/chat_gestore"
-        android:id="@id/chat_rider_gestore_info"
-        android:background="@color/new_green"
 
-        />
     <RelativeLayout
-        android:layout_below="@+id/chat_rider_gestore_info"
         android:layout_width="match_parent"
         android:padding="5dp"
         android:layout_height="wrap_content"
         android:id="@+id/chat_rider_gestore"
         >
 
-
+        <androidx.cardview.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chat_rider_gestore_info"
+            card_view:cardBackgroundColor="@color/new_green"
+            card_view:cardCornerRadius="30dp"
+            card_view:cardElevation="3dp"
+            card_view:contentPadding="4dp"
+            android:foreground="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chat_gestore"
+            />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,21 +41,21 @@
             android:id="@+id/name_gestore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nome"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:textSize="25sp"
+            android:layout_below="@id/chat_rider_gestore_info"/>
 
         <TextView
             android:id="@+id/surname_gestore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cognome"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/name_gestore"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:textSize="25sp"
+            android:layout_below="@id/chat_rider_gestore_info"/>
 
         <TextView
             android:id="@+id/anteprima_gestore"
@@ -56,13 +65,11 @@
             android:layout_marginStart="20dp"
             android:textColor="@color/black"
             android:layout_marginTop="10dp"
-            android:text="Ultimo messaggio chat"
             android:textSize="15sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ora_gestore"
-            android:text="10:13"
             android:layout_below="@id/data_gestore"
             android:textColor="@color/black"
             android:layout_alignParentEnd="true"
@@ -71,49 +78,47 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/data_gestore"
-            android:text="10 Ago 2021"
             android:textColor="@color/black"
             android:layout_alignParentEnd="true"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1"
             android:textColor="@color/white"
             android:layout_marginEnd="10dp"
             android:gravity="center"
             android:padding="5dp"
             android:background="@drawable/chat_notifica"
             android:id="@+id/notifiche_gestore"
-
+            android:visibility="invisible"
             android:layout_below="@id/ora_gestore"
             android:layout_alignParentEnd="true"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="5px"
-            android:layout_marginTop="10dp"
+            android:layout_height="3dp"
+            android:layout_marginTop="15dp"
             android:layout_below="@id/notifiche_gestore"
             android:background="@color/menu"/>
     </RelativeLayout>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/chat_cliente"
-        android:id="@+id/chat_rider_cliente_info"
-        android:background="@color/new_green"
-        android:layout_below="@id/chat_rider_gestore"
 
-        />
     <RelativeLayout
 
         android:layout_width="match_parent"
         android:padding="5dp"
         android:layout_height="wrap_content"
         android:id="@+id/chat_rider_cliente"
-        android:layout_below="@id/chat_rider_cliente_info"
+        android:visibility="invisible"
+        android:layout_below="@id/chat_rider_gestore"
         >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chat_cliente"
+            android:id="@+id/chat_rider_cliente_info"
+            android:background="@color/new_green"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -123,21 +128,21 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nome"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:textSize="25sp"
+            android:layout_below="@id/chat_rider_cliente_info"/>
 
         <TextView
             android:id="@+id/surname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cognome"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/name"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:textSize="25sp"
+            android:layout_below="@id/chat_rider_cliente_info"/>
 
         <TextView
             android:id="@+id/anteprima"
@@ -147,13 +152,11 @@
             android:layout_marginStart="20dp"
             android:textColor="@color/black"
             android:layout_marginTop="10dp"
-            android:text="Ultimo messaggio chat"
             android:textSize="15sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ora"
-            android:text="10:13"
             android:layout_below="@id/data"
             android:textColor="@color/black"
             android:layout_alignParentEnd="true"
@@ -162,26 +165,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/data"
-            android:text="10 Ago 2021"
             android:textColor="@color/black"
             android:layout_alignParentEnd="true"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1"
             android:textColor="@color/white"
             android:layout_marginEnd="10dp"
             android:gravity="center"
             android:padding="5dp"
             android:background="@drawable/chat_notifica"
             android:id="@+id/notifiche"
-
             android:layout_below="@id/ora"
             android:layout_alignParentEnd="true"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="5px"
+            android:layout_height="5dp"
             android:layout_marginTop="10dp"
             android:layout_below="@id/notifiche"
             android:background="@color/menu"/>

@@ -104,7 +104,7 @@ class ChatActivity : AppCompatActivity() {
                                             "mail" to mail,
                                             "tipo" to u.tipo
                                     )
-                                    Log.d("mymess","$entry")
+
                                     db.collection("chats").document(cliente!!).collection("contacts").document(mail)
                                             .set(
                                                     entry,
@@ -118,30 +118,27 @@ class ChatActivity : AppCompatActivity() {
     }
     private fun getUserData(user : String ,myCallback: DatiPersonali.MyCallback){
         val db = FirebaseFirestore.getInstance()
-        db.collection("users")
+        db.collection("users").document(user)
                 .get()
                 .addOnSuccessListener { result->
                     Log.d("prof","$result")
-                    for (document in result) {
                         lateinit var u : DatiPersonali.Utente
-                        if(document.id == user){
-                            //utente ha già scelto il tipo di account
+                        if(result.id == user){
                             u = DatiPersonali.Utente(
-                                    document.get("mail").toString(),
-                                    document.get("name").toString(),
-                                    document.get("surname").toString(),
-                                    document.get("type").toString(),
-                                    document.get("address").toString()
+                                    result.get("mail").toString(),
+                                    result.get("name").toString(),
+                                    result.get("surname").toString(),
+                                    result.get("type").toString(),
+                                    result.get("address").toString()
                             )
                             Log.d("prof","$u")
                             myCallback.onCallback(u)
                         }
-
-                    }
                 }
                 .addOnFailureListener{ e -> Log.w("---","Error getting user info - DatiPersonali",e)}
     }
     private fun sendMessage(messaggio: Messaggio, ricevente: String, me: String){
+        Log.d("Chats","$me invia $ricevente")
         val db = FirebaseFirestore.getInstance()
         val entry = hashMapOf<String, Any>(
                 "inviato" to messaggio.inviato,

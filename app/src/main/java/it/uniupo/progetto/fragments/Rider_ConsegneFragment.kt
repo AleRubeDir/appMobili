@@ -51,18 +51,21 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
             val partenzaMM = viewConsegne.findViewById<Button>(R.id.leftMMButton) //bottone
             val consegnaRider = viewConsegne.findViewById<SlideToActView>(R.id.ConsegnaRider) //slider
 
-
-            partenzaMM.visibility = View.VISIBLE
+            partenzaMM.visibility = RiderActivity.partenzaMMVisibility
+            confermaPagamento.visibility = RiderActivity.confermaPagamentovisibility
+            rifiutaPagamento.visibility = RiderActivity.rifiutaPagamentovisibility
             val mapFragment = childFragmentManager
                     .findFragmentById(R.id.map_rider) as SupportMapFragment
             mapFragment.getMapAsync(this)
 
             partenzaMM.setOnClickListener{
-                confermaPagamento.visibility = View.VISIBLE
-                rifiutaPagamento.visibility = View.VISIBLE
+                RiderActivity.confermaPagamentovisibility = View.VISIBLE
+                RiderActivity.rifiutaPagamentovisibility = View.VISIBLE
+                RiderActivity.partenzaMMVisibility = View.INVISIBLE
+                partenzaMM.visibility = View.INVISIBLE
+                confermaPagamento.visibility = RiderActivity.confermaPagamentovisibility
+                rifiutaPagamento.visibility = RiderActivity.rifiutaPagamentovisibility
 //                manda notifica
-
-
             }
             confermaPagamento.setOnClickListener {
                 confermaPagamentofun()
@@ -188,7 +191,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                 }
     }
 
-    public fun terminaConsegnaFun() {
+    fun terminaConsegnaFun() {
         val db = FirebaseFirestore.getInstance()
         var rider = FirebaseAuth.getInstance().currentUser!!.email
 
@@ -353,23 +356,6 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
         db.collection("riders").document(user).set(entry, SetOptions.merge())
     }
 
-
-   /* private fun caricaProdotto(p: Prodotto) {
-        val db = FirebaseFirestore.getInstance()
-        val entry = hashMapOf<String, Any?>(
-                "id" to p.id,
-                "titolo" to p.titolo,
-                "desc" to p.desc,
-                "img" to p.img,
-                "qta" to p.qta,
-                "prezzo" to p.prezzo,
-        )
-        db.collection("products").document(p.id.toString())
-                .set(entry)
-                .addOnSuccessListener {
-                    Log.d("add", "Aggiunto prodotto $entry")
-                }
-                .addOnFailureListener{ e -> Log.w("---", "Errore aggiunta prodotto", e)}*/
 
 
 }
