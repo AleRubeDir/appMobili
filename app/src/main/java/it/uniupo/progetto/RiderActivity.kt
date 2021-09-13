@@ -32,6 +32,7 @@ class RiderActivity : AppCompatActivity() {
         makeCurrentFragment(deliveryFragment)
         Log.d("notifications","start notification service ")
         startService(Intent(this,NotificationService::class.java))
+        Log.d("notifications","start positionRider service ")
         startService(Intent(this,PositionService::class.java))
         // inizializza valori in caso di ordine accettato
 

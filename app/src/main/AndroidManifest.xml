@@ -72,5 +72,10 @@
             android:enabled="true"
             android:exported="false"
             android:name=".NotificationService" />
+
+        <service
+            android:enabled="true"
+            android:exported="false"
+            android:name=".PositionService" />
     </application>
 </manifest>
