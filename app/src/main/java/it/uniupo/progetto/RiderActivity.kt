@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +22,7 @@ import it.uniupo.progetto.fragments.Rider_chatFragment
 
 
 class RiderActivity : AppCompatActivity() {
+    private lateinit var sp: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider)
@@ -28,21 +30,42 @@ class RiderActivity : AppCompatActivity() {
         val deliveryFragment = Rider_ConsegneFragment()
         val profileFragment = ProfileFragment()
         makeCurrentFragment(deliveryFragment)
+        sp = applicationContext.getSharedPreferences("ordineAccettato", 0)
         Log.d("notifications","start notification service ")
         startService(Intent(this,NotificationService::class.java))
         Log.d("notifications","start positionRider service ")
         startService(Intent(this,PositionService::class.java))
-
-        // inizializza valori in caso di ordine accettato
-
-        if(intent.getBooleanExtra("ordineAccettato",false)){
+        Log.d("sharedPref", " fuori vale ${sp.getBoolean("ordineAccettato", false)} e " +
+                "delete vale ${intent.getBooleanExtra("deletePrefOrd",false)}")
+        if(intent.getBooleanExtra("deletePrefOrd",false)) {
+            val editor = sp.edit()
+            Log.d("sharedPref","primo if, sp.ordineAccettato vale ${sp.getBoolean("ordineAccettato",false)}")
+            editor.putBoolean("ordineAccettato", false)
+            editor.apply()
+        }
+        else if(intent.getBooleanExtra("ordineAccettato",false) ){
+            Log.d("sharedPref","secondo if, devo settare le info")
+            val editor = sp.edit()
+            editor.putBoolean("ordineAccettato", true)
             ind = intent.getStringExtra("address")
             ordId = intent.getStringExtra("orderId")
             userMail = intent.getStringExtra("userMail")
             flag_consegna = 1
+            editor.putString("address", ind)
+            editor.putString("ordId", ordId)
+            editor.putString("userMail", userMail)
+            editor.putInt("flag_consegna", flag_consegna)
+            editor.apply()
             makeCurrentFragment(Rider_ConsegneFragment())
         }
-
+        else if(sp.getBoolean("ordineAccettato",false) && (!intent.getBooleanExtra("deletePrefOrd",false))) {
+            Log.d("sharedPref","secondo if, devo recuperare le info")
+            ind =   sp.getString("address","")
+            ordId =  sp.getString("ordId","")
+            userMail =   sp.getString("userMail","")
+            flag_consegna = sp.getInt("flag_consegna",-1)
+            makeCurrentFragment(Rider_ConsegneFragment())
+                }
 
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnItemSelectedListener {

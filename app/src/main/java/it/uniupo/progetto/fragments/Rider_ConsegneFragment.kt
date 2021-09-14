@@ -87,6 +87,9 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                     // devo prendere tutti i dati che sono presenti nella precedente activity e inserirli qui
                     Log.d("mattia", "Premuto terminaConsegna " + RiderActivity.ordId!!)
                     terminaConsegnaFun()
+                    val int = Intent(viewConsegne.context, RiderActivity::class.java)
+                    int.putExtra("deletePrefOrd",true)
+                    startActivity(int)
                 }
             }
 
@@ -257,17 +260,14 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                 }
 
                         Log.d("mattia", "sto per cancellare corrispondenza " + client)
-
-
                         db.collection("chats").document(rider).delete()
-                       //db.collection("client-rider").document(client).collection("rider").document(rider).delete()
-//                        db.collection("client-rider").document(client).collection(RiderActivity.ordId!!).delete()
+                       db.collection("client-rider").document(client).collection("rider").document(rider).delete()
                         }
                     }
                 }
 
 
-    public fun diminuisciQtaDB(p: Prodotto, stato: Int, statoPagamento: Int) {
+    fun diminuisciQtaDB(p: Prodotto, stato: Int, statoPagamento: Int) {
         // si diminuiscono le quantità solo se l'ordine è stato accettato e pagato
         if(stato == 1 && statoPagamento==1){
 

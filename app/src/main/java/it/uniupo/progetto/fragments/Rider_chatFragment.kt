@@ -108,6 +108,7 @@ class Rider_chatFragment : Fragment() {
         chatClient.setOnClickListener{
             val intent = Intent(view.context,ChatActivity::class.java)
             intent.putExtra("mail",mail.text.toString())
+            intent.putExtra("fromRider", true)
             view.context.startActivity(intent)
         }
 

@@ -24,8 +24,10 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.chat_activity)
 
         val contatto = findViewById<TextView>(R.id.contatto)
+
         val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val ricevente = intent.getStringExtra("mail")!!.toString()
+
         Log.d("chats", ricevente)
         var rider = 0
         val back = findViewById<ImageView>(R.id.back)
@@ -37,7 +39,8 @@ class ChatActivity : AppCompatActivity() {
 
         Log.d("mymess","flag vale $flag")
         if (flag) {
-            rider=1
+            //sono un rider
+            rider = 1
             getMessageFromChat((object:ChatGestoreFragment.MyCallbackMessages{
                 override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, clientMail: Contatto?) {
                     Log.d("Chats", "Dentro la chat $messages")
@@ -62,7 +65,7 @@ class ChatActivity : AppCompatActivity() {
                 }
             }), user, ricevente)
 
-        }
+     }
             val send = findViewById<ImageButton>(R.id.send)
             val mess = findViewById<EditText>(R.id.write_message)
             send.setOnClickListener {
@@ -71,11 +74,13 @@ class ChatActivity : AppCompatActivity() {
                     val messaggio : Messaggio
                     if(rider==1){
                         messaggio = Messaggio(0, ora, mess.text.toString())
-                        sendMessage(messaggio,user,ricevente)
+                        //user = rider, ricevente = cliente
+                        sendMessage(messaggio,ricevente,user)
                     }
                     else {
                         messaggio = Messaggio(1, ora, mess.text.toString())
-                        sendMessage(messaggio, ricevente, user)
+                        //user = cliente, ricevente = rider
+                        sendMessage(messaggio, user , ricevente )
                     }
                     messages.add(messaggio)
                 }
@@ -84,32 +89,28 @@ class ChatActivity : AppCompatActivity() {
             }
     }
 
-    private fun createChat(contatto: TextView, cliente: String?, mail: String) {
+    private fun createChat(contatto: TextView, currUser: String?, ricevente: String) {
         //mail è il rider
         val db = FirebaseFirestore.getInstance()
         var check = 0
-        getUserData(mail, object: DatiPersonali.MyCallback {
+        getUserData(ricevente, object: DatiPersonali.MyCallback {
             override fun onCallback(u: DatiPersonali.Utente) {
                 Log.d("prof","u vale $u")
                 contatto.text=applicationContext.getString(R.string.nomeChat,u.nome,u.cognome)
-                db.collection("chats").document(cliente.toString()).collection("contacts").get()
+                db.collection("chats").document(currUser.toString()).collection("contacts").get()
                         .addOnSuccessListener {
                             it.forEach { doc ->
-                                if (doc.id == mail) check = 1
+                                if (doc.id == ricevente) check = 1
                                 if (check == 0) {
                                     Log.d("mymess","check vale $check")
                                     val entry = hashMapOf<String, Any?>(
                                             "name" to u.nome,
                                             "surname" to u.cognome,
-                                            "mail" to mail,
+                                            "mail" to ricevente,
                                             "tipo" to u.tipo
                                     )
-
-                                    db.collection("chats").document(cliente!!).collection("contacts").document(mail)
-                                            .set(
-                                                    entry,
-                                                    SetOptions.merge()
-                                            )
+                                    db.collection("chats").document(currUser!!).collection("contacts").document(ricevente)
+                                            .set(entry, SetOptions.merge())
                                 }
                             }
                         }
@@ -137,8 +138,10 @@ class ChatActivity : AppCompatActivity() {
                 }
                 .addOnFailureListener{ e -> Log.w("---","Error getting user info - DatiPersonali",e)}
     }
-    private fun sendMessage(messaggio: Messaggio, ricevente: String, me: String){
-        Log.d("Chats","$me invia $ricevente")
+    private fun sendMessage(messaggio: Messaggio, me: String, ricevente: String){
+
+        //me = CLIENTE, ricente = RIDER chat/cliente/contacts/rider
+        Log.d("Chats","$ricevente riceve da  $me")
         val db = FirebaseFirestore.getInstance()
         val entry = hashMapOf<String, Any>(
                 "inviato" to messaggio.inviato,
@@ -165,19 +168,19 @@ class ChatActivity : AppCompatActivity() {
                 }
     }
     private fun getMessageFromChat(myCallback: ChatGestoreFragment.MyCallbackMessages, user : String , you: String){
+        Log.d("getmessage","user vale $user, you vale $you")
         val db = FirebaseFirestore.getInstance()
         messages.clear()
         val entry = hashMapOf<String, Any?>(
                 "notifications" to 0
         )
-        db.collection("chats").document(user!!).collection("contacts").document(you).set(entry,SetOptions.merge())
+        db.collection("chats").document(user).collection("contacts").document(you).set(entry,SetOptions.merge())
 
         db.collection("chats").document(user).collection("contacts").document(you).collection("messages")
                 .get()
                 .addOnSuccessListener { result ->
                     for(document in result){
                         val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
-                        Log.d("Chats", "mess $mess")
                         messages.add(mess)
                     }
                     myCallback.onCallback(messages,0,null)

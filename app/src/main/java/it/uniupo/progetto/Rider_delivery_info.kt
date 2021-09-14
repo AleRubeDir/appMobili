@@ -2,6 +2,7 @@ package it.uniupo.progetto
 
 import android.Manifest
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -35,14 +36,16 @@ import java.util.*
 
 class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
-
+    private lateinit var sp: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rider_delivery_info)
         val ordine = intent.getBooleanExtra("ordineAccettato", false)
+        Log.d("sharedPref", " xxxx")
+        sp = applicationContext.getSharedPreferences("ordineAccettato", 0)
 
-        if (ordine){
+        if (ordine || sp.getBoolean("ordineAccettato", false)) {
             onStartRiderActivity()
         }
 
@@ -53,31 +56,31 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
 
         val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
 
-        consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener{
+        consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
             override fun onSlideComplete(view: SlideToActView) {
                 val orderId = intent.getStringExtra("orderId")!!
                 Log.d("mattia", "Premuto terminaConsegna " + orderId)
                 terminaConsegnaFun(orderId)
                 //per tornare indietro con l'aztivity
-                startActivity(Intent(applicationContext,RiderActivity::class.java))
+
             }
         }
 
         val confermaPagamento = findViewById<Button>(R.id.RiderConfermaPagamento)
-        confermaPagamento.setOnClickListener{
+        confermaPagamento.setOnClickListener {
             val orderId = intent.getStringExtra("orderId")!!
             confermaPagamentofun(orderId)
-            Toast.makeText(applicationContext,"Pagamento confermato",Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Pagamento confermato", Toast.LENGTH_SHORT).show()
             consegnaRider.isLocked = false
             consegnaRider.visibility = View.VISIBLE
             Log.d("mattia", "Premuto confermaPagamento " + orderId)
         }
 
         val errorePagamento = findViewById<Button>(R.id.RiderProblemiPagamento)
-        errorePagamento.setOnClickListener{
+        errorePagamento.setOnClickListener {
             val orderId = intent.getStringExtra("orderId")!!
             errorePagamentofun(orderId)
-            Toast.makeText(applicationContext,"Pagamento rifiutato",Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Pagamento rifiutato", Toast.LENGTH_SHORT).show()
             consegnaRider.isLocked = false
             consegnaRider.visibility = View.VISIBLE
             Log.d("mattia", "Premuto errorePagamento " + orderId)

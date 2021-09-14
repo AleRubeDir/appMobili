@@ -35,6 +35,7 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
                     val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
                     getRiderForUser(mail,object : MyCallback{
                         override fun onCallback(rider: String) {
+                            Log.d("click","rider vale $rider mail vale $mail")
                             val intent = Intent(view.context, ChatActivity::class.java)
                             intent.putExtra("mail", rider )
                             view.context.startActivity(intent)
