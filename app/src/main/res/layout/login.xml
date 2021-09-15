@@ -14,6 +14,8 @@
     <ImageView
         android:layout_width="161dp"
         android:layout_height="158dp"
+        android:id="@+id/logo"
+        android:layout_centerHorizontal="true"
         android:contentDescription="@string/logo"
         android:src="@mipmap/ic_launcher_round" />
   <TableLayout
