@@ -15,7 +15,7 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nome"
+        android:text="@string/nome"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="25sp"/>
@@ -24,7 +24,7 @@
         android:id="@+id/surname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cognome"
+        android:text="@string/cognome"
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/name"
         android:textColor="@color/black"
@@ -39,13 +39,13 @@
         android:layout_marginStart="20dp"
         android:textColor="@color/black"
         android:layout_marginTop="10dp"
-        android:text="Ultimo messaggio chat"
+        android:text="@string/ultimo_messaggio_filler"
         android:textSize="15sp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ora"
-        android:text="10:13"
+        android:text="@string/tiem_filler"
         android:layout_below="@id/data"
         android:textColor="@color/black"
         android:layout_alignParentEnd="true"
@@ -54,27 +54,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/data"
-        android:text="10 Ago 2021"
+        android:text="@string/date_filler"
         android:textColor="@color/black"
         android:layout_alignParentEnd="true"
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1"
-        android:textColor="@color/white"
-        android:layout_marginEnd="10dp"
-        android:gravity="center"
-        android:padding="5dp"
-        android:background="@drawable/chat_notifica"
-        android:id="@+id/notifiche"
 
-        android:layout_below="@id/ora"
-        android:layout_alignParentEnd="true"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="5px"
+        android:layout_height="5dp"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/notifiche"
+        android:layout_below="@id/anteprima"
         android:background="@color/menu"/>
 </RelativeLayout>

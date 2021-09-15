@@ -42,7 +42,7 @@ class ChatActivity : AppCompatActivity() {
             //sono un rider
             rider = 1
             getMessageFromChat((object:ChatGestoreFragment.MyCallbackMessages{
-                override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, clientMail: Contatto?) {
+                override fun onCallback(value: ArrayList<Messaggio>, clientMail: Contatto?) {
                     Log.d("Chats", "Dentro la chat $messages")
                     Log.d("mymess", "user $user , mail $ricevente,")
                     createChat(contatto, user, ricevente)
@@ -54,7 +54,7 @@ class ChatActivity : AppCompatActivity() {
             }),ricevente ,user)
         } else {
             getMessageFromChat((object : ChatGestoreFragment.MyCallbackMessages {
-                override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, clientMail: Contatto?) {
+                override fun onCallback(value: ArrayList<Messaggio>, clientMail: Contatto?) {
                     Log.d("Chats", "Dentro la chat $messages")
                     Log.d("mymess", "mail $ricevente, user $user")
                     createChat(contatto, user, ricevente)
@@ -148,15 +148,6 @@ class ChatActivity : AppCompatActivity() {
                 "ora" to messaggio.ora,
                 "testo" to messaggio.testo
         )
-        db.collection("chats").document(me).collection("contacts").document(ricevente).get()
-                .addOnSuccessListener {
-                    var not = it.getLong("notifications")!!.toInt()
-                    val notify = hashMapOf<String, Any>(
-                            "notifications" to not+1
-                    )
-                    Log.d("notify","$not")
-                    db.collection("chats").document(me).collection("contacts").document(ricevente).set(notify, SetOptions.merge())
-                }
 
         db.collection("chats").document(me).collection("contacts").document(ricevente).collection("messages")
                 .add(entry)
@@ -171,10 +162,6 @@ class ChatActivity : AppCompatActivity() {
         Log.d("getmessage","user vale $user, you vale $you")
         val db = FirebaseFirestore.getInstance()
         messages.clear()
-        val entry = hashMapOf<String, Any?>(
-                "notifications" to 0
-        )
-        db.collection("chats").document(user).collection("contacts").document(you).set(entry,SetOptions.merge())
 
         db.collection("chats").document(user).collection("contacts").document(you).collection("messages")
                 .get()
@@ -183,7 +170,7 @@ class ChatActivity : AppCompatActivity() {
                         val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
                         messages.add(mess)
                     }
-                    myCallback.onCallback(messages,0,null)
+                    myCallback.onCallback(messages,null)
                 }
     }
 }

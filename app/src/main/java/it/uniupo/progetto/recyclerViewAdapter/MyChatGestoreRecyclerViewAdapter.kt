@@ -42,7 +42,6 @@ class MyChatGestoreRecyclerViewAdapter(
         var cognome: TextView = view.findViewById(R.id.surname)
         var ora : TextView = view.findViewById(R.id.ora)
         var anteprima : TextView = view.findViewById(R.id.anteprima)
-        var notifiche : TextView = view.findViewById(R.id.notifiche)
         var data : TextView = view.findViewById(R.id.data)
     }
 
@@ -61,8 +60,6 @@ class MyChatGestoreRecyclerViewAdapter(
         Log.d("anteprima","ultimo messaggio => ${item.messaggio.last().testo} \n\n")
         holder.anteprima.text = item.messaggio.last().testo
         holder.data.text =convertLongToTime(item.messaggio.last().ora.seconds)
-        if(item.notifications==0) holder.notifiche.visibility = View.INVISIBLE
-        holder.notifiche.text = item.notifications.toString()
     }
 
     private fun convertLongToTime(time: Long): String {

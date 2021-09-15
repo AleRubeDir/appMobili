@@ -141,4 +141,7 @@
     <string name="chat_gestore">CHAT GESTORE</string>
     <string name="chat_cliente">CHAT CLIENTE</string>
     <string name="scrivi_un_messaggio">Scrivi un messaggio...</string>
+    <string name="date_filler">10 Ago 2021</string>
+    <string name="tiem_filler">10:13</string>
+    <string name="ultimo_messaggio_filler">Ultimo messaggio chat</string>
 </resources>

@@ -81,23 +81,12 @@
             android:textColor="@color/black"
             android:layout_alignParentEnd="true"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:background="@drawable/chat_notifica"
-            android:id="@+id/notifiche_gestore"
-            android:visibility="invisible"
-            android:layout_below="@id/ora_gestore"
-            android:layout_alignParentEnd="true"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_marginTop="15dp"
-            android:layout_below="@id/notifiche_gestore"
+            android:layout_below="@id/anteprima_gestore"
             android:background="@color/menu"/>
     </RelativeLayout>
 
@@ -168,22 +157,12 @@
             android:textColor="@color/black"
             android:layout_alignParentEnd="true"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:background="@drawable/chat_notifica"
-            android:id="@+id/notifiche"
-            android:layout_below="@id/ora"
-            android:layout_alignParentEnd="true"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/notifiche"
+            android:layout_below="@id/anteprima"
             android:background="@color/menu"/>
     </RelativeLayout>
 </RelativeLayout>
