@@ -56,7 +56,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
 
         val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
 
-        consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
+      /*  consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
             override fun onSlideComplete(view: SlideToActView) {
                 val orderId = intent.getStringExtra("orderId")!!
                 Log.d("mattia", "Premuto terminaConsegna " + orderId)
@@ -65,7 +65,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
 
             }
         }
-
+*/
         val confermaPagamento = findViewById<Button>(R.id.RiderConfermaPagamento)
         confermaPagamento.setOnClickListener {
             val orderId = intent.getStringExtra("orderId")!!
@@ -152,7 +152,7 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    private fun terminaConsegnaFun(orderId: String){
+    /*private fun terminaConsegnaFun(orderId: String){
         val db = FirebaseFirestore.getInstance()
         var rider = FirebaseAuth.getInstance().currentUser!!.email
 
@@ -212,5 +212,5 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
     }
-
+*/
 }

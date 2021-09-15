@@ -203,12 +203,15 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
 
                     //la consegna può terminare solo se il pagamento è stato confermato( accettato/rifiutato)
                     if (doc.getLong("statoPagamento")!!.toInt() == -1) {
-                        //Log.d("mattia", "dentro if, non pagato " + doc.getLong("statoPagamento")!!.toInt())
                         Toast.makeText(viewConsegne.context, "Prima conferma il pagamento!!!!!", Toast.LENGTH_SHORT).show()
-
                     } else {
-                       // Log.d("mattia", "dentro else, pagato")
-                        //rende di nuovo disponibile rider
+                        val det = hashMapOf<String, Any?>(
+                                "stato" to 1,
+                        )
+                        db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).set(
+                                det,
+                                SetOptions.merge()
+                        )
                         val occ = hashMapOf<String, Any?>(
                                 "disponibile" to true,
                         )
@@ -216,7 +219,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         Log.d("mattia", "dopo azioni che funzionano ")
 
                         //salva in order_history
-                        var client = doc.getString("client")
+                        val client = doc.getString("client")
                         val stato = doc.getLong("stato")!!.toInt()
                         val statoPagamento = doc.getLong("statoPagamento")!!.toInt()
                         val tipoPagamento = doc.getString("tipo_pagamento")
@@ -224,18 +227,19 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         Log.d("mattia", "dopo di retrieve dati " + client + stato + statoPagamento + tipoPagamento)
 
                         val newOrderHistory = hashMapOf<String, Any?>(
-                                "data" to Date(),
+                                "data" to  Date(),
                                 "mail" to client,
                                 "rider" to rider,
                                 "tipoPagamento" to tipoPagamento,
                                 "statoPagamento" to statoPagamento,
-                                "risultatoOrdine" to stato,
+                                "risultatoOrdine" to 1,
                                 "ratingQ" to -1,
                                 "ratingV" to -1,
                                 "ratingC" to -1,
+                                "ratingRC" to -1,
+                                "ratingRP" to -1,
 
                                 )
-                        Log.d("mattia", "prima di aggiunta in order history: " + RiderActivity.ordId!! + newOrderHistory)
                         db.collection("orders_history").document(RiderActivity.ordId!!).set(newOrderHistory).addOnSuccessListener {
                             var int = Intent(viewConsegne.context, RiderActivity::class.java)
                             int.putExtra("ordineAccettato",false)
@@ -259,9 +263,15 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                     }
                                 }
 
-                        Log.d("mattia", "sto per cancellare corrispondenza " + client)
-                        db.collection("chats").document(rider).delete()
-                       db.collection("client-rider").document(client).collection("rider").document(rider).delete()
+                        Log.d("schiumo", "usermail vale ${RiderActivity.userMail} e rider vale $rider e ordid vale ${RiderActivity.ordId}")
+                        db.collection("orders").document(RiderActivity.userMail!!).collection("order").document(RiderActivity.ordId!!).delete()
+                        db.collection("chats").document(rider).collection("contacts").document(RiderActivity.userMail!!).delete()
+                        db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).collection("messages").get()
+                                .addOnCompleteListener {
+                                    for(d in it.result) d.reference.delete()
+                                   // db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).delete()
+                                }
+                        db.collection("client-rider").document(client).collection("rider").document(rider).delete()
                         }
                     }
                 }

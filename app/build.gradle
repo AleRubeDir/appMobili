@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+
 }
 
 android {
@@ -38,7 +39,6 @@ dependencies {
     implementation 'androidx.wear:wear:1.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
-    compileOnly 'com.google.android.wearable:wearable:2.8.1'
     implementation 'com.shawnlin:number-picker:2.4.12'
     implementation 'com.google.android.material:material:1.4.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

@@ -62,14 +62,14 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
         }
         return ViewHolder(view)
     }
-                        private fun hasOrderPending(myCallback: MyCallback2) {
+    private fun hasOrderPending(myCallback: MyCallback2) {
                     val db = FirebaseFirestore.getInstance()
                     val email = FirebaseAuth.getInstance().currentUser!!.email.toString()
                     db.collection("orders").get()
                             .addOnSuccessListener { doc ->
                                 for(d in doc){
                                     if(d.id==email){
-                                        Log.d("order","L'utente ha un ordine $doc ")
+                                        Log.d("order","L'utente ha un ordine ${doc} ")
                                         myCallback.onCallback(true)
                                     }
                                 }
