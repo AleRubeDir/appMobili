@@ -316,7 +316,8 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
         db.collection("riders").document(rider).get()
                 .addOnSuccessListener {
                     val occ = it.getBoolean("disponibile")
-                    mycallback.onCallback(occ!!)
+                    if(occ!=null)
+                     mycallback.onCallback(occ)
                 }
     }
 

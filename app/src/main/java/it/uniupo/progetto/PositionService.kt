@@ -75,7 +75,8 @@ class PositionService : Service() {
                     if (!locationResult.locations.isNullOrEmpty()) {
                         val toSend = hashMapOf<String, Any?>(
                                 "lat" to  locationResult.lastLocation.latitude,
-                                "lon" to  locationResult.lastLocation.longitude,)
+                                "lon" to  locationResult.lastLocation.longitude,
+                                "disponibile" to false )
                         Log.d("position","aggiornamento posizione : ${locationResult.lastLocation}")
                         db.collection("riders").document(user).set(toSend, SetOptions.merge())                            }
                 }

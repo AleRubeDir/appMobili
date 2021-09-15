@@ -22,6 +22,7 @@ class Ordini : AppCompatActivity() {
         array.add(Azione("Storico degli ordini", 3))
         array.sortBy { it.id }
 
+
         recyclerView.adapter = MyOrderActionsAdapter(array)
 
     }

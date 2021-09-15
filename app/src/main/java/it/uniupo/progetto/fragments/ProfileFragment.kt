@@ -18,13 +18,14 @@ class ProfileFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
-        Log.d("login", "---- ${requireActivity().getSharedPreferences("login", 0).getString("login", "")}")
+        Log.d("login", "---- ${view.context.getSharedPreferences("login", 0).getString("login", "")}")
         val recyclerView = view.findViewById<RecyclerView>(R.id.profile_actions)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         var array = ArrayList<Azione>()
-        val type = requireActivity().getSharedPreferences("login", 0).getString("login", "")
+        val type = view.context.getSharedPreferences("login", 0).getString("login", "")
         array.add(Azione("Dati personali", 0))
         array.add(Azione("Logout", 5))
+
         if (type == "Cliente") {
             array.add(Azione("La mia posizione", 1))
             array.add(Azione("I miei ordini", 2))
