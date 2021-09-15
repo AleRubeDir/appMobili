@@ -264,7 +264,9 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                 }
 
                         Log.d("schiumo", "usermail vale ${RiderActivity.userMail} e rider vale $rider e ordid vale ${RiderActivity.ordId}")
-                        db.collection("orders").document(RiderActivity.userMail!!).collection("order").document(RiderActivity.ordId!!).delete()
+
+//
+//                        db.collection("orders").document(RiderActivity.userMail!!).collection("order").document(RiderActivity.ordId!!).delete()
                         db.collection("chats").document(rider).collection("contacts").document(RiderActivity.userMail!!).delete()
                         db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).collection("messages").get()
                                 .addOnCompleteListener {
@@ -272,6 +274,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                    // db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).delete()
                                 }
                         db.collection("client-rider").document(client).collection("rider").document(rider).delete()
+                        db.collection("client-rider").document(client).delete()
                         }
                     }
                 }

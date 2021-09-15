@@ -15,10 +15,9 @@ import it.uniupo.progetto.fragments.ProfileFragment.Azione
 import it.uniupo.progetto.*
 
 class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView.Adapter<MyOrderActionsAdapter.ViewHolder>() {
+        lateinit var view : View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.action, parent, false)
-
+                view = LayoutInflater.from(parent.context).inflate(R.layout.action, parent, false)
         val id  = view.findViewById<TextView>(R.id.id)
         val row = view.findViewById<RelativeLayout>(R.id.action_row)
         val nome  = view.findViewById<TextView>(R.id.nome)
@@ -65,9 +64,9 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
     private fun hasOrderPending(myCallback: MyCallback2) {
                     val db = FirebaseFirestore.getInstance()
                     val email = FirebaseAuth.getInstance().currentUser!!.email.toString()
-                    db.collection("orders").get()
+                    db.collection("client-rider").get()
                             .addOnSuccessListener { doc ->
-                                for(d in doc){
+                                for(d in doc) {
                                     if(d.id==email){
                                         Log.d("order","L'utente ha un ordine ${doc} ")
                                         myCallback.onCallback(true)
@@ -77,7 +76,9 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
                             .addOnFailureListener{e->
                                 e.printStackTrace()
                             }
-                }
+        Toast.makeText(view.context, "Nessun ordine trovato, inizia ad acquistare!!!", Toast.LENGTH_SHORT).show()
+
+    }
     private fun getRiderForUser(mail: String, myCallback: MyCallback) {
         val db = FirebaseFirestore.getInstance()
         Log.d("chat", mail)
@@ -85,6 +86,9 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
             .addOnSuccessListener {
                 for(d in it)    myCallback.onCallback(d.id)
             }
+                Toast.makeText(view.context, "Nessun ordine trovato, inizia ad acquistare!!!", Toast.LENGTH_SHORT).show()
+
+
     }
 
     interface MyCallback {
