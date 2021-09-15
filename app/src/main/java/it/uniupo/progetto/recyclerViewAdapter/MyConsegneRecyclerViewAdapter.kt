@@ -123,7 +123,6 @@ class MyConsegneRecyclerViewAdapter(
                         "name" to u.nome,
                         "surname" to u.cognome,
                         "mail" to userMail,
-                        "notifications" to 0
                 )
                 db.collection("chats").document(rider).collection("contacts").document(userMail).set(chat, SetOptions.merge())
             }

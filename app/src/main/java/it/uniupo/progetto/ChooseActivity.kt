@@ -82,7 +82,6 @@ class ChooseActivity : AppCompatActivity() {
             //setup chat gestore-rider
             val entry2 = hashMapOf<String, Any>(
                     "name" to name,
-                    "notifications" to 0,
                     "surname" to surname,
                     "tipo" to "Rider",
             )

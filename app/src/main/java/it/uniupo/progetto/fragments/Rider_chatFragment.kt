@@ -37,13 +37,12 @@ class Rider_chatFragment : Fragment() {
         if(RiderActivity.flag_consegna==1){
             chatClient.visibility = View.VISIBLE
         getChats(object : ChatGestoreFragment.MyCallbackMessages {
-                override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, contatto: Contatto?) {
+                override fun onCallback(value: ArrayList<Messaggio>, contatto: Contatto?) {
                     Log.d("chatRider", "fuori $value ")
-                    val chatUtente = Chat(contatto!!,value,notifications)
+                    val chatUtente = Chat(contatto!!,value)
                     val name = view.findViewById<TextView>(R.id.name)
                     val surname = view.findViewById<TextView>(R.id.surname)
                     val mail = view.findViewById<TextView>(R.id.mail)
-                    val notifiche = view.findViewById<TextView>(R.id.notifiche)
                     val ora = view.findViewById<TextView>(R.id.ora)
                     val data = view.findViewById<TextView>(R.id.data)
                     val anteprima = view.findViewById<TextView>(R.id.anteprima)
@@ -51,10 +50,8 @@ class Rider_chatFragment : Fragment() {
                     name.text = chatUtente.contatto.nome
                     surname.text = chatUtente.contatto.cognome
                     mail.text = chatUtente.contatto.mail
-                    if(notifications!=0) notifiche.visibility = View.VISIBLE
                     if(value.size > 0 ){
                     Log.d("chatRider", "value> 0 valore $value ")
-                    notifiche.text = notifications.toString()
                     val vora = value.last().ora.toDate().hours.toString()
                     var vminuti = value.last().ora.toDate().minutes.toString()
                     if(vminuti.length==1) vminuti = "0"+  value.last().ora.toDate().minutes.toString()
@@ -69,13 +66,12 @@ class Rider_chatFragment : Fragment() {
              })
         }
         getGestoreChats(object : ChatGestoreFragment.MyCallbackMessages {
-            override fun onCallback(value: ArrayList<Messaggio>, notifications: Int, contatto: Contatto?) {
-                Log.d("chatRider","dentro getGestoreChats $value, $notifications, $contatto")
-                val chatUtente = Chat(contatto!!,value,notifications)
+            override fun onCallback(value: ArrayList<Messaggio>, contatto: Contatto?) {
+                Log.d("chatRider","dentro getGestoreChats $value, $contatto")
+                val chatUtente = Chat(contatto!!,value)
                 val name = view.findViewById<TextView>(R.id.name_gestore)
                 val surname = view.findViewById<TextView>(R.id.surname_gestore)
                 val mail = view.findViewById<TextView>(R.id.mail_gestore)
-                val notifiche = view.findViewById<TextView>(R.id.notifiche_gestore)
                 val ora = view.findViewById<TextView>(R.id.ora_gestore)
                 val data = view.findViewById<TextView>(R.id.data_gestore)
                 val anteprima = view.findViewById<TextView>(R.id.anteprima_gestore)
@@ -83,11 +79,8 @@ class Rider_chatFragment : Fragment() {
                 name.text = chatUtente.contatto.nome
                 surname.text = chatUtente.contatto.cognome
                 mail.text = chatUtente.contatto.mail
-                if(notifications!=0) notifiche.visibility = View.VISIBLE
                 if(value.size > 0 ){
                 Log.d("chatRider", "valore " + (value.size) + value)
-
-                notifiche.text = notifications.toString()
 
                     val vora = value.last().ora.toDate().hours.toString()
                     var vminuti = value.last().ora.toDate().minutes.toString()
@@ -143,17 +136,15 @@ class Rider_chatFragment : Fragment() {
                                         val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
                                         messages.add(mess)
                                     }
-                                    var notifications = 0
                                     var surname = ""
                                     var name = ""
                                     var tipo = ""
                                     db.collection("chats").document(usr).collection("contacts").document(clientMail).get().addOnSuccessListener {
                                         //controllo nel caso in cui la chat non contenga messaggi
-                                            notifications = it.getLong("notifications")!!.toInt()
                                             name = it.getString("name")!!
                                             surname = it.getString("surname")!!
                                             val contatto = Contatto(clientMail, name, surname)
-                                            myCallback.onCallback(messages, notifications, contatto)
+                                            myCallback.onCallback(messages,contatto)
                                     }
                                 }
                     }
@@ -170,12 +161,11 @@ class Rider_chatFragment : Fragment() {
 
         db.collection("chats").document(gestoreMail).collection("contacts").document(usr).collection("messages").get()
                 .addOnCompleteListener { res ->
-                                    var messages = arrayListOf<Messaggio>()
+                                    val messages = arrayListOf<Messaggio>()
                                     for (document in res.result) {
                                         val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
                                         messages.add(mess)
                                     }
-                                    var notifications = 0
                                     var surname = ""
                                     var name = ""
                                     var tipo = ""
@@ -185,12 +175,8 @@ class Rider_chatFragment : Fragment() {
                                         surname = it.getString("surname")!!
                                         tipo = it.getString("tipo")!!
                                         val contatto = Contatto(gestoreMail, name, surname)
-                                        db.collection("chats").document(gestoreMail).collection("contacts").document(usr).get().addOnSuccessListener {
-                                            notifications = it.getLong("notifications")!!.toInt()
-                                            myCallback.onCallback(messages, notifications, contatto)
-                                        }
+                                        myCallback.onCallback(messages, contatto)
                                     }
-
-                                }
+                            }
                     }
                 }
