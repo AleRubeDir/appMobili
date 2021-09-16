@@ -50,16 +50,17 @@ class StoricoOrdini : AppCompatActivity() {
         var prod = arrayListOf<Prodotto>()
         var ord : Order
         val ords = arrayListOf<Order>()
-        var currUser = FirebaseAuth.getInstance().currentUser!!.email.toString()
+        var currUser = FirebaseAuth.getInstance().currentUser!!.email.toString() //gestore
         var toBeChecked = "mail"
 
             db.collection("orders_history").get()
                     .addOnCompleteListener {
                             for(d in it.result) {
                                 if(tipo=="Rider") toBeChecked = "rider"
-                                if ((tipo=="Gestore") || d.getString(toBeChecked).toString() == currUser) {
+                                if (d.getString(toBeChecked).toString() == currUser) {
                                     val id = d.id
                                     val cliente = d.getString("mail").toString()
+                                    Log.d("history3","cliente vale $cliente")
                                     val rider = d.getString("rider").toString()
                                     val tipo = d.getString("tipoPagamento").toString()
                                     val data = convertLongToTime(d.getTimestamp("data")?.seconds)
