@@ -252,7 +252,7 @@ class NotificationService : Service() {
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         db.collection("delivery").addSnapshotListener{snap,e ->
             if(snap!=null){
-                db.collection("delivery").document(rider).collection("richiamato").document("r").get()
+                db.collection("delivery").document(rider).get()
                         .addOnSuccessListener {
                             if(it.getBoolean("richiamato")==true) {
                                 val intent = Intent(applicationContext,RiderActivity::class.java)
