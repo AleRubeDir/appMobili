@@ -72,7 +72,7 @@ class RichiamaOrdine : AppCompatActivity() {
         for(p in ord.arr) db.collection("orders").document(mail).collection("order").document(ord.id.toString()).collection("products").document(p.id.toString()).delete()
         db.collection("orders").document(mail).collection("order").document(ord.id.toString()).collection("details").document("dett").delete()
        Log.d("richiama2","ordrider vale ${ord.rider}")
-        db.collection("delivery").document(ord.rider).collection("richiamato").document("r").set(richiamato, SetOptions.merge())
+        db.collection("delivery").document(ord.rider).set(richiamato, SetOptions.merge())
         db.collection("orders").document(mail).collection("order").document(ord.id.toString()).delete()
                 .addOnSuccessListener {
 
