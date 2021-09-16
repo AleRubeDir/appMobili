@@ -31,7 +31,6 @@ class StoricoOrdini : AppCompatActivity() {
         })
     }
 
-
     private fun getUserType(mycallback: MyCallback3){
         val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val db = FirebaseFirestore.getInstance()
@@ -62,6 +61,7 @@ class StoricoOrdini : AppCompatActivity() {
                                 val ratingV = d.getLong("ratingV")?.toInt()
                                 val ratingC = d.getLong("ratingC")?.toInt()
                                 val risultatoOrdine = d.getLong("risultatoOrdine")?.toInt()
+                                //controllo per sapere chi sta guardando lo sotrico ordini, in base al risultato metti campo "rider" come secondo o terzo parametro
                                 ord = Order(id, mail, rider, tipo, prod, ratingQ, ratingV, ratingC, -1, -1, data, "0",0, risultatoOrdine)
                                 Log.d("history2", "dentro ord vale $ord")
                                 ords.add(ord)

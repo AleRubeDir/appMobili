@@ -250,6 +250,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                             startActivity(int)
                         }
                         db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
+                        db.collection("delivery").document(rider).delete()
                         db.collection("toAssignOrders").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
 
                         db.collection("orders").document(client!!).collection("order").document(RiderActivity.ordId!!).collection("products").get()
@@ -262,8 +263,6 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                         diminuisciQtaDB(prod,stato,statoPagamento)
                                     }
                                 }
-
-                        Log.d("schiumo", "usermail vale ${RiderActivity.userMail} e rider vale $rider e ordid vale ${RiderActivity.ordId}")
 
 //
 //                        db.collection("orders").document(RiderActivity.userMail!!).collection("order").document(RiderActivity.ordId!!).delete()
