@@ -64,20 +64,19 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
     private fun hasOrderPending(myCallback: MyCallback2) {
                     val db = FirebaseFirestore.getInstance()
                     val email = FirebaseAuth.getInstance().currentUser!!.email.toString()
-                    db.collection("client-rider").get()
-                            .addOnSuccessListener { doc ->
-                                for(d in doc) {
-                                    if(d.id==email){
-                                        Log.d("order","L'utente ha un ordine ${doc} ")
+                    db.collection("client-rider").document(email).collection("rider").get()
+                        .addOnSuccessListener {
+                            for(d in it){
+//                                    if(d.id==email){
+                                        Log.d("order","L'utente ha un ordine con rider ${d.id}")
                                         myCallback.onCallback(true)
-                                    }
-                                }
+//                                    }
                             }
+                                }
                             .addOnFailureListener{e->
                                 e.printStackTrace()
                             }
-        Toast.makeText(view.context, "Nessun ordine trovato, attendi che venga selezionato un rider", Toast.LENGTH_SHORT).show()
-
+//        Toast.makeText(view.context, "Nessun ordine trovato, inizia ad acquistare!!!", Toast.LENGTH_SHORT).show()
     }
     private fun getRiderForUser(mail: String, myCallback: MyCallback) {
         val db = FirebaseFirestore.getInstance()
@@ -86,7 +85,7 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
             .addOnSuccessListener {
                 for(d in it)    myCallback.onCallback(d.id)
             }
-                Toast.makeText(view.context, "Nessun ordine trovato, attendi che venga selezionato un rider", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(view.context, "Nessun ordine trovato, inizia ad acquistare!!!", Toast.LENGTH_SHORT).show()
 
 
     }
