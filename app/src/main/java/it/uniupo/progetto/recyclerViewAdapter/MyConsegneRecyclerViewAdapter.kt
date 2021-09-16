@@ -138,19 +138,28 @@ class MyConsegneRecyclerViewAdapter(
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
 //      toglie da assignedOrders, mette in toassignOrders
-        Log.d("DELIVERY - ", orderId)
+        Log.d("refuse", orderId)
+
         db.collection("assignedOrders").document(orderId).get()
                 .addOnCompleteListener {
-                    val tipoPagamento = it.result.getString("tipo").toString()
-                    val indirizzo = it.result.getString("indirizzo").toString()
-                    val cliente = it.result.getString("cliente").toString()
-                    val dummy = hashMapOf<String, Any?>(
-                            "tipo" to tipoPagamento,
-                            //indirizzo ordine
-                            "indirizzo" to indirizzo,
-                            "cliente" to cliente
-                    )
-                    db.collection("toassignOrders").document(orderId).set(dummy)
+//                    for (i in it){
+                        val tipoPagamento = it.result.getString("tipo").toString()
+                        val indirizzo = it.result.getString("indirizzo").toString()
+                        val cliente = it.result.getString("cliente").toString()
+                        Log.d("refuse", "TIPO PAGAMENTO, INDIRIZZO, CLIENTE $tipoPagamento $indirizzo $cliente")
+                        val dummy = hashMapOf<String, Any?>(
+                                "tipo" to tipoPagamento,
+                                //indirizzo ordine
+                                "indirizzo" to indirizzo,
+                                "cliente" to cliente
+                        )
+                        Log.d("refuse", "prima di salvare, $dummy")
+
+                        //inserisce ordine all'interno degli ordini da riassegnare
+                        var newOrder = "RR" + orderId
+                        db.collection("toassignOrders").document(newOrder).set(dummy, SetOptions.merge())
+//                    }
+
                 }
         db.collection("assignedOrders").document(orderId).delete()
 //      toglie da assignedOrders, mette in toassignOrders
@@ -183,11 +192,21 @@ class MyConsegneRecyclerViewAdapter(
                             "risultatoOrdine" to -2,
                             "statoPagamento" to -2,
                     )
+
+//                    val dummy = hashMapOf<String, Any?>(
+//                            "tipo" to tipo_pagamento,
+//                            //indirizzo ordine
+//                            "indirizzo" to indirizzo,
+//                            "cliente" to cliente
+//                    )
                     db.collection("orders_history").document(orderId).set(entry, SetOptions.merge())
                             .addOnSuccessListener {
                                 db.collection("delivery").document(rider).collection("orders").document(orderId).delete()
                                 db.collection("toassignOrders").document(orderId).delete()
                             }
+
+
+
                 }
 
         //cancella ordine nel db delivery

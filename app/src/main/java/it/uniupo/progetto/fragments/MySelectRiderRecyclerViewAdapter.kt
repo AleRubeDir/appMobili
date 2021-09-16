@@ -39,14 +39,32 @@ class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: Array
         db.collection("users").document(clientMail!!).get()
             .addOnSuccessListener { document->
                 add = document.getString("address").toString()
+                val add1 = document.getString("address").toString()
+                Log.d("DELIVERY", "add 1  vale: $add")
+                Log.d("DELIVERY", "add 2  vale: $add1")
+
+                val dummy = hashMapOf<String, Any?>(
+                        "tipo" to tipoPagamento,
+                        //indirizzo ordine
+                        "indirizzo" to add1,
+                        "cliente" to clientMail
+                )
+                Log.d("refuse", "Ordine appena salvato, $dummy")
+
+                if (ordId != null) {
+                    db.collection("assignedOrders").document(ordId).set(dummy)
+                }
+
             }
 
-        val dummy = hashMapOf<String, Any?>(
-                "tipo" to tipoPagamento,
-                //indirizzo ordine
-                "indirizzo" to add,
-                "cliente" to clientMail
-        )
+        Log.d("DELIVERY", "add vale fuori : $add")
+
+//        val dummy = hashMapOf<String, Any?>(
+//                "tipo" to tipoPagamento,
+//                //indirizzo ordine
+//                "indirizzo" to add,
+//                "cliente" to clientMail
+//        )
         val richiamato = hashMapOf<String, Any?>(
                 "richiamato" to false,
         )
@@ -65,7 +83,6 @@ class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: Array
                     view.context.startActivity(Intent(view.context , GestoreActivity::class.java))
                 }
         db.collection("toassignOrders").document(ordId).delete()
-        db.collection("assignedOrders").document(ordId).set(dummy)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
