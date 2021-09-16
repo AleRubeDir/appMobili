@@ -76,7 +76,7 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
                             .addOnFailureListener{e->
                                 e.printStackTrace()
                             }
-        Toast.makeText(view.context, "Nessun ordine trovato, inizia ad acquistare!!!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(view.context, "Nessun ordine trovato, attendi che venga selezionato un rider", Toast.LENGTH_SHORT).show()
 
     }
     private fun getRiderForUser(mail: String, myCallback: MyCallback) {
@@ -86,7 +86,7 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
             .addOnSuccessListener {
                 for(d in it)    myCallback.onCallback(d.id)
             }
-                Toast.makeText(view.context, "Nessun ordine trovato, inizia ad acquistare!!!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(view.context, "Nessun ordine trovato, attendi che venga selezionato un rider", Toast.LENGTH_SHORT).show()
 
 
     }
