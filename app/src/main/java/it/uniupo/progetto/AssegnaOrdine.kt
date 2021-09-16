@@ -50,10 +50,10 @@ class AssegnaOrdine : AppCompatActivity() {
                             val rider = Rider(d.id,d.getString("nome")!!,d.getString("cognome")!!,riderpos.latitude,riderpos.longitude,dist)
                             riders.add(rider)
 //                            rende il rider non più disponibile
-                            val disp = hashMapOf<String, Any?>(
-                                    "disponibile" to false
-                            )
-                            db.collection("riders").document(d.id).set(disp, SetOptions.merge())
+//                            val disp = hashMapOf<String, Any?>(
+//                                    "disponibile" to false
+//                            )
+//                            db.collection("riders").document(d.id).set(disp, SetOptions.merge())
                         }
 
                     }
