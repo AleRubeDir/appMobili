@@ -235,7 +235,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         val stato = doc.getLong("stato")!!.toInt()
                         val statoPagamento = doc.getLong("statoPagamento")!!.toInt()
                         val tipoPagamento = doc.getString("tipo_pagamento")
-                        val risultatoOrdine = doc.getString("risultatoOrdine")
+                        val risultatoOrdine = doc.getLong("risultatoOrdine")!!.toInt()
                         //risultato ordine da fare successivamente
                         Log.d("mattia", "dopo di retrieve dati " + client + stato + statoPagamento + tipoPagamento)
 
@@ -263,7 +263,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                             startActivity(int)
                         }
                         db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
-                        db.collection("delivery").document(rider).collection("richiamato").document("r").delete()
+//                        db.collection("delivery").document(rider).collection("richiamato").document("r").delete()
                         db.collection("delivery").document(rider).delete()
 
                         db.collection("toAssignOrders").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
