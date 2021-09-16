@@ -235,6 +235,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         val stato = doc.getLong("stato")!!.toInt()
                         val statoPagamento = doc.getLong("statoPagamento")!!.toInt()
                         val tipoPagamento = doc.getString("tipo_pagamento")
+                        val risultatoOrdine = doc.getString("risultatoOrdine")
                         //risultato ordine da fare successivamente
                         Log.d("mattia", "dopo di retrieve dati " + client + stato + statoPagamento + tipoPagamento)
 
@@ -244,7 +245,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                 "rider" to rider,
                                 "tipoPagamento" to tipoPagamento,
                                 "statoPagamento" to statoPagamento,
-                                "risultatoOrdine" to 1,
+                                "risultatoOrdine" to risultatoOrdine,
                                 "ratingQ" to -1,
                                 "ratingV" to -1,
                                 "ratingC" to -1,
