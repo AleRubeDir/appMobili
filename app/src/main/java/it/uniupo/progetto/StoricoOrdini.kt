@@ -26,10 +26,11 @@ class StoricoOrdini : AppCompatActivity() {
                     override fun onCallback(ord : ArrayList<Order>){
                             recyclerView.adapter = MyHistoryOrderAdapter(ord,tipo)
                     }
-                })
+                },tipo)
             }
         })
     }
+
 
     private fun getUserType(mycallback: MyCallback3){
         val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
@@ -44,27 +45,32 @@ class StoricoOrdini : AppCompatActivity() {
                 }
     }
 
-    private fun getOrdersByUser(mycallback : MyCallback) {
+    private fun getOrdersByUser(mycallback : MyCallback,tipo :String ) {
         val db = FirebaseFirestore.getInstance()
         var prod = arrayListOf<Prodotto>()
         var ord : Order
         val ords = arrayListOf<Order>()
-        val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
+        var currUser = FirebaseAuth.getInstance().currentUser!!.email.toString()
+        var toBeChecked = "mail"
+
             db.collection("orders_history").get()
                     .addOnCompleteListener {
                             for(d in it.result) {
-                                val id = d.id
-                                val rider = d.getString("rider").toString()
-                                val tipo = d.getString("tipoPagamento").toString()
-                                val data = convertLongToTime(d.getTimestamp("data")?.seconds)
-                                val ratingQ = d.getLong("ratingQ")?.toInt()
-                                val ratingV = d.getLong("ratingV")?.toInt()
-                                val ratingC = d.getLong("ratingC")?.toInt()
-                                val risultatoOrdine = d.getLong("risultatoOrdine")?.toInt()
-                                //controllo per sapere chi sta guardando lo sotrico ordini, in base al risultato metti campo "rider" come secondo o terzo parametro
-                                ord = Order(id, mail, rider, tipo, prod, ratingQ, ratingV, ratingC, -1, -1, data, "0",0, risultatoOrdine)
-                                Log.d("history2", "dentro ord vale $ord")
-                                ords.add(ord)
+                                if(tipo=="Rider") toBeChecked = "rider"
+                                if ((tipo=="Gestore") || d.getString(toBeChecked).toString() == currUser) {
+                                    val id = d.id
+                                    val cliente = d.getString("mail").toString()
+                                    val rider = d.getString("rider").toString()
+                                    val tipo = d.getString("tipoPagamento").toString()
+                                    val data = convertLongToTime(d.getTimestamp("data")?.seconds)
+                                    val ratingQ = d.getLong("ratingQ")?.toInt()
+                                    val ratingV = d.getLong("ratingV")?.toInt()
+                                    val ratingC = d.getLong("ratingC")?.toInt()
+                                    val risultatoOrdine = d.getLong("risultatoOrdine")?.toInt()
+                                    ord = Order(id, cliente, rider, tipo, prod, ratingQ, ratingV, ratingC, -1, -1, data, "0", 0, risultatoOrdine)
+                                    Log.d("history2", "dentro ord vale $ord")
+                                    ords.add(ord)
+                                }
                             }
                         Log.d("history2", "dentro ords vale $ords")
             mycallback.onCallback(ords)

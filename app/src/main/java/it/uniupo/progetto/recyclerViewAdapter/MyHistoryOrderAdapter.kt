@@ -29,9 +29,9 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = ord[position]
+        Log.d("riderHistory","item vale $item ")
         if(tipo=="Cliente") holder.rl_rider.visibility = View.INVISIBLE
         else if(tipo=="Rider") holder.rl_cliente.visibility = View.INVISIBLE
-
             checkRatings(item.id!!, holder.ratingQ, item.ratingQ, 1)
             checkRatings(item.id!!, holder.ratingV, item.ratingV, 2)
             checkRatings(item.id!!, holder.ratingC, item.ratingC, 3)

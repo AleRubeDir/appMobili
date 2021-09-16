@@ -30,23 +30,22 @@ class ChatGestoreFragment : Fragment() {
         new.setOnClickListener{
             startActivity(Intent(view.context,NewChatActivity::class.java))
         }
+        Log.d("chats","entro dentro chatgestorefragment")
         getUserContacts((object: MyCallbackContact{
             override fun onCallback(value: ArrayList<Contatto>) {
                 contacts = value
-                Log.d("mymess","contacts $contacts")
+                Log.d("chats","contacts $contacts")
                 for (c in contacts) {
                     getMessageFromChat((object: MyCallbackMessages{
                         override fun onCallback(value: ArrayList<Messaggio>, clientMail: Contatto?) {
                             Log.d("mymess","value $value,  clientMail $clientMail")
                             val chatUtente = Chat(c,value)
                             chats.add(chatUtente)
+                                //chats.sortByDescending { it.messaggio.last().ora.seconds }
+                                Log.d("mymess","sto per entrare nel view adapter con $chats")
+                                recyclerView.adapter = MyChatGestoreRecyclerViewAdapter(chats)
                         }
                     }),c.mail)
-                }
-                if(chats.size>0){
-
-                chats.sortByDescending { it.messaggio.last().ora.seconds }
-                recyclerView.adapter = MyChatGestoreRecyclerViewAdapter(chats)
                 }
 
             }

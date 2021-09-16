@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.media.RingtoneManager
@@ -11,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -37,36 +39,46 @@ class RiderActivity : AppCompatActivity() {
         startService(Intent(this,PositionService::class.java))
         Log.d("sharedPref", " fuori vale ${sp.getBoolean("ordineAccettato", false)} e " +
                 "delete vale ${intent.getBooleanExtra("deletePrefOrd",false)}")
-        if(intent.getBooleanExtra("deletePrefOrd",false)) {
-            val editor = sp.edit()
-            Log.d("sharedPref","primo if, sp.ordineAccettato vale ${sp.getBoolean("ordineAccettato",false)}")
-            editor.putBoolean("ordineAccettato", false)
-            editor.apply()
+        if(intent.getBooleanExtra("richiamato",false )!=true) {
+            if (intent.getBooleanExtra("deletePrefOrd", false)) {
+                val editor = sp.edit()
+                editor.putBoolean("ordineAccettato", false)
+                editor.apply()
+            }
+            else if (intent.getBooleanExtra("ordineAccettato", false)) {
+                val editor = sp.edit()
+                editor.putBoolean("ordineAccettato", true)
+                ind = intent.getStringExtra("address")
+                ordId = intent.getStringExtra("orderId")
+                userMail = intent.getStringExtra("userMail")
+                flag_consegna = 1
+                editor.putString("address", ind)
+                editor.putString("ordId", ordId)
+                editor.putString("userMail", userMail)
+                editor.putInt("flag_consegna", flag_consegna)
+                editor.apply()
+                makeCurrentFragment(Rider_ConsegneFragment())
+            }
+            else if (sp.getBoolean("ordineAccettato", false) && (!intent.getBooleanExtra("deletePrefOrd", false))) {
+                ind = sp.getString("address", "")
+                ordId = sp.getString("ordId", "")
+                userMail = sp.getString("userMail", "")
+                flag_consegna = sp.getInt("flag_consegna", -1)
+                makeCurrentFragment(Rider_ConsegneFragment())
+            }
+        }else{
+            AlertDialog.Builder(this)
+                    .setTitle("Ordine richiamato")
+                    .setMessage("Non dovrai più consegnare questo ordine")
+                    .setPositiveButton("OKAY!")
+                    { _: DialogInterface, _: Int ->
+                    }
+                    .show()
+            ind = ""
+            ordId = ""
+            userMail = ""
+            flag_consegna = 0
         }
-        else if(intent.getBooleanExtra("ordineAccettato",false) ){
-            Log.d("sharedPref","secondo if, devo settare le info")
-            val editor = sp.edit()
-            editor.putBoolean("ordineAccettato", true)
-            ind = intent.getStringExtra("address")
-            ordId = intent.getStringExtra("orderId")
-            userMail = intent.getStringExtra("userMail")
-            flag_consegna = 1
-            editor.putString("address", ind)
-            editor.putString("ordId", ordId)
-            editor.putString("userMail", userMail)
-            editor.putInt("flag_consegna", flag_consegna)
-            editor.apply()
-            makeCurrentFragment(Rider_ConsegneFragment())
-        }
-        else if(sp.getBoolean("ordineAccettato",false) && (!intent.getBooleanExtra("deletePrefOrd",false))) {
-            Log.d("sharedPref","secondo if, devo recuperare le info")
-            ind =   sp.getString("address","")
-            ordId =  sp.getString("ordId","")
-            userMail =   sp.getString("userMail","")
-            flag_consegna = sp.getInt("flag_consegna",-1)
-            makeCurrentFragment(Rider_ConsegneFragment())
-                }
-
         val nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         nav.setOnItemSelectedListener {
             when(it.itemId){
@@ -104,7 +116,6 @@ class RiderActivity : AppCompatActivity() {
         var partenzaMMVisibility = View.VISIBLE
         var confermaPagamentovisibility = View.INVISIBLE
         var rifiutaPagamentovisibility = View.INVISIBLE
-
     }
 
 }
