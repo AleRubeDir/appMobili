@@ -143,7 +143,8 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
         val db = FirebaseFirestore.getInstance()
         var rider = FirebaseAuth.getInstance().currentUser!!.email
         val det = hashMapOf<String, Any?>(
-                "statoPagamento" to 0,
+                "risultatoOrdine" to 0,
+                "statoPagamento" to 0
         )
 //        Log.d("DELIVERY - ",orderId)
         db.collection("delivery").document(rider!!).collection("orders").get()
