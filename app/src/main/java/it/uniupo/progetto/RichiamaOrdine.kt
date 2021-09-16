@@ -65,12 +65,16 @@ class RichiamaOrdine : AppCompatActivity() {
 
     private fun richiamaOrdine(ord : Order) {
         val db = FirebaseFirestore.getInstance()
+        val richiamato = hashMapOf<String,Any>(
+                "richiamato" to true
+        )
         val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
         for(p in ord.arr) db.collection("orders").document(mail).collection("order").document(ord.id.toString()).collection("products").document(p.id.toString()).delete()
         db.collection("orders").document(mail).collection("order").document(ord.id.toString()).collection("details").document("dett").delete()
-
+        db.collection("delivery").document(ord.rider).set(richiamato, SetOptions.merge())
         db.collection("orders").document(mail).collection("order").document(ord.id.toString()).delete()
                 .addOnSuccessListener {
+
                     Toast.makeText(this,"Ordine annullato",Toast.LENGTH_SHORT).show()
                 }
 

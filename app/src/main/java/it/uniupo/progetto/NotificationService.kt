@@ -257,6 +257,7 @@ class NotificationService : Service() {
                             if(it.getBoolean("richiamato")==true) {
                                 val intent = Intent(applicationContext,RiderActivity::class.java)
                                 intent.putExtra("richiamato",true)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 startActivity(intent)
                             }
                         }

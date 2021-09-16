@@ -48,7 +48,7 @@ class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: Array
                 "cliente" to clientMail
         )
         val empty = hashMapOf<String, Any?>(
-                " " to " ",
+                "richiamato" to false,
         )
 
         Log.d("assegna","rider vale $rider ordId vale $ordId")
