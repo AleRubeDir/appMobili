@@ -250,7 +250,9 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                             startActivity(int)
                         }
                         db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
+                        db.collection("delivery").document(rider).collection("richiamato").document("r").delete()
                         db.collection("delivery").document(rider).delete()
+
                         db.collection("toAssignOrders").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
 
                         db.collection("orders").document(client!!).collection("order").document(RiderActivity.ordId!!).collection("products").get()
@@ -274,6 +276,20 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                 }
                         db.collection("client-rider").document(client).collection("rider").document(rider).delete()
                         db.collection("client-rider").document(client).delete()
+
+                        db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("details").document("dett").delete()
+                        db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("products").get()
+                                .addOnSuccessListener {
+
+                                    for(d in it){
+                                        db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("products").document(d.reference.toString()).delete()
+                                    }
+                                }
+                        db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("rider").document("r").delete()
+                        db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).delete()
+                        db.collection("orders").document(client).delete()
+
+
                         }
                     }
                 }

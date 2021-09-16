@@ -65,19 +65,22 @@ class OrderFragment  : Fragment() {
         var prod = arrayListOf<Prodotto>()
         var ord : Order
         val ords = arrayListOf<Order>()
-        val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
+//        val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
         db.collection("orders_history").get()
             .addOnCompleteListener {
                 for(d in it.result) {
                     val id = d.id
+                    val mail = d.getString("mail").toString()
                     val rider = d.getString("rider").toString()
                     val tipo = d.getString("tipoPagamento").toString()
                     val data = convertLongToTime(d.getTimestamp("data")?.seconds)
                     val ratingQ = d.getLong("ratingQ")?.toInt()
                     val ratingV = d.getLong("ratingV")?.toInt()
                     val ratingC = d.getLong("ratingC")?.toInt()
+                    val ratingRC = d.getLong("ratingRC")?.toInt()
+                    val ratingRP = d.getLong("ratingRP")?.toInt()
                     val risultatoOrdine = d.getLong("risultatoOrdine")?.toInt()
-                    ord = Order(id, mail, rider, tipo, prod, ratingQ, ratingV, ratingC, -1, -1, data, "0",0, risultatoOrdine)
+                    ord = Order(id, mail, rider, tipo, prod, ratingQ, ratingV, ratingC, ratingRC, ratingRP, data, "0",0, risultatoOrdine)
                     Log.d("history2", "dentro ord vale $ord")
                     ords.add(ord)
                 }
