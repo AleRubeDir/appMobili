@@ -43,7 +43,7 @@ class ChatGestoreFragment : Fragment() {
                             chats.add(chatUtente)
                                 //chats.sortByDescending { it.messaggio.last().ora.seconds }
                                 Log.d("mymess","sto per entrare nel view adapter con $chats")
-                                recyclerView.adapter = MyChatGestoreRecyclerViewAdapter(chats)
+                            if(chats.size>0) recyclerView.adapter = MyChatGestoreRecyclerViewAdapter(chats)
                         }
                     }),c.mail)
                 }

@@ -97,6 +97,10 @@ class ChatActivity : AppCompatActivity() {
             override fun onCallback(u: DatiPersonali.Utente) {
                 Log.d("prof","u vale $u")
                 contatto.text=applicationContext.getString(R.string.nomeChat,u.nome,u.cognome)
+                val empty = hashMapOf<String,Any>(
+                        " " to " "
+                )
+                db.collection("chats").document(currUser.toString()).set(empty, SetOptions.merge())
                 db.collection("chats").document(currUser.toString()).collection("contacts").get()
                         .addOnSuccessListener {
                             it.forEach { doc ->
