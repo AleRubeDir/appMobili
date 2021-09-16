@@ -100,8 +100,15 @@ class ChatActivity : AppCompatActivity() {
                 val empty = hashMapOf<String,Any>(
                         " " to " "
                 )
+                val entry = hashMapOf<String, Any?>(
+                        "name" to u.nome,
+                        "surname" to u.cognome,
+                        "mail" to ricevente,
+                        "tipo" to u.tipo
+                )
                 db.collection("chats").document(currUser.toString()).set(empty, SetOptions.merge())
-                db.collection("chats").document(currUser.toString()).collection("contacts").get()
+                db.collection("chats").document(currUser.toString()).collection("contacts").document(u.email).set(entry, SetOptions.merge())
+               /* db.collection("chats").document(currUser.toString()).collection("contacts").get()
                         .addOnSuccessListener {
                             it.forEach { doc ->
                                 if (doc.id == ricevente) check = 1
@@ -117,7 +124,7 @@ class ChatActivity : AppCompatActivity() {
                                             .set(entry, SetOptions.merge())
                                 }
                             }
-                        }
+                        }*/
             }
         })
     }
@@ -126,7 +133,7 @@ class ChatActivity : AppCompatActivity() {
         db.collection("users").document(user)
                 .get()
                 .addOnSuccessListener { result->
-                    Log.d("prof","$result")
+                    Log.d("prof","${result.id} == ${user} ")
                         lateinit var u : DatiPersonali.Utente
                         if(result.id == user){
                             u = DatiPersonali.Utente(

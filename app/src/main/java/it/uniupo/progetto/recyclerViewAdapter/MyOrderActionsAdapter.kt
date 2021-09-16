@@ -83,11 +83,11 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
         Log.d("chat", mail)
         db.collection("client-rider").document(mail).collection("rider").get()
             .addOnSuccessListener {
-                for(d in it)   {
-                    db.collection("delivery").document(d.id).collection("orders").get()
+                for(rider in it)   {
+                    db.collection("delivery").document(rider.id).collection("orders").get()
                             .addOnSuccessListener {
                                 for(d in it){
-                                    if(d.getBoolean("leftMM")==true) myCallback.onCallback(d.id)
+                                    if(d.getBoolean("leftMM")==true) myCallback.onCallback(rider.id)
                                 }
                             }
 
