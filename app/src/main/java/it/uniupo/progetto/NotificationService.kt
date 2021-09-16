@@ -81,8 +81,8 @@ class NotificationService : Service() {
                                     val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                        val name = getString(R.string.notificheRider)
-                                        val descriptionText = "nuovoOrdine"
+                                        val name = getString(R.string.notificheGestore)
+                                        val descriptionText =  getString(R.string.notificheGestore)
                                         val importance = NotificationManager.IMPORTANCE_DEFAULT
                                         val CHANNEL_ID = getString(R.string.notificheGestore)
                                         val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
@@ -142,8 +142,8 @@ class NotificationService : Service() {
                                                         Log.d(TAG, "dentro createNotification")
                                                         val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
                                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                                            val name = getString(R.string.notificheRider)
-                                                            val descriptionText = "nuovoOrdine"
+                                                            val name = getString(R.string.notificheCliente)
+                                                            val descriptionText = getString(R.string.notificheCliente)
                                                             val importance = NotificationManager.IMPORTANCE_DEFAULT
                                                             val CHANNEL_ID = getString(R.string.notificheCliente)
                                                             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
@@ -201,7 +201,7 @@ class NotificationService : Service() {
                                     val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                         val name = getString(R.string.notificheRider)
-                                        val descriptionText = "nuovoOrdine"
+                                        val descriptionText = getString(R.string.notificheRider)
                                         val importance = NotificationManager.IMPORTANCE_DEFAULT
                                         val CHANNEL_ID = getString(R.string.notificheRider)
                                         val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {

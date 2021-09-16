@@ -65,22 +65,31 @@ class PositionService : Service() {
             Log.d("position","Dentro getLocationUpdate")
             val db = FirebaseFirestore.getInstance()
             val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
-
-
-            locationCallback = object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult) {
-                    super.onLocationResult(locationResult)
-                    Log.d("position","Dentro callback")
-                    Log.d("position","locationresult vale ${locationResult.locations}")
-                    if (!locationResult.locations.isNullOrEmpty()) {
-                        val toSend = hashMapOf<String, Any?>(
-                                "lat" to  locationResult.lastLocation.latitude,
-                                "lon" to  locationResult.lastLocation.longitude,
-                                "disponibile" to false )
-                        Log.d("position","aggiornamento posizione : ${locationResult.lastLocation}")
-                        db.collection("riders").document(user).set(toSend, SetOptions.merge())                            }
+            var name= ""
+            var surname = ""
+            db.collection("users").document(user).get()
+                .addOnSuccessListener {
+                     name = it.getString("name")!!
+                     surname = it.getString("surname")!!
                 }
-            }
+
+                    locationCallback = object : LocationCallback() {
+                        override fun onLocationResult(locationResult: LocationResult) {
+                            super.onLocationResult(locationResult)
+                            Log.d("position","Dentro callback")
+                            Log.d("position","locationresult vale ${locationResult.locations}")
+                            if (!locationResult.locations.isNullOrEmpty()) {
+                                val toSend = hashMapOf<String, Any?>(
+                                        "nome" to name,
+                                        "cognome" to surname,
+                                        "lat" to  locationResult.lastLocation.latitude,
+                                        "lon" to  locationResult.lastLocation.longitude,
+                                        "disponibile" to true )
+                                Log.d("position","aggiornamento posizione : ${locationResult.lastLocation}")
+                                db.collection("riders").document(user).set(toSend, SetOptions.merge())
+                            }
+                        }
+                    }
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 Log.d("position","startLocationUpdates")
