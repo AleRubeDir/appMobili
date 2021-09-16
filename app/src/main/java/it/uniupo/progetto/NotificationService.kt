@@ -191,7 +191,7 @@ class NotificationService : Service() {
                     // Get the PendingIntent containing the entire back stack
                     getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
                 }
-
+                checkRichiamato()
                 getRiders(object : MyCallback{
                     override fun onCallback(ris: List<String>) {
                         for(rider in ris){
@@ -247,6 +247,22 @@ class NotificationService : Service() {
         }
     }
 
+    private fun checkRichiamato(){
+        val db = FirebaseFirestore.getInstance()
+        val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
+        db.collection("delivery").addSnapshotListener{snap,e ->
+            if(snap!=null){
+                db.collection("delivery").document(rider).get()
+                        .addOnSuccessListener {
+                            if(it.getBoolean("richiamato")==true) {
+                                val intent = Intent(applicationContext,RiderActivity::class.java)
+                                intent.putExtra("richiamato",true)
+                                startActivity(intent)
+                            }
+                        }
+            }
+        }
+    }
     private fun getClients(myCallback: MyCallback) {
         val db = FirebaseFirestore.getInstance()
         val ris = mutableListOf<String>()
