@@ -71,7 +71,8 @@ class RichiamaOrdine : AppCompatActivity() {
         val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
         for(p in ord.arr) db.collection("orders").document(mail).collection("order").document(ord.id.toString()).collection("products").document(p.id.toString()).delete()
         db.collection("orders").document(mail).collection("order").document(ord.id.toString()).collection("details").document("dett").delete()
-        db.collection("delivery").document(ord.rider).set(richiamato, SetOptions.merge())
+       Log.d("richiama2","ordrider vale ${ord.rider}")
+        db.collection("delivery").document(ord.rider).collection("richiamato").document("r").set(richiamato, SetOptions.merge())
         db.collection("orders").document(mail).collection("order").document(ord.id.toString()).delete()
                 .addOnSuccessListener {
 
