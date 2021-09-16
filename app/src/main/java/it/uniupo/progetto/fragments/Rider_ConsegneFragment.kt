@@ -65,6 +65,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                 partenzaMM.visibility = View.INVISIBLE
                 confermaPagamento.visibility = RiderActivity.confermaPagamentovisibility
                 rifiutaPagamento.visibility = RiderActivity.rifiutaPagamentovisibility
+                setLeftMMDB()
 //                manda notifica
             }
             confermaPagamento.setOnClickListener {
@@ -124,6 +125,16 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
 
         }
             return viewConsegne
+
+    }
+
+    private fun setLeftMMDB() {
+        val db = FirebaseFirestore.getInstance()
+        val rider = FirebaseAuth.getInstance().currentUser!!.email.toString()
+        val entry = hashMapOf<String,Any>(
+                "leftMM" to true
+        )
+        db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId.toString()).set(entry, SetOptions.merge())
 
     }
 
