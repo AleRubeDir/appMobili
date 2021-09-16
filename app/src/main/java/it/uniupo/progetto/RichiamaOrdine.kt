@@ -138,6 +138,9 @@ class RichiamaOrdine : AppCompatActivity() {
             val prod = ArrayList<Prodotto>()
 //            controllare se tra tutti i delivery c'è n'è qualcuno appartenente al cliente
 
+            db.collection("orders").document(email).collection("order").document(c).collection("rider").document("r").get()
+                    .addOnSuccessListener {
+                        var rider = it.getString("mail").toString()
 
             db.collection("orders").document(email).collection("order").document(c).collection("products").get()
                     .addOnSuccessListener {
@@ -149,10 +152,10 @@ class RichiamaOrdine : AppCompatActivity() {
                         var tot = 0.0
                         prod.forEach { tot += it.qta * it.prezzo.toDouble() }
                         Log.d("richiama","tot vale $tot")
-                        ordine = Order(c,email,"","",prod,-1,-1,-1,-1,-1,"",tot.toString(),0,0)
+                        ordine = Order(c,email,rider,"",prod,-1,-1,-1,-1,-1,"",tot.toString(),0,0)
                         myCallback.onCallback(ordine)
                     }
-
+                    }
         }
     }
 }
