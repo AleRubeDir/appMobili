@@ -47,12 +47,12 @@ class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: Array
                 "indirizzo" to add,
                 "cliente" to clientMail
         )
-        val empty = hashMapOf<String, Any?>(
+        val richiamato = hashMapOf<String, Any?>(
                 "richiamato" to false,
         )
 
         Log.d("assegna","rider vale $rider ordId vale $ordId")
-        db.collection("delivery").document(rider).set(empty, SetOptions.merge())
+        db.collection("delivery").document(rider).collection("richiamato").document("r").set(richiamato, SetOptions.merge())
         db.collection("delivery").document(rider).collection("orders").document(ordId!!).set(entry, SetOptions.merge())
         val entry2 = hashMapOf<String, Any>(
                 "mail" to rider
