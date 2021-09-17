@@ -192,11 +192,10 @@ class NotificationService : Service() {
                     getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
                 }
                 checkRichiamato()
-                getRiders(object : MyCallback{
-                    override fun onCallback(ris: List<String>) {
-                        for(rider in ris){
+                val rider = FirebaseAuth.getInstance().currentUser!!.email.toString()
                             db.collection("delivery").document(rider).collection("orders").addSnapshotListener{ snap, e ->
                                 if (snap != null) {
+                                    for(doc in snap.documents) Log.d("prova","r ${doc.id} ${doc.getString("client")}")
                                     Log.d(TAG,"dentro createNotification")
                                     val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -241,11 +240,10 @@ class NotificationService : Service() {
                                 else e?.printStackTrace()
                             }
                         }
-                    }
-                })
+
             }
         }
-    }
+
 
     private fun checkRichiamato(){
         val db = FirebaseFirestore.getInstance()

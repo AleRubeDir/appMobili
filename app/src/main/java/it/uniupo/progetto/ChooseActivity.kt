@@ -71,7 +71,6 @@ class ChooseActivity : AppCompatActivity() {
                 "type" to type,
                 "mail" to mail,
         )
-        Log.d("google", "mail in choose vale $mail")
         db.collection("users").document(mail)
                 .set(entry, SetOptions.merge())
                 .addOnSuccessListener {
@@ -86,6 +85,11 @@ class ChooseActivity : AppCompatActivity() {
                     "tipo" to "Rider",
             )
             db.collection("chats").document(R.string.EMAIL_GESTORE.toString()).collection("contacts").document(mail).set(entry2, SetOptions.merge())
+            val toSend = hashMapOf<String, Any?>(
+                    "nome" to name,
+                    "cognome" to surname,
+                    "disponibile" to true )
+            db.collection("riders").document(mail).set(toSend, SetOptions.merge())
         }
     }
 }

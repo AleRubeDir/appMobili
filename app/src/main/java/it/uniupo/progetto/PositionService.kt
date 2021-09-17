@@ -65,14 +65,6 @@ class PositionService : Service() {
             Log.d("position","Dentro getLocationUpdate")
             val db = FirebaseFirestore.getInstance()
             val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
-            var name= ""
-            var surname = ""
-            db.collection("users").document(user).get()
-                .addOnSuccessListener {
-                     name = it.getString("name")!!
-                     surname = it.getString("surname")!!
-                }
-
                     locationCallback = object : LocationCallback() {
                         override fun onLocationResult(locationResult: LocationResult) {
                             super.onLocationResult(locationResult)
@@ -80,11 +72,9 @@ class PositionService : Service() {
                             Log.d("position","locationresult vale ${locationResult.locations}")
                             if (!locationResult.locations.isNullOrEmpty()) {
                                 val toSend = hashMapOf<String, Any?>(
-                                        "nome" to name,
-                                        "cognome" to surname,
                                         "lat" to  locationResult.lastLocation.latitude,
                                         "lon" to  locationResult.lastLocation.longitude,
-                                        "disponibile" to true )
+                                        )
                                 Log.d("position","aggiornamento posizione : ${locationResult.lastLocation}")
                                 db.collection("riders").document(user).set(toSend, SetOptions.merge())
                             }
