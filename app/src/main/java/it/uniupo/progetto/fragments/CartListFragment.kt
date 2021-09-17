@@ -1,6 +1,7 @@
 package it.uniupo.progetto.fragments
 
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,13 +56,30 @@ class CartListFragment : Fragment()  {
         }))
         val compra = view.findViewById<Button>(R.id.compra)
         compra.setOnClickListener{
-            impostaOrdine(ClienteActivity.carrello, object : MyCallback{
-                override fun onCallback(ordId: String) {
-                    intent = Intent(view.context, PagamentoActivity::class.java)
-                    intent.putExtra("ord_id",ordId)
-                    startActivity(intent)
+            hasOrderPending(object : MyCallback2 {
+                override fun onCallback(ris: Boolean) {
+                    Log.d("secondo","ris vale $ris")
+                    if(!ris){
+                        impostaOrdine(ClienteActivity.carrello, object : MyCallback{
+                            override fun onCallback(ordId: String) {
+                                intent = Intent(view.context, PagamentoActivity::class.java)
+                                intent.putExtra("ord_id",ordId)
+                                startActivity(intent)
+                            }
+                        })
+                    }else{
+                        AlertDialog.Builder(view.context)
+                                .setTitle("Ordine attivo")
+                                .setMessage("Non puoi effettuare un altro ordine, aspetta di completare quello attivo")
+                                .setPositiveButton("Accetta")
+                                { _: DialogInterface, _: Int ->
+                                }
+                                .show()
+                    }
                 }
+
             })
+
 
         }
 
@@ -74,6 +93,27 @@ class CartListFragment : Fragment()  {
         touchelper.attachToRecyclerView(recyclerView)
         return view
     }
+    interface MyCallback2{
+        fun onCallback(ris : Boolean)
+    }
+
+    fun hasOrderPending(myCallback: MyCallback2) {
+        val db = FirebaseFirestore.getInstance()
+        val email = FirebaseAuth.getInstance().currentUser!!.email.toString()
+        var ris = false
+        db.collection("orders").document(email).collection("order").get()
+                .addOnSuccessListener {
+                    for (d in it) {
+                        ris = true
+                    }
+                        myCallback.onCallback(ris)
+                }
+                .addOnFailureListener { e ->
+                    Log.d("secondo","failure listener")
+                    e.printStackTrace()
+                }
+    }
+
     fun getRandomString() : String {
         val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
         return (1..8)
@@ -87,9 +127,7 @@ class CartListFragment : Fragment()  {
         var dummy = hashMapOf<String, Any?>(
                 " " to " "
         )
-
                     for (p in carrello) {
-
                         var entry = hashMapOf<String, Any?>(
                                 "id" to p.id,
                                 "titolo" to p.titolo,

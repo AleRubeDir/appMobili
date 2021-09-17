@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
-import it.uniupo.progetto.fragments.MySelectRiderRecyclerViewAdapter
-import java.util.*
+import it.uniupo.progetto.recyclerViewAdapter.MySelectRiderRecyclerViewAdapter
 import kotlin.collections.ArrayList
 
 class AssegnaOrdine : AppCompatActivity() {

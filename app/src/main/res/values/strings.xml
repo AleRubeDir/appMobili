@@ -144,4 +144,7 @@
     <string name="date_filler">10 Ago 2021</string>
     <string name="tiem_filler">10:13</string>
     <string name="ultimo_messaggio_filler">Ultimo messaggio chat</string>
+    <string name="ordine_n_rifiutato">Ordine <br/> rifiutato</string>
+    <string name="pagamento_n_rifiutato">Pagamento <br/> rifiutato</string>
+    <string name="ordine_n_completato">Ordine <br/> completato</string>
 </resources>

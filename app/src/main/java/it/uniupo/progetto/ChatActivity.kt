@@ -174,14 +174,23 @@ class ChatActivity : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         messages.clear()
 
-        db.collection("chats").document(user).collection("contacts").document(you).collection("messages")
-                .get()
+        db.collection("chats").document(user).collection("contacts").document(you).collection("messages").addSnapshotListener{snap,e->
+            if(snap!=null){
+                for(d in snap.documents) {
+                    val mess = Messaggio(d.getLong("inviato")!!.toInt(), d.get("ora") as Timestamp, d.get("testo").toString())
+                    messages.add(mess)
+                }
+            myCallback.onCallback(messages,null)
+            }
+        }
+
+             /*   .get()
                 .addOnSuccessListener { result ->
                     for(document in result){
                         val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
                         messages.add(mess)
                     }
                     myCallback.onCallback(messages,null)
-                }
+                }*/
     }
 }

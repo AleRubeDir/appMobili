@@ -68,7 +68,7 @@ class PagamentoActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
                 .setTitle("Ordine inviato")
                 .setMessage("Riceverai una notifica appena il rider partirà con il tuo ordine")
-                .setNeutralButton("Chiudi")
+                .setPositiveButton("OKAY")
                 { _: DialogInterface, _: Int ->
                     svuotaCarrello()
                     startActivity(Intent(this,ClienteActivity::class.java))
