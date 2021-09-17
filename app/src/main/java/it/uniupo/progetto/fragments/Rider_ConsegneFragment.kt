@@ -218,18 +218,21 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                     if (doc.getLong("statoPagamento")!!.toInt() == -1) {
                         Toast.makeText(viewConsegne.context, "Prima conferma il pagamento!!!!!", Toast.LENGTH_SHORT).show()
                     } else {
-                        val det = hashMapOf<String, Any?>(
-                                "statoPagamento" to 1,
-                        )
-                        db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).set(
-                                det,
-                                SetOptions.merge()
-                        )
+//                        val det = hashMapOf<String, Any?>(
+//                                "statoPagamento" to 1,
+//                        )
+//                        db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).set(
+//                                det,
+//                                SetOptions.merge()
+//                        )
+
+//                        rider torna disponibile
                         val occ = hashMapOf<String, Any?>(
                                 "disponibile" to true,
                         )
                         db.collection("riders").document(rider).set(occ, SetOptions.merge())
                         Log.d("mattia", "dopo azioni che funzionano ")
+
 
                         //salva in order_history
                         val client = doc.getString("client")
@@ -263,12 +266,14 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                             RiderActivity.flag_consegna = 0
                             startActivity(int)
                         }
+
+
+//                        elimina ordine attivo
                         db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
-//                        db.collection("delivery").document(rider).collection("richiamato").document("r").delete()
                         db.collection("delivery").document(rider).delete()
 
-//                        db.collection("toAssignOrders").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
 
+//                        diminuisce quantità
                         db.collection("orders").document(client!!).collection("order").document(RiderActivity.ordId!!).collection("products").get()
                                 .addOnSuccessListener { result ->
                                     for (document in result) {
@@ -280,17 +285,19 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                     }
                                 }
 
-//
-//                        db.collection("orders").document(RiderActivity.userMail!!).collection("order").document(RiderActivity.ordId!!).delete()
+//                      elimina chat
                         db.collection("chats").document(rider).collection("contacts").document(RiderActivity.userMail!!).delete()
                         db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).collection("messages").get()
                                 .addOnCompleteListener {
                                     for(d in it.result) d.reference.delete()
                                    // db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).delete()
                                 }
+//                        elimina corrispondenza client- rider
                         db.collection("client-rider").document(client).collection("rider").document(rider).delete()
                         db.collection("client-rider").document(client).delete()
 
+
+//                        elimina tutto ordine
                         db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("details").document("dett").delete()
                         db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("products").get()
                                 .addOnSuccessListener {
