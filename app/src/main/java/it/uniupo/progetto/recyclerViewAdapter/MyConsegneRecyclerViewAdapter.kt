@@ -139,7 +139,23 @@ class MyConsegneRecyclerViewAdapter(
         val db = FirebaseFirestore.getInstance()
 //      toglie da assignedOrders, mette in toassignOrders
         Log.d("DELIVERY - ", orderId)
-        db.collection("assignedOrders").document(orderId).get()
+
+        db.collection("assignedOrders").document(orderId).get().addOnSuccessListener {
+            val tipoPagamento = it.getString("tipo").toString()
+            val indirizzo = it.getString("indirizzo").toString()
+            val cliente = it.getString("cliente").toString()
+            val dummy = hashMapOf<String, Any?>(
+                    "tipo" to tipoPagamento,
+                    //indirizzo ordine
+                    "indirizzo" to indirizzo,
+                    "cliente" to cliente
+            )
+            Log.d("dummy","dummy vale $dummy")
+            db.collection("toassignOrders").document(orderId).set(dummy, SetOptions.merge()).addOnSuccessListener {
+                db.collection("assignedOrders").document(orderId).delete()
+            }
+        }
+/*        db.collection("assignedOrders").document(orderId).get()
                 .addOnCompleteListener {
                     val tipoPagamento = it.result.getString("tipo").toString()
                     val indirizzo = it.result.getString("indirizzo").toString()
@@ -150,9 +166,9 @@ class MyConsegneRecyclerViewAdapter(
                             "indirizzo" to indirizzo,
                             "cliente" to cliente
                     )
-                    db.collection("toassignOrders").document(orderId).set(dummy)
-                }
-        db.collection("assignedOrders").document(orderId).delete()
+                    Log.d("dummy","dummy vale $dummy")
+                }*/
+
 //      toglie da assignedOrders, mette in toassignOrders
 //        cancella nel fragment l'ordine
         for (p in values) {

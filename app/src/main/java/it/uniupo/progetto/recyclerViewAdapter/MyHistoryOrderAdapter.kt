@@ -45,6 +45,7 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
         holder.tv_orderId.text = item.id
 
         if(item.risultatoOrdine==0) holder.cv.setCardBackgroundColor(view.context.getColor(R.color.red))
+        if(item.risultatoOrdine==-2) holder.cv.setCardBackgroundColor(view.context.getColor(R.color.gray))
             else  holder.cv.setCardBackgroundColor(view.context.getColor(R.color.green))
     }
 

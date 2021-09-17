@@ -15,10 +15,76 @@
         android:text="@string/storico_degli_ordini"
         android:textColor="@color/black"
         android:maxLines="1"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/title"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/legenda">
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/green"
+        android:layout_margin="5dp"
+        card_view:cardBackgroundColor="@color/green"
+        card_view:cardCornerRadius="30dp"
+        card_view:cardElevation="3dp"
+        card_view:contentPadding="4dp"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Ordine completato"/>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/red"
+        android:layout_toEndOf="@id/green"
+        android:layout_margin="5dp"
+        card_view:cardBackgroundColor="@color/red"
+        card_view:cardCornerRadius="30dp"
+        card_view:cardElevation="3dp"
+        card_view:contentPadding="4dp"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Pagamento rifiutato"/>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/red2"
+        android:layout_toEndOf="@id/red"
+        android:layout_margin="5dp"
+        card_view:cardBackgroundColor="@color/gray"
+        card_view:cardCornerRadius="30dp"
+        card_view:cardElevation="3dp"
+        card_view:contentPadding="4dp"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Ordine rifiutato"/>
+    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/profile_actions"
-
+        android:layout_below="@id/legenda"
         android:name="it.uniupo.progetto.fragments.MyOrderFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,8 +92,8 @@
         android:layout_marginRight="2dp"
         app:layoutManager="LinearLayoutManager"
         tools:context=".fragments.MyOrderFragment"
-        tools:listitem="@layout/action"
-        android:layout_marginTop="70dp"
+        tools:listitem="@layout/history_order"
+        android:layout_marginTop="5dp"
         android:focusable="true"
         android:clickable="true"
         />
