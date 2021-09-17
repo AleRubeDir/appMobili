@@ -105,6 +105,8 @@ class MyCartListRecyclerViewAdapter(
         return ViewHolder(view)
     }
 
+
+
     private fun diminuisciQta(id: Int){
         for(p in values){
             if(p.id==id)
