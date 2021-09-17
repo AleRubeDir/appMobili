@@ -86,6 +86,8 @@ class ChooseActivity : AppCompatActivity() {
             val toSend = hashMapOf<String, Any?>(
                     "nome" to name,
                     "cognome" to surname,
+                    "lat" to 0,
+                    "lon" to 0,
                     "disponibile" to true )
             db.collection("riders").document(mail).set(toSend, SetOptions.merge())
             val dummy = hashMapOf<String, Any>(
