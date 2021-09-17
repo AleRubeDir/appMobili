@@ -126,12 +126,13 @@ class MyConsegneRecyclerViewAdapter(
                         "mail" to userMail,
                 )
                 db.collection("chats").document(rider).collection("contacts").document(userMail).set(chat, SetOptions.merge())
+                db.collection("chats").document(userMail).collection("contacts").document(rider).set(chat, SetOptions.merge())
             }
 
         })
 
-        db.collection("chats").document(rider)
-                .set(dummy, SetOptions.merge())
+        db.collection("chats").document(rider).set(dummy, SetOptions.merge())
+        db.collection("chats").document(userMail).set(dummy, SetOptions.merge())
     }
 
     //        refuse order:
