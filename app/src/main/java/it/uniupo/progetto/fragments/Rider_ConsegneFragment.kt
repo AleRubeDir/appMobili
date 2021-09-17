@@ -218,21 +218,24 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
 
         db.collection("delivery").document(rider!!).collection("orders").document(RiderActivity.ordId!!).get()
                 .addOnSuccessListener { doc ->
+                    Log.d("aggiornamentoQta","risultatoOridne vale ${doc.getLong("risultatoOrdine")!!.toInt()}")
                     if (doc.getLong("risultatoOrdine")!!.toInt()==0){
-                        db.collection("orders").document(doc.getString("mail").toString()).collection("order").document(RiderActivity.ordId!!).collection("products").get()
+                    Log.d("aggiornamentoQta","cliente vale ${doc.getString("client").toString()}")
+                    Log.d("aggiornamentoQta","ordId vale  vale ${RiderActivity.ordId!!}")
+                        db.collection("orders").document(doc.getString("client").toString()).collection("order").document(RiderActivity.ordId!!).collection("products").get()
                                 .addOnSuccessListener {
-                                    for(prod in it)
-                                    //CartListFragment().diminuisciQtaDB(Prodotto(p.getLong("id")!!.toInt(),"","","","",p.getLong("qta")!!.toInt()))
-                                    db.collection("products").document(prod.id).get()
-                                            .addOnSuccessListener { document->
-                                                val p = Prodotto(prod.getLong("id")!!.toInt(),"","","","",prod.getLong("qta")!!.toInt())
-                                                            var newqta = document.getLong("qta")!!.toInt() + p.qta
-                                                            val entry = hashMapOf<String, Any?>(
-                                                                    "qta" to newqta,
-                                                            )
-                                                            db.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
-                                            }
-
+                                    for(prod in it) {
+                                        val p = Prodotto(prod.getLong("id")!!.toInt(), "", "", "", "", prod.getLong("qta")!!.toInt())
+                                        db.collection("products").document(prod.id).get()
+                                                .addOnSuccessListener { document ->
+                                                    val newqta = document.getLong("qta")!!.toInt() + p.qta
+                                                    val entry = hashMapOf<String, Any?>(
+                                                            "qta" to newqta,
+                                                    )
+                                                    Log.d("aggiornamentoQta","nuova qta vale $newqta")
+                                                    db.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
+                                                }
+                                    }
                                 }
 
                     }
@@ -280,9 +283,10 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         db.collection("delivery").document(rider).delete()
                         db.collection("chats").document(rider).collection("contacts").document(RiderActivity.userMail!!).delete()
                         db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).collection("messages").get()
-                                .addOnCompleteListener {
-                                    for (d in it.result) d.reference.delete()
+                                .addOnSuccessListener {
+                                    for (d in it)  db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).collection("messages").document(d.id).delete()
                                 }
+                        db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).delete()
                         db.collection("client-rider").document(client!!).collection("rider").document(rider).delete()
                         db.collection("client-rider").document(client).delete()
                         db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("details").document("dett").delete()
