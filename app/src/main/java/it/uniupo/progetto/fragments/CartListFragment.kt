@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import it.uniupo.progetto.*
 import it.uniupo.progetto.recyclerViewAdapter.*
 /**
@@ -128,6 +129,7 @@ class CartListFragment : Fragment()  {
                 " " to " "
         )
                     for (p in carrello) {
+                        diminuisciQtaDB(p)
                         var entry = hashMapOf<String, Any?>(
                                 "id" to p.id,
                                 "titolo" to p.titolo,
@@ -150,6 +152,31 @@ class CartListFragment : Fragment()  {
     }
     interface MyCallback{
         fun onCallback(ordId : String)
+    }
+
+    fun diminuisciQtaDB(p: Prodotto) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("products").document(p.id.toString()).get()
+                .addOnSuccessListener { document->
+                    val vecchiaqta = document.getLong("qta")!!.toInt()
+                    val nuovaqta = vecchiaqta-p.qta
+                    val entry = hashMapOf<String, Any?>(
+                            "qta" to nuovaqta,
+                    )
+                    Log.d("aggiornamentoQta","vecchia qta vale $vecchiaqta \n nuova qta vale $nuovaqta \n prodotto vale $p")
+                    db.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
+                            .addOnSuccessListener {
+                                Log.d("qta","Qta prodotto aggiornata con successo")
+                            }
+                            .addOnFailureListener{
+                                Log.w("qta","Errore modifica qtaDB $it")
+                                it.printStackTrace()
+                            }
+                }
+                .addOnFailureListener{
+                    Log.w("qta","Errore ottenimento qtaDB $it")
+                    it.printStackTrace()
+                }
     }
 
     fun cartTot() {

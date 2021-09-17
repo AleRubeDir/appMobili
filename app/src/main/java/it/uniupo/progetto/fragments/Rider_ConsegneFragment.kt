@@ -107,7 +107,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                             Log.d("consegne", "consegne vale $consegne")
 
                             recyclerView.adapter = MyConsegneRecyclerViewAdapter(consegne)
-                            
+
 //                        Log.d("RISULTATO", consegne.toString())
                         }
                     })
@@ -137,6 +137,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
         val entry = hashMapOf<String,Any>(
                 "leftMM" to true
         )
+        Log.d("inizio","ordId per leftmm vale ${RiderActivity.ordId}")
         db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId.toString()).set(entry, SetOptions.merge())
 
     }
@@ -159,6 +160,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         )
                     }
                 }
+
     }
 
     override fun onMapReady(p0: GoogleMap) {
@@ -216,26 +218,43 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
 
         db.collection("delivery").document(rider!!).collection("orders").document(RiderActivity.ordId!!).get()
                 .addOnSuccessListener { doc ->
+                    Log.d("aggiornamentoQta","risultatoOridne vale ${doc.getLong("risultatoOrdine")!!.toInt()}")
+                    if (doc.getLong("risultatoOrdine")!!.toInt()==0){
+                    Log.d("aggiornamentoQta","cliente vale ${doc.getString("client").toString()}")
+                    Log.d("aggiornamentoQta","ordId vale  vale ${RiderActivity.ordId!!}")
+                        db.collection("orders").document(doc.getString("client").toString()).collection("order").document(RiderActivity.ordId!!).collection("products").get()
+                                .addOnSuccessListener {
+                                    for(prod in it) {
+                                        val p = Prodotto(prod.getLong("id")!!.toInt(), "", "", "", "", prod.getLong("qta")!!.toInt())
+                                        db.collection("products").document(prod.id).get()
+                                                .addOnSuccessListener { document ->
+                                                    val newqta = document.getLong("qta")!!.toInt() + p.qta
+                                                    val entry = hashMapOf<String, Any?>(
+                                                            "qta" to newqta,
+                                                    )
+                                                    Log.d("aggiornamentoQta","nuova qta vale $newqta")
+                                                    db.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
+                                                }
+                                    }
+                                }
 
+                    }
                     //la consegna può terminare solo se il pagamento è stato confermato( accettato/rifiutato)
                     if (doc.getLong("statoPagamento")!!.toInt() == -1) {
                         Toast.makeText(viewConsegne.context, "Prima conferma il pagamento!!!!!", Toast.LENGTH_SHORT).show()
                     } else {
-//                        val det = hashMapOf<String, Any?>(
-//                                "statoPagamento" to 1,
-//                        )
-//                        db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).set(
-//                                det,
-//                                SetOptions.merge()
-//                        )
-
-//                        rider torna disponibile
+                        val det = hashMapOf<String, Any?>(
+                                "statoPagamento" to 1,
+                        )
+                        db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).set(
+                                det,
+                                SetOptions.merge()
+                        )
                         val occ = hashMapOf<String, Any?>(
                                 "disponibile" to true,
                         )
                         db.collection("riders").document(rider).set(occ, SetOptions.merge())
                         Log.d("mattia", "dopo azioni che funzionano ")
-
 
                         //salva in order_history
                         val client = doc.getString("client")
@@ -247,7 +266,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         Log.d("mattia", "dopo di retrieve dati " + client + stato + statoPagamento + tipoPagamento)
 
                         val newOrderHistory = hashMapOf<String, Any?>(
-                                "data" to  Date(),
+                                "data" to Date(),
                                 "mail" to client,
                                 "rider" to rider,
                                 "tipoPagamento" to tipoPagamento,
@@ -260,95 +279,39 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                 "ratingRP" to -1,
 
                                 )
-                        db.collection("orders_history").document(RiderActivity.ordId!!).set(newOrderHistory).addOnSuccessListener {
-                            var int = Intent(viewConsegne.context, RiderActivity::class.java)
-                            int.putExtra("ordineAccettato",false)
-                            RiderActivity.ind = ""
-                            RiderActivity.ordId = ""
-                            RiderActivity.userMail = ""
-                            RiderActivity.flag_consegna = 0
-                            startActivity(int)
-                        }
-
-
-//                        elimina ordine attivo
                         db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
                         db.collection("delivery").document(rider).delete()
-
-
-//                        diminuisce quantità
-                        db.collection("orders").document(client!!).collection("order").document(RiderActivity.ordId!!).collection("products").get()
-                                .addOnSuccessListener { result ->
-                                    for (document in result) {
-                                        val id = document.getLong("id")!!.toInt()
-                                        val qta = document.getLong("qta")!!.toInt()
-
-                                        val prod = Prodotto(id,"","","","",qta)
-                                        diminuisciQtaDB(prod,stato,statoPagamento)
-                                    }
-                                }
-
-//                      elimina chat
                         db.collection("chats").document(rider).collection("contacts").document(RiderActivity.userMail!!).delete()
                         db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).collection("messages").get()
-                                .addOnCompleteListener {
-                                    for(d in it.result) d.reference.delete()
-                                   // db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).delete()
+                                .addOnSuccessListener {
+                                    for (d in it)  db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).collection("messages").document(d.id).delete()
                                 }
-//                        elimina corrispondenza client- rider
-                        db.collection("client-rider").document(client).collection("rider").document(rider).delete()
+                        db.collection("chats").document(RiderActivity.userMail!!).collection("contacts").document(rider).delete()
+                        db.collection("client-rider").document(client!!).collection("rider").document(rider).delete()
                         db.collection("client-rider").document(client).delete()
-
-
-//                        elimina tutto ordine
                         db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("details").document("dett").delete()
                         db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("products").get()
                                 .addOnSuccessListener {
-
-                                    for(d in it){
-                                        db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("products").document(d.reference.toString()).delete()
+                                    for (d in it) {
+                                        db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("products").document(d.id).delete()
                                     }
                                 }
-                        db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("products").get()
-
                         db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("rider").document("r").delete()
                         db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).delete()
-                        db.collection("orders").document(client).delete()
-
-
+                        db.collection("orders").document(client).delete().addOnSuccessListener {
+                            db.collection("orders_history").document(RiderActivity.ordId!!).set(newOrderHistory).addOnSuccessListener {
+                                db.collection("assignedOrders").document(RiderActivity.ordId!!).delete()
+                                var int = Intent(viewConsegne.context, RiderActivity::class.java)
+                                int.putExtra("ordineAccettato", false)
+                                RiderActivity.ind = ""
+                                RiderActivity.ordId = ""
+                                RiderActivity.userMail = ""
+                                RiderActivity.flag_consegna = 0
+                                startActivity(int)
+                            }
                         }
                     }
                 }
-
-
-    fun diminuisciQtaDB(p: Prodotto, stato: Int, statoPagamento: Int) {
-        // si diminuiscono le quantità solo se l'ordine è stato accettato e pagato
-        if(stato == 1 && statoPagamento==1){
-
-
-        val db = FirebaseFirestore.getInstance()
-        db.collection("products").document(p.id.toString()).get()
-                .addOnSuccessListener { document->
-                    val vecchiaqta = document.getLong("qta")!!.toInt()
-                    val nuovaqta = vecchiaqta-p.qta
-                    val entry = hashMapOf<String, Any?>(
-                            "qta" to nuovaqta,
-                    )
-                    db.collection("products").document(p.id.toString()).set(entry, SetOptions.merge())
-                            .addOnSuccessListener {
-                                Log.d("qta","Qta prodotto aggiornata con successo")
-                            }
-                            .addOnFailureListener{
-                                Log.w("qta","Errore modifica qtaDB $it")
-                                it.printStackTrace()
-                            }
-
-                }
-                .addOnFailureListener{
-                    Log.w("qta","Errore ottenimento qtaDB $it")
-                    it.printStackTrace()
-                }
-        }
     }
 
     private fun getDisponibilita(mycallback: myCallbackBoolean) {
