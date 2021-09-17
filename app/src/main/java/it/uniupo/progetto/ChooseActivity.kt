@@ -79,12 +79,6 @@ class ChooseActivity : AppCompatActivity() {
                 .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
         if (type == "Rider") {
             //setup chat gestore-rider
-            val dummy = hashMapOf<String, Any>(
-                    "ora" to " ",
-                    "testo" to "Ciao sono il Gestore, per qualsiasi cosa scrivimi pure",
-                    "inviato" to 1
-            )
-            db.collection("chats").document(R.string.EMAIL_GESTORE.toString()).collection("contacts").document(mail).collection("messages").document("base").set(dummy, SetOptions.merge())
             val entry2 = hashMapOf<String, Any>(
                     "name" to name,
                     "surname" to surname,
@@ -97,6 +91,12 @@ class ChooseActivity : AppCompatActivity() {
                     "cognome" to surname,
                     "disponibile" to true )
             db.collection("riders").document(mail).set(toSend, SetOptions.merge())
+            val dummy = hashMapOf<String, Any>(
+                    "ora" to " ",
+                    "testo" to "Ciao sono il Gestore, per qualsiasi cosa scrivimi pure",
+                    "inviato" to 1
+            )
+            db.collection("chats").document(R.string.EMAIL_GESTORE.toString()).collection("contacts").document(mail).collection("messages").document("base").set(dummy, SetOptions.merge())
         }
     }
 }
