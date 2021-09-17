@@ -172,9 +172,8 @@ class ChatActivity : AppCompatActivity() {
     private fun getMessageFromChat(myCallback: ChatGestoreFragment.MyCallbackMessages, user : String , you: String){
         Log.d("getmessage","user vale $user, you vale $you")
         val db = FirebaseFirestore.getInstance()
-        messages.clear()
-
         db.collection("chats").document(user).collection("contacts").document(you).collection("messages").addSnapshotListener{snap,e->
+            messages.clear()
             if(snap!=null){
                 for(d in snap.documents) {
                     val mess = Messaggio(d.getLong("inviato")!!.toInt(), d.get("ora") as Timestamp, d.get("testo").toString())

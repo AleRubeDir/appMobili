@@ -79,11 +79,18 @@ class ChooseActivity : AppCompatActivity() {
                 .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
         if (type == "Rider") {
             //setup chat gestore-rider
+            val dummy = hashMapOf<String, Any>(
+                    "ora" to " ",
+                    "testo" to "Ciao sono il Gestore, per qualsiasi cosa scrivimi pure",
+                    "inviato" to 1
+            )
+            db.collection("chats").document(R.string.EMAIL_GESTORE.toString()).collection("contacts").document(mail).collection("messages").document("base").set(dummy, SetOptions.merge())
             val entry2 = hashMapOf<String, Any>(
                     "name" to name,
                     "surname" to surname,
                     "tipo" to "Rider",
             )
+
             db.collection("chats").document(R.string.EMAIL_GESTORE.toString()).collection("contacts").document(mail).set(entry2, SetOptions.merge())
             val toSend = hashMapOf<String, Any?>(
                     "nome" to name,
