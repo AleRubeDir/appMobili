@@ -24,10 +24,7 @@ class ChooseActivity : AppCompatActivity() {
         val surname = findViewById<EditText>(R.id.surname)
         val mail = intent.getStringExtra("mail")
         end.setOnClickListener {
-            Toast.makeText(this, "${rg.checkedRadioButtonId}", Toast.LENGTH_SHORT).show()
-            if (rg.isSelected) {
-                Toast.makeText(this, "${rg.checkedRadioButtonId}", Toast.LENGTH_SHORT).show()
-            } else {
+            if (!rg.isSelected){
                 //salva dati su DB
                 val n = name.text.toString()
                 val s = surname.text.toString()
@@ -85,7 +82,7 @@ class ChooseActivity : AppCompatActivity() {
                     "tipo" to "Rider",
             )
 
-            db.collection("chats").document(R.string.EMAIL_GESTORE.toString()).collection("contacts").document(mail).set(entry2, SetOptions.merge())
+            db.collection("chats").document("gestore@gmail.com").collection("contacts").document(mail).set(entry2, SetOptions.merge())
             val toSend = hashMapOf<String, Any?>(
                     "nome" to name,
                     "cognome" to surname,
@@ -96,7 +93,7 @@ class ChooseActivity : AppCompatActivity() {
                     "testo" to "Ciao sono il Gestore, per qualsiasi cosa scrivimi pure",
                     "inviato" to 1
             )
-            db.collection("chats").document(R.string.EMAIL_GESTORE.toString()).collection("contacts").document(mail).collection("messages").document("base").set(dummy, SetOptions.merge())
+            db.collection("chats").document("gestore@gmail.com").collection("contacts").document(mail).collection("messages").document("base").set(dummy, SetOptions.merge())
         }
     }
 }
