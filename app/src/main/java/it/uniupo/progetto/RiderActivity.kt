@@ -76,6 +76,7 @@ class RiderActivity : AppCompatActivity() {
                     .setMessage("Non dovrai più consegnare questo ordine")
                     .setPositiveButton("Accetta")
                     { _: DialogInterface, _: Int ->
+                        makeCurrentFragment(chatFragment)
                     }
                     .show()
             ind = ""
