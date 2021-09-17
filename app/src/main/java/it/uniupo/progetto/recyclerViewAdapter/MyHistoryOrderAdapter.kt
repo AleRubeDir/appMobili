@@ -5,10 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -32,11 +29,11 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
         Log.d("riderHistory","item vale $item ")
         if(tipo=="Cliente") holder.rl_rider.visibility = View.INVISIBLE
         else if(tipo=="Rider") holder.rl_cliente.visibility = View.INVISIBLE
-            checkRatings(item.id!!, holder.ratingQ, item.ratingQ, 1)
-            checkRatings(item.id!!, holder.ratingV, item.ratingV, 2)
-            checkRatings(item.id!!, holder.ratingC, item.ratingC, 3)
-            checkRatings(item.id!!, holder.ratingRC, item.ratingRC, 4)
-            checkRatings(item.id!!, holder.ratingRP, item.ratingRP, 5)
+            checkRatings(item.id!!, holder.ratingQ, item.ratingQ, 1,item.risultatoOrdine)
+            checkRatings(item.id!!, holder.ratingV, item.ratingV, 2,item.risultatoOrdine)
+            checkRatings(item.id!!, holder.ratingC, item.ratingC, 3,item.risultatoOrdine)
+            checkRatings(item.id!!, holder.ratingRC, item.ratingRC, 4,item.risultatoOrdine)
+            checkRatings(item.id!!, holder.ratingRP, item.ratingRP, 5,item.risultatoOrdine)
         Log.d("pagamento","item.tipo = ${item.tipo} risultato if = ${item.tipo=="Carta"}")
             if (item.tipo == "Carta") holder.card.setImageResource(R.drawable.ic_baseline_credit_card_24)
             holder.date.text = item.date
@@ -49,34 +46,39 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
             else  holder.cv.setCardBackgroundColor(view.context.getColor(R.color.green))
     }
 
-    private fun checkRatings(id : String, holder: RatingBar, rating: Int?, type : Int) {
+    private fun checkRatings(id : String, holder: RatingBar, rating: Int?, type : Int, risultatoOrdine : Int?) {
+
         if(rating==-1 && tipo != "Gestore")
         {
             holder.setIsIndicator(false)
             holder.setOnRatingBarChangeListener{ ratingBar: RatingBar, _, _ ->
+                if(risultatoOrdine==-2) {
+                    holder.setOnClickListener {
+                        Toast.makeText(view.context, "Non puoi valutare un ordine rifiutato", Toast.LENGTH_SHORT).show()
+                    }
+                }else {
+                    AlertDialog.Builder(view.context)
+                            .setPositiveButton("Conferma") { _, _ ->
+                                var newrat = "ratingQ"
+                                if (type == 2) newrat = "ratingV"
+                                else if (type == 3) newrat = "ratingC"
+                                else if (type == 4) newrat = "ratingRC"
+                                else if (type == 5) newrat = "ratingRP"
+                                val entry = hashMapOf<String, Any?>(
+                                        newrat to ratingBar.progress,
+                                )
 
-                AlertDialog.Builder(view.context)
-                        .setPositiveButton("Conferma"){ _, _ ->
-                            var newrat = "ratingQ"
-                            if(type==2) newrat = "ratingV"
-                            else if(type==3) newrat = "ratingC"
-                            else if(type==4) newrat = "ratingRC"
-                            else if(type==5) newrat = "ratingRP"
-                            val entry = hashMapOf<String, Any?>(
-                                    newrat to ratingBar.progress,
-                            )
-
-                            val db = FirebaseFirestore.getInstance()
-                            db.collection("orders_history").document(id)
-                                    .set(entry, SetOptions.merge())
-                            holder.setIsIndicator(true)
-                        }
-                        .setTitle("Feedback")
-                        .setMessage("Vuoi davvero assegnare questo voto?")
-                        .setNeutralButton("Chiudi")
-                        { _: DialogInterface, _: Int ->}
-                        .show()
-
+                                val db = FirebaseFirestore.getInstance()
+                                db.collection("orders_history").document(id)
+                                        .set(entry, SetOptions.merge())
+                                holder.setIsIndicator(true)
+                            }
+                            .setTitle("Feedback")
+                            .setMessage("Vuoi davvero assegnare questo voto?")
+                            .setPositiveButton("OKAY")
+                            { _: DialogInterface, _: Int -> }
+                            .show()
+                }
             }
         }
         else if(rating!=null) holder.progress = rating //va da 0 a 10. 1 = 1/2 stella

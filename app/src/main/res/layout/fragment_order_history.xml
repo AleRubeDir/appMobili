@@ -38,7 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="Ordine completato"/>
+            android:gravity="center"
+            android:text="@string/ordine_n_completato"/>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -58,7 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="Pagamento rifiutato"/>
+            android:gravity="center"
+            android:text="@string/pagamento_n_rifiutato"/>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -78,7 +80,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="Ordine rifiutato"/>
+            android:gravity="center"
+            android:text="@string/ordine_n_rifiutato"/>
     </androidx.cardview.widget.CardView>
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
