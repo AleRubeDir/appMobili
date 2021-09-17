@@ -309,6 +309,8 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                                         db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("products").document(d.reference.toString()).delete()
                                     }
                                 }
+                        db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("products").get()
+
                         db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).collection("rider").document("r").delete()
                         db.collection("orders").document(client).collection("order").document(RiderActivity.ordId!!).delete()
                         db.collection("orders").document(client).delete()

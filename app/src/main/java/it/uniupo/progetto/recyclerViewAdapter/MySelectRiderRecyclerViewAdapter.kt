@@ -82,6 +82,10 @@ class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: Array
                     view.context.startActivity(Intent(view.context , GestoreActivity::class.java))
                 }
         db.collection("toassignOrders").document(ordId).delete()
+
+
+//        rende il rider non più disponibile
+
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

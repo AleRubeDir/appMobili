@@ -106,6 +106,12 @@ class MyConsegneRecyclerViewAdapter(
     fun acceptOrder(orderId: String, userMail: String) {
         val rider = FirebaseAuth.getInstance().currentUser?.email.toString()
         val db = FirebaseFirestore.getInstance()
+
+        val disp = hashMapOf<String, Any?>(
+                "disponibile" to false
+        )
+        db.collection("riders").document(rider).set(disp, SetOptions.merge())
+
         val dummy = hashMapOf<String, Any?>(
                 " " to " ",
         )

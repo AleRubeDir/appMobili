@@ -92,6 +92,9 @@ class RichiamaOrdine : AppCompatActivity() {
                                 }
                     }
         }
+
+        db.collection("client-rider").document(mail).collection("rider").document(rider).delete()
+        db.collection("client-rider").document(mail).delete()
     }
 
     private fun getOrderCodes(myCallback: MyCallback){
