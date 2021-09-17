@@ -192,6 +192,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
         val db = FirebaseFirestore.getInstance()
         var rider = FirebaseAuth.getInstance().currentUser!!.email
         val det = hashMapOf<String, Any?>(
+                "risultatoOrdine" to 1,
                 "statoPagamento" to 1,
         )
 //        Log.d("DELIVERY - ",orderId)
@@ -218,7 +219,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                         Toast.makeText(viewConsegne.context, "Prima conferma il pagamento!!!!!", Toast.LENGTH_SHORT).show()
                     } else {
                         val det = hashMapOf<String, Any?>(
-                                "stato" to 1,
+                                "statoPagamento" to 1,
                         )
                         db.collection("delivery").document(rider).collection("orders").document(RiderActivity.ordId!!).set(
                                 det,
@@ -266,7 +267,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
 //                        db.collection("delivery").document(rider).collection("richiamato").document("r").delete()
                         db.collection("delivery").document(rider).delete()
 
-                        db.collection("toAssignOrders").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
+//                        db.collection("toAssignOrders").document(rider).collection("orders").document(RiderActivity.ordId!!).delete()
 
                         db.collection("orders").document(client!!).collection("order").document(RiderActivity.ordId!!).collection("products").get()
                                 .addOnSuccessListener { result ->
