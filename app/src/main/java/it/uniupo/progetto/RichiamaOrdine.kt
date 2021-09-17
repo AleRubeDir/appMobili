@@ -75,7 +75,7 @@ class RichiamaOrdine : AppCompatActivity() {
         db.collection("delivery").document(ord.rider).set(richiamato, SetOptions.merge())
         db.collection("orders").document(mail).collection("order").document(ord.id.toString()).delete()
                 .addOnSuccessListener {
-
+                    RiderActivity.ordId = ""
                     Toast.makeText(this,"Ordine annullato",Toast.LENGTH_SHORT).show()
                 }
 

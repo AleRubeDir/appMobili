@@ -127,26 +127,28 @@ class Rider_chatFragment : Fragment() {
         db.collection("chats").document(usr).collection("contacts").get()
                 .addOnCompleteListener {
                     for (d in it.result) {
-                        val clientMail = d.id
-                        Log.d("chatRider", "clientMail vale $clientMail")
-                        db.collection("chats").document(clientMail).collection("contacts").document(usr).collection("messages").get()
-                                .addOnSuccessListener { result ->
-                                    var messages = arrayListOf<Messaggio>()
-                                    for (document in result) {
-                                        val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
-                                        messages.add(mess)
-                                    }
-                                    var surname = ""
-                                    var name = ""
-                                    var tipo = ""
-                                    db.collection("chats").document(usr).collection("contacts").document(clientMail).get().addOnSuccessListener {
-                                        //controllo nel caso in cui la chat non contenga messaggi
+                        if (d.getString("tipo") == "Cliente") {
+                            val clientMail = d.id
+                            Log.d("chatRider", "clientMail vale $clientMail")
+                            db.collection("chats").document(clientMail).collection("contacts").document(usr).collection("messages").get()
+                                    .addOnSuccessListener { result ->
+                                        var messages = arrayListOf<Messaggio>()
+                                        for (document in result) {
+                                            val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
+                                            messages.add(mess)
+                                        }
+                                        var surname = ""
+                                        var name = ""
+                                        var tipo = ""
+                                        db.collection("chats").document(usr).collection("contacts").document(clientMail).get().addOnSuccessListener {
+                                            //controllo nel caso in cui la chat non contenga messaggi
                                             name = it.getString("name")!!
                                             surname = it.getString("surname")!!
                                             val contatto = Contatto(clientMail, name, surname)
-                                            myCallback.onCallback(messages,contatto)
+                                            myCallback.onCallback(messages, contatto)
+                                        }
                                     }
-                                }
+                        }
                     }
                 }
     }
@@ -154,7 +156,7 @@ class Rider_chatFragment : Fragment() {
     private fun getGestoreChats(myCallback: ChatGestoreFragment.MyCallbackMessages) {
         val db = FirebaseFirestore.getInstance()
         val usr = FirebaseAuth.getInstance().currentUser!!.email.toString()
-        var gestoreMail = "gestore@gmail.com"
+        val gestoreMail = "gestore@gmail.com"
 
         // chat gestore - rider
         //prendo messaggi in chats--> gestore--> contacts --> rider --> messages

@@ -45,6 +45,7 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
             savedInstanceState: Bundle?): View? {
         Log.d("inizio", RiderActivity.ind + RiderActivity.ordId + RiderActivity.userMail + RiderActivity.flag_consegna )
         if (RiderActivity.flag_consegna == 1) {
+
             viewConsegne = inflater.inflate(R.layout.activity_rider_delivery_info, container, false)
             val confermaPagamento = viewConsegne.findViewById<Button>(R.id.RiderConfermaPagamento) //bottone
             val rifiutaPagamento = viewConsegne.findViewById<Button>(R.id.RiderProblemiPagamento) //bottone
@@ -104,7 +105,9 @@ class Rider_ConsegneFragment() : Fragment(), OnMapReadyCallback {
                     object : myCallback {
                         override fun onCallback(consegne: MutableList<Consegna>) {
                             Log.d("consegne", "consegne vale $consegne")
+
                             recyclerView.adapter = MyConsegneRecyclerViewAdapter(consegne)
+                            
 //                        Log.d("RISULTATO", consegne.toString())
                         }
                     })
