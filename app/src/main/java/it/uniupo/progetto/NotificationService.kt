@@ -65,9 +65,7 @@ class NotificationService : Service() {
                 val intent = Intent(applicationContext, GestoreActivity::class.java)
                 intent.putExtra("from_notification","true")
                 val resultIntent = TaskStackBuilder.create(this).run {
-                    // Add the intent, which inflates the back stack
                     addNextIntentWithParentStack(intent)
-                    // Get the PendingIntent containing the entire back stack
                     getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
                 }
                 getClients(object : MyCallback {
@@ -79,7 +77,6 @@ class NotificationService : Service() {
                                 if (snap != null) {
                                     Log.d(TAG,"dentro createNotification")
                                     val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-
                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                         val name = getString(R.string.notificheGestore)
                                         val descriptionText =  getString(R.string.notificheGestore)
@@ -88,7 +85,6 @@ class NotificationService : Service() {
                                         val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                                             description = descriptionText
                                         }
-                                        // Register the channel with the system
                                         val notificationManager: NotificationManager =
                                                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                                         notificationManager.createNotificationChannel(channel)
@@ -193,49 +189,50 @@ class NotificationService : Service() {
                 }
                 checkRichiamato()
                 val rider = FirebaseAuth.getInstance().currentUser!!.email.toString()
-                            db.collection("delivery").document(rider).collection("orders").addSnapshotListener{ snap, e ->
+                            db.collection("delivery").addSnapshotListener{ snap, e ->
                                 if (snap != null) {
-                                    for(doc in snap.documents) Log.d("prova","r ${doc.id} ${doc.getString("client")}")
-                                    Log.d(TAG,"dentro createNotification")
-                                    val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                        val name = getString(R.string.notificheRider)
-                                        val descriptionText = getString(R.string.notificheRider)
-                                        val importance = NotificationManager.IMPORTANCE_DEFAULT
-                                        val CHANNEL_ID = getString(R.string.notificheRider)
-                                        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                                            description = descriptionText
-                                        }
-                                        // Register the channel with the system
-                                        val notificationManager: NotificationManager =
-                                                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                                        notificationManager.createNotificationChannel(channel)
+                                    for(doc in snap.documents) {
+                                        if (doc.id==rider) {
+                                            Log.d(TAG, "dentro createNotification")
+                                            val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                                val name = getString(R.string.notificheRider)
+                                                val descriptionText = getString(R.string.notificheRider)
+                                                val importance = NotificationManager.IMPORTANCE_DEFAULT
+                                                val CHANNEL_ID = getString(R.string.notificheRider)
+                                                val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                                                    description = descriptionText
+                                                }
+                                                // Register the channel with the system
+                                                val notificationManager: NotificationManager =
+                                                        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                                                notificationManager.createNotificationChannel(channel)
 
-                                        val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-                                                .setSmallIcon(R.mipmap.ic_launcher)
-                                                .setContentTitle("Ordine ASSEGNATO")
-                                                .setContentText("Ti è stato assegnato un nuovo ordine.")
+                                                val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+                                                        .setSmallIcon(R.mipmap.ic_launcher)
+                                                        .setContentTitle("Ordine ASSEGNATO")
+                                                        .setContentText("Ti è stato assegnato un nuovo ordine.")
 //                                                .setStyle(NotificationCompat.BigTextStyle()
 //                                                        .bigText("Much longer text that cannot fit one line..."))
-                                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                                .setContentIntent(resultIntent)
+                                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                                        .setContentIntent(resultIntent)
 
-                                        with(NotificationManagerCompat.from(applicationContext)) {
-                                            // notificationId is a unique int for each notification that you must define
-                                            notify(3, builder.build())
+                                                with(NotificationManagerCompat.from(applicationContext)) {
+                                                    // notificationId is a unique int for each notification that you must define
+                                                    notify(3, builder.build())
+                                                }
+                                            } else {
+                                                Log.d("NOTIFICA", "<oreo")
+                                                val mBuilder = Notification.Builder(applicationContext)
+                                                        .setContentTitle("Ordine ASSEGNATO")
+                                                        .setContentText("Ti è stato assegnato un nuovo ordine.")
+                                                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                                                mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                                                mBuilder.setAutoCancel(true)
+                                                mNotificationManager.notify(0, mBuilder.build())
+                                            }
                                         }
-                                    }else {
-                                        Log.d("NOTIFICA","<oreo")
-                                        val mBuilder = Notification.Builder(applicationContext)
-                                                .setContentTitle("Ordine ASSEGNATO")
-                                                .setContentText("Ti è stato assegnato un nuovo ordine.")
-                                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                                        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                                        mBuilder.setAutoCancel(true)
-                                        mNotificationManager.notify(0, mBuilder.build())
                                     }
-
-
                                 }
                                 else e?.printStackTrace()
                             }
