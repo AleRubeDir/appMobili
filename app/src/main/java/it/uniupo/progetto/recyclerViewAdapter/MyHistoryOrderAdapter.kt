@@ -18,6 +18,11 @@ import kotlin.coroutines.coroutineContext
 
 class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String) : RecyclerView.Adapter<MyHistoryOrderAdapter.ViewHolder>() {
     lateinit var view : View
+    val codRatingQ = 1
+    val codRatingV = 2
+    val codRatingC = 3
+    val codRatingRC = 4
+    val codRatingRP = 5
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.history_order, parent, false)
@@ -29,11 +34,11 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
         Log.d("riderHistory","item vale $item ")
         if(tipo=="Cliente") holder.rl_rider.visibility = View.INVISIBLE
         else if(tipo=="Rider") holder.rl_cliente.visibility = View.INVISIBLE
-            checkRatings(item.id!!, holder.ratingQ, item.ratingQ, 1,item.risultatoOrdine)
-            checkRatings(item.id!!, holder.ratingV, item.ratingV, 2,item.risultatoOrdine)
-            checkRatings(item.id!!, holder.ratingC, item.ratingC, 3,item.risultatoOrdine)
-            checkRatings(item.id!!, holder.ratingRC, item.ratingRC, 4,item.risultatoOrdine)
-            checkRatings(item.id!!, holder.ratingRP, item.ratingRP, 5,item.risultatoOrdine)
+            checkRatings(item.id!!, holder.ratingQ, item.ratingQ, codRatingQ ,item.risultatoOrdine)
+            checkRatings(item.id!!, holder.ratingV, item.ratingV, codRatingV,item.risultatoOrdine)
+            checkRatings(item.id!!, holder.ratingC, item.ratingC, codRatingC,item.risultatoOrdine)
+            checkRatings(item.id!!, holder.ratingRC, item.ratingRC, codRatingRC,item.risultatoOrdine)
+            checkRatings(item.id!!, holder.ratingRP, item.ratingRP, codRatingRP,item.risultatoOrdine)
         Log.d("pagamento","item.tipo = ${item.tipo} risultato if = ${item.tipo=="Carta"}")
             if (item.tipo == "Carta") holder.card.setImageResource(R.drawable.ic_baseline_credit_card_24)
             holder.date.text = item.date
@@ -47,23 +52,24 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
     }
 
     private fun checkRatings(id : String, holder: RatingBar, rating: Int?, type : Int, risultatoOrdine : Int?) {
-
+            //voto ancora non assegnato, e utente non è gestore
         if(rating==-1 && tipo != "Gestore")
         {
+            //rende selezionabili le stelle
             holder.setIsIndicator(false)
             holder.setOnRatingBarChangeListener{ ratingBar: RatingBar, _, _ ->
-                if(risultatoOrdine==-2) {
+                if(risultatoOrdine==-2) { //ordine è rifiutato
                     holder.setOnClickListener {
                         Toast.makeText(view.context, "Non puoi valutare un ordine rifiutato", Toast.LENGTH_SHORT).show()
                     }
                 }else {
                     AlertDialog.Builder(view.context)
-                            .setPositiveButton("Conferma") { _, _ ->
+                            .setPositiveButton("OKAY") { _, _ ->
                                 var newrat = "ratingQ"
-                                if (type == 2) newrat = "ratingV"
-                                else if (type == 3) newrat = "ratingC"
-                                else if (type == 4) newrat = "ratingRC"
-                                else if (type == 5) newrat = "ratingRP"
+                                if (type == codRatingV) newrat = "ratingV"
+                                else if (type == codRatingC) newrat = "ratingC"
+                                else if (type == codRatingRC) newrat = "ratingRC"
+                                else if (type == codRatingRP) newrat = "ratingRP"
                                 val entry = hashMapOf<String, Any?>(
                                         newrat to ratingBar.progress,
                                 )
@@ -75,8 +81,7 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
                             }
                             .setTitle("Feedback")
                             .setMessage("Vuoi davvero assegnare questo voto?")
-                            .setPositiveButton("OKAY")
-                            { _: DialogInterface, _: Int -> }
+                            .setNegativeButton("Annulla"){ _, _ ->}
                             .show()
                 }
             }
