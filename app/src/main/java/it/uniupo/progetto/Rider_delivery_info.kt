@@ -37,6 +37,7 @@ import java.util.*
 class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var sp: SharedPreferences
+    private val LOCATION_REQUEST_CODE = 101
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -52,20 +53,9 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map_rider) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
+        
         val consegnaRider = findViewById<SlideToActView>(R.id.ConsegnaRider)
 
-      /*  consegnaRider!!.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
-            override fun onSlideComplete(view: SlideToActView) {
-                val orderId = intent.getStringExtra("orderId")!!
-                Log.d("mattia", "Premuto terminaConsegna " + orderId)
-                terminaConsegnaFun(orderId)
-                //per tornare indietro con l'aztivity
-
-            }
-        }
-*/
         val confermaPagamento = findViewById<Button>(R.id.RiderConfermaPagamento)
         confermaPagamento.setOnClickListener {
             val orderId = intent.getStringExtra("orderId")!!
@@ -106,19 +96,45 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                     SetOptions.merge()
             )
     }
+    private fun requestPermission(permissionType: String, requestCode: Int) {
+        ActivityCompat.requestPermissions(this, arrayOf(permissionType), requestCode
+        )
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            LOCATION_REQUEST_CODE -> {
+                if (grantResults.isEmpty() || grantResults[0] !=
+                        PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this,
+                            "Unable to show location - permission required",
+                            Toast.LENGTH_LONG).show()
+                } else {
+                    val mapFragment = supportFragmentManager
+                            .findFragmentById(R.id.map) as SupportMapFragment
+                    mapFragment.getMapAsync(this)
+                }
+            }
+        }
+    }
 
     override fun onMapReady(p0: GoogleMap) {
+        Log.d("posizioneRider","dentro OMR, fine = ${ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)} coarse = ${ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)}")
         var zoomLevel = 16.0f
         mMap = p0
         mMap.uiSettings.isMyLocationButtonEnabled = false
         var geocodeMatches: List<Address>? = null
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED) {
-            return
+
+        val permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            mMap.isMyLocationEnabled = true
+        } else {
+            requestPermission(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    LOCATION_REQUEST_CODE)
         }
-        mMap.isMyLocationEnabled = true;
+
         val address = intent.getStringExtra("address")!!
         Log.d("posizioneRider","address vale $address")
         try {
@@ -151,66 +167,4 @@ class Rider_delivery_info : AppCompatActivity(), OnMapReadyCallback {
                 SetOptions.merge()
         )
     }
-
-    /*private fun terminaConsegnaFun(orderId: String){
-        val db = FirebaseFirestore.getInstance()
-        var rider = FirebaseAuth.getInstance().currentUser!!.email
-
-        db.collection("delivery").document(rider!!).collection("orders").document(orderId).get()
-                .addOnSuccessListener { doc ->
-
-                    //la consegna può terminare solo se il pagamento è stato confermato( accettato/rifiutato)
-                    if (doc.getLong("statoPagamento")!!.toInt() == -1) {
-                        Log.d("mattia","dentro if, non pagato " + doc.getLong("statoPagamento")!!.toInt())
-                        Toast.makeText(this, "Prima conferma il pagamento!!!!!", Toast.LENGTH_SHORT).show()
-
-                    } else {
-                        Log.d("mattia","dentro else, pagato")
-                        // termina consegna
-                        val det = hashMapOf<String, Any?>(
-                                "stato" to 1,
-                        )
-                        db.collection("delivery").document(rider).collection("orders").document(orderId).set(
-                                det,
-                                SetOptions.merge()
-                        )
-                        //rende di nuovo disponibile rider
-                        val occ = hashMapOf<String, Any?>(
-                                "disponibile" to false,
-                        )
-                        db.collection("riders").document(rider).set(occ, SetOptions.merge())
-                        Log.d("mattia", "dopo azioni che funzionano ")
-
-                        //salva in order_history
-                        val client = doc.getString("client")
-                        val stato = doc.getLong("stato")!!.toInt()
-                        val statoPagamento = doc.getLong("statoPagamento")!!.toInt()
-                        val tipoPagamento = doc.getString("tipo_pagamento")
-                        //risultato ordine da fare successivamente
-                        Log.d("mattia", "dopo di retrieve dati "  + client + stato + statoPagamento + tipoPagamento)
-
-                        val newOrderHistory = hashMapOf<String, Any?>(
-                                "data" to  Date(),
-                                "mail" to client,
-                                "rider" to rider,
-                                "tipoPagamento" to tipoPagamento,
-                                "statoPagamento" to statoPagamento,
-                                "risultatoOrdine" to 1,
-                                "ratingQ" to -1,
-                                "ratingV" to -1,
-                                "ratingC" to -1,
-                                "ratingRC" to -1,
-                                "ratingRP" to -1,
-
-                       )
-                        Log.d("mattia", "prima di aggiunta in order history: " + orderId + newOrderHistory)
-                        db.collection("orders_history").document(orderId).set(newOrderHistory)
-                        db.collection("delivery").document(rider).collection("orders").document(orderId).delete()
-                        db.collection("toAssignOrders").document(rider).collection("orders").document(orderId).delete()
-                        db.collection("chats").document(rider).collection("orders").document(orderId).delete()
-
-                    }
-                }
-    }
-*/
 }

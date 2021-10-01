@@ -48,18 +48,20 @@ class MyChatGestoreRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = chats[position]
         Log.d("mymess","chats vale $chats")
-        item.messaggio.sortBy{it.ora}
-        val ora = item.messaggio.last().ora.toDate().hours.toString()
-        var minuti = item.messaggio.last().ora.toDate().minutes.toString()
-        if(minuti.length==1) minuti = "0"+ item.messaggio.last().ora.toDate().minutes.toString()
+        if(item.messaggio.isNotEmpty()) {
+            item.messaggio.sortBy { it.ora }
+            val ora = item.messaggio.last().ora.toDate().hours.toString()
+            var minuti = item.messaggio.last().ora.toDate().minutes.toString()
+            if (minuti.length == 1) minuti = "0" + item.messaggio.last().ora.toDate().minutes.toString()
 
-        holder.mail.text = item.contatto.mail
-        holder.nome.text = item.contatto.nome
-        holder.cognome.text = item.contatto.cognome
-        holder.ora.text = view.context.getString(R.string.orario,ora,minuti)
-        Log.d("anteprima","ultimo messaggio => ${item.messaggio.last().testo} \n\n")
-        holder.anteprima.text = item.messaggio.last().testo
-        holder.data.text =convertLongToTime(item.messaggio.last().ora.seconds)
+            holder.mail.text = item.contatto.mail
+            holder.nome.text = item.contatto.nome
+            holder.cognome.text = item.contatto.cognome
+            holder.ora.text = view.context.getString(R.string.orario, ora, minuti)
+            Log.d("anteprima", "ultimo messaggio => ${item.messaggio.last().testo} \n\n")
+            holder.anteprima.text = item.messaggio.last().testo
+            holder.data.text = convertLongToTime(item.messaggio.last().ora.seconds)
+        }
     }
 
     private fun convertLongToTime(time: Long): String {

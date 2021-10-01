@@ -33,6 +33,7 @@ class MyConsegneRecyclerViewAdapter(
             val address = view.findViewById<TextView>(R.id.indirizzo).text.toString()
             intent.putExtra("orderId", orderId)
             intent.putExtra("address", address)
+            Log.d("info","orderId vale $orderId address vale $address")
             view.context.startActivity(intent)
         }
         val accept_order_button = view.findViewById<ImageButton>(R.id.check)
@@ -130,6 +131,7 @@ class MyConsegneRecyclerViewAdapter(
                         "name" to u.nome,
                         "surname" to u.cognome,
                         "mail" to userMail,
+                        "tipo" to u.tipo
                 )
                 db.collection("chats").document(rider).collection("contacts").document(userMail).set(chat, SetOptions.merge())
                 db.collection("chats").document(userMail).collection("contacts").document(rider).set(chat, SetOptions.merge())
@@ -184,7 +186,6 @@ class MyConsegneRecyclerViewAdapter(
                 .addOnCompleteListener {
                     val cliente = it.result.getString("client").toString()
                     val distanza = it.result.getDouble("distanza")
-                    /*var statoOrdine = it.result.getLong("stato")!!.toInt()*/
                     val tipo_pagamento = it.result.getString("tipo_pagamento").toString()
                     val entry = hashMapOf<String, Any?>(
                             "data" to Date(),

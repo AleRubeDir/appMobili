@@ -90,12 +90,7 @@ class ChooseActivity : AppCompatActivity() {
                     "lon" to 0,
                     "disponibile" to true )
             db.collection("riders").document(mail).set(toSend, SetOptions.merge())
-            val dummy = hashMapOf<String, Any>(
-                    "ora" to " ",
-                    "testo" to "Ciao sono il Gestore, per qualsiasi cosa scrivimi pure",
-                    "inviato" to 1
-            )
-            db.collection("chats").document("gestore@gmail.com").collection("contacts").document(mail).collection("messages").document("base").set(dummy, SetOptions.merge())
+
         }
     }
 }

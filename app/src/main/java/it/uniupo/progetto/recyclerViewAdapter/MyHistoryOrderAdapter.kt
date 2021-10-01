@@ -55,36 +55,37 @@ class MyHistoryOrderAdapter(private var ord: ArrayList<Order>, var tipo: String)
             //voto ancora non assegnato, e utente non è gestore
         if(rating==-1 && tipo != "Gestore")
         {
-            //rende selezionabili le stelle
             holder.setIsIndicator(false)
-            holder.setOnRatingBarChangeListener{ ratingBar: RatingBar, _, _ ->
-                if(risultatoOrdine==-2) { //ordine è rifiutato
-                    holder.setOnClickListener {
-                        Toast.makeText(view.context, "Non puoi valutare un ordine rifiutato", Toast.LENGTH_SHORT).show()
-                    }
-                }else {
-                    AlertDialog.Builder(view.context)
-                            .setPositiveButton("OKAY") { _, _ ->
-                                var newrat = "ratingQ"
-                                if (type == codRatingV) newrat = "ratingV"
-                                else if (type == codRatingC) newrat = "ratingC"
-                                else if (type == codRatingRC) newrat = "ratingRC"
-                                else if (type == codRatingRP) newrat = "ratingRP"
-                                val entry = hashMapOf<String, Any?>(
-                                        newrat to ratingBar.progress,
-                                )
+                         holder.setOnRatingBarChangeListener{ ratingBar: RatingBar, _, _ ->
+                        if(risultatoOrdine==-2) { //ordine è rifiutato
+                            Toast.makeText(view.context, "Non puoi valutare un ordine rifiutato", Toast.LENGTH_SHORT).show()
+                            holder.progress = 0
+                        }else{
+                        AlertDialog.Builder(view.context)
+                                .setPositiveButton("OKAY") { _, _ ->
+                                    var newrat = "ratingQ"
+                                    if (type == codRatingV) newrat = "ratingV"
+                                    else if (type == codRatingC) newrat = "ratingC"
+                                    else if (type == codRatingRC) newrat = "ratingRC"
+                                    else if (type == codRatingRP) newrat = "ratingRP"
+                                    val entry = hashMapOf<String, Any?>(
+                                            newrat to ratingBar.progress,
+                                    )
 
-                                val db = FirebaseFirestore.getInstance()
-                                db.collection("orders_history").document(id)
-                                        .set(entry, SetOptions.merge())
-                                holder.setIsIndicator(true)
-                            }
-                            .setTitle("Feedback")
-                            .setMessage("Vuoi davvero assegnare questo voto?")
-                            .setNegativeButton("Annulla"){ _, _ ->}
-                            .show()
-                }
+                                    val db = FirebaseFirestore.getInstance()
+                                    db.collection("orders_history").document(id)
+                                            .set(entry, SetOptions.merge())
+                                    holder.setIsIndicator(true)
+                                }
+                                .setTitle("Feedback")
+                                .setMessage("Vuoi davvero assegnare questo voto?")
+                                .setNegativeButton("Annulla"){ _, _ ->}
+                                .show()
+                    }
             }
+            //rende selezionabili le stelle
+
+
         }
         else if(rating!=null) holder.progress = rating //va da 0 a 10. 1 = 1/2 stella
     }

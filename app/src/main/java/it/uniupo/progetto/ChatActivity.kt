@@ -1,5 +1,7 @@
 package it.uniupo.progetto
 
+import android.app.NotificationManager
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -22,13 +24,10 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chat_activity)
-
         val contatto = findViewById<TextView>(R.id.contatto)
-
         val user = FirebaseAuth.getInstance().currentUser!!.email.toString()
         val ricevente = intent.getStringExtra("mail")!!.toString()
-
-        Log.d("chats", ricevente)
+        deleteNotifications()
         var rider = 0
         val back = findViewById<ImageView>(R.id.back)
         back.setOnClickListener {
@@ -37,7 +36,13 @@ class ChatActivity : AppCompatActivity() {
 
         val flag = intent.getBooleanExtra("fromRider", false)
 
-        Log.d("mymess","flag vale $flag")
+        val accesso = hashMapOf<String,Any>(
+                "ultimoaccesso" to Timestamp(Date())
+        )
+        Log.d("livenot","chat activity \n $accesso")
+        FirebaseFirestore.getInstance().collection("chats").document(user).collection("contacts").document(ricevente).set(accesso, SetOptions.merge()).addOnSuccessListener {
+
+
         if (flag) {
             //sono un rider
             rider = 1
@@ -87,6 +92,12 @@ class ChatActivity : AppCompatActivity() {
                 mess.text.clear()
                 recyclerView.adapter = MyMessageListRecyclerViewAdapter(messages,rider)
             }
+     }
+    }
+
+    fun deleteNotifications() {
+        val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        nm.cancelAll()
     }
 
     private fun createChat(contatto: TextView, currUser: String?, ricevente: String) {
@@ -108,23 +119,6 @@ class ChatActivity : AppCompatActivity() {
                 )
                 db.collection("chats").document(currUser.toString()).set(empty, SetOptions.merge())
                 db.collection("chats").document(currUser.toString()).collection("contacts").document(u.email).set(entry, SetOptions.merge())
-               /* db.collection("chats").document(currUser.toString()).collection("contacts").get()
-                        .addOnSuccessListener {
-                            it.forEach { doc ->
-                                if (doc.id == ricevente) check = 1
-                                if (check == 0) {
-                                    Log.d("mymess","check vale $check")
-                                    val entry = hashMapOf<String, Any?>(
-                                            "name" to u.nome,
-                                            "surname" to u.cognome,
-                                            "mail" to ricevente,
-                                            "tipo" to u.tipo
-                                    )
-                                    db.collection("chats").document(currUser!!).collection("contacts").document(ricevente)
-                                            .set(entry, SetOptions.merge())
-                                }
-                            }
-                        }*/
             }
         })
     }
@@ -182,14 +176,5 @@ class ChatActivity : AppCompatActivity() {
             myCallback.onCallback(messages,null)
             }
         }
-
-             /*   .get()
-                .addOnSuccessListener { result ->
-                    for(document in result){
-                        val mess = Messaggio(document.getLong("inviato")!!.toInt(), document.get("ora") as Timestamp, document.get("testo").toString())
-                        messages.add(mess)
-                    }
-                    myCallback.onCallback(messages,null)
-                }*/
     }
 }

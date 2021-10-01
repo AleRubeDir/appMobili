@@ -24,20 +24,14 @@ class ItemFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                Log.d("***", "Values in item $array")
-                getAllProducts((object: MyCallback {
-                    override fun onCallback(value: List<Prodotto>) {
-                        adapter = MyItemRecyclerViewAdapter(array)
-                    }
-                }))
+        val recyclerView = view.findViewById<RecyclerView>(R.id.myList)
+        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        getAllProducts((object: MyCallback {
+            override fun onCallback(value: List<Prodotto>) {
+                recyclerView.adapter = MyItemRecyclerViewAdapter(array)
             }
-        }
+        }))
+
         return view
     }
 

@@ -1,5 +1,6 @@
 
 package it.uniupo.progetto.fragments
+import android.app.NotificationManager
 import it.uniupo.progetto.recyclerViewAdapter.*
 import android.location.Address
 import android.location.Geocoder
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -32,6 +34,8 @@ class OrderFragment  : Fragment() {
 
         val arrivo = myview.findViewById<RelativeLayout>(R.id.arrivo)
 
+        val nm = myview.context.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+        nm.cancelAll()
 
         val orderView = myview.findViewById<RecyclerView>(R.id.list)
         val historyView = myview.findViewById<RecyclerView>(R.id.storico_ordini)
@@ -65,7 +69,6 @@ class OrderFragment  : Fragment() {
         var prod = arrayListOf<Prodotto>()
         var ord : Order
         val ords = arrayListOf<Order>()
-//        val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
         db.collection("orders_history").get()
             .addOnCompleteListener {
                 for(d in it.result) {

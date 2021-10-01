@@ -180,7 +180,7 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
                     }
                     .addOnFailureListener { e -> Log.w("---", "Error adding document", e) }
     }
-    public fun isInside(location: Location?, circle: Circle) {
+    private fun isInside(location: Location?, circle: Circle) {
         val distance = FloatArray(2)
         if (location != null) {
             Location.distanceBetween(location.latitude, location.longitude, circle.center.latitude, circle.center.longitude, distance)
@@ -190,9 +190,9 @@ class ClientMappa : AppCompatActivity(), OnMapReadyCallback {
             } else {
                 Toast.makeText(this, "Indirizzo valido", Toast.LENGTH_SHORT).show()
                 val go = findViewById<Button>(R.id.go)
-                setAddressFirebase(location)
                 go.visibility = View.VISIBLE
                 go.setOnClickListener {
+                    setAddressFirebase(location)
                     startActivity(Intent(this, ClienteActivity::class.java))
                 }
             }

@@ -32,7 +32,8 @@ class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: Array
                 "orderId" to ordId,
                 "client" to clientMail,
                 "tipo_pagamento" to tipoPagamento,
-                "leftMM" to false
+                "leftMM" to false,
+                "sendNot" to true
         )
         var add=""
         db.collection("users").document(clientMail!!).get()
@@ -66,6 +67,7 @@ class MySelectRiderRecyclerViewAdapter(var distanza : Double , var riders: Array
 //        )
         val richiamato = hashMapOf<String, Any?>(
                 "richiamato" to false,
+                "sendNotR" to true
         )
 
         Log.d("assegna","rider vale $rider ordId vale $ordId")

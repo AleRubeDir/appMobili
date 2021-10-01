@@ -2,7 +2,9 @@ package it.uniupo.progetto.recyclerViewAdapter
 
 
 import android.app.ActivityManager
+import android.app.NotificationManager
 import android.content.Context.ACTIVITY_SERVICE
+import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -78,7 +80,13 @@ class ProfileActionsAdapter(
                          val myService = Intent(view.context, PositionService::class.java)
                          view.context.stopService(myService)
                      }
+                     if ("it.uniupo.progetto.ChatNotificationService" == service.service.className) {
+                         val myService = Intent(view.context, PositionService::class.java)
+                         view.context.stopService(myService)
+                     }
                  }
+                 val notService = Intent(view.context, NotificationService::class.java)
+                 view.context.stopService(notService)
              }
          }
          return ViewHolder(view)

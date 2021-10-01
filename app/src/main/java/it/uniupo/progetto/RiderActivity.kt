@@ -37,13 +37,15 @@ class RiderActivity : AppCompatActivity() {
         sp = applicationContext.getSharedPreferences("ordineAccettato", 0)
         Log.d("notifications","start notification service ")
         startService(Intent(this,NotificationService::class.java))
+        Log.d("notifications","start chat notification service ")
+        startService(Intent(this,ChatNotificationService::class.java))
         Log.d("notifications","start positionRider service ")
         startService(Intent(this,PositionService::class.java))
         Log.d("sharedPref", " fuori vale ${sp.getBoolean("ordineAccettato", false)} e " +
                 "delete vale ${intent.getBooleanExtra("deletePrefOrd",false)}")
 
 //        richiamato serve quando un cliente richiama un ordine, arriva da positionService
-        if(intent.getBooleanExtra("richiamato",false )!=true) {
+        if(!intent.getBooleanExtra("richiamato",false )) {
             if (intent.getBooleanExtra("deletePrefOrd", false)) {
                 val editor = sp.edit()
                 editor.putBoolean("ordineAccettato", false)
@@ -70,7 +72,10 @@ class RiderActivity : AppCompatActivity() {
                 flag_consegna = sp.getInt("flag_consegna", -1)
                 makeCurrentFragment(Rider_ConsegneFragment())
             }
+
+
         }else{
+
             AlertDialog.Builder(this)
                     .setTitle("Ordine richiamato")
                     .setMessage("Non dovrai più consegnare questo ordine")

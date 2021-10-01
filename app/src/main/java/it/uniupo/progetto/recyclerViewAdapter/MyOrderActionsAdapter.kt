@@ -22,24 +22,37 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
         val row = view.findViewById<RelativeLayout>(R.id.action_row)
         val nome  = view.findViewById<TextView>(R.id.nome)
 
-        row.setOnClickListener{
-            Log.d("prof","Cliccato ${id.text} - ${nome.text} ")
-            if(id.text=="0"){
-                // Traccia il tuo ordine
-                val intent = Intent(view.context, RiderPosition::class.java)
-                view.context.startActivity(intent)
+        row.setOnClickListener {
+            Log.d("prof", "Cliccato ${id.text} - ${nome.text} ")
+            if (id.text == "0") {
+            // Traccia il tuo ordine
+                hasOrderPending(object : MyCallback2 {
+                    override fun onCallback(ris: Boolean) {
+                        if (ris) {
+                            val intent = Intent(view.context, RiderPosition::class.java)
+                            view.context.startActivity(intent)
+                        } else Toast.makeText(view.context, "Non hai ordini attivi", Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
             if(id.text=="1"){
                 //Chat con rider
-                    val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
-                    getRiderForUser(mail,object : MyCallback{
-                        override fun onCallback(rider: String) {
-                            Log.d("click","rider vale $rider mail vale $mail")
-                            val intent = Intent(view.context, ChatActivity::class.java)
-                            intent.putExtra("mail", rider )
-                            view.context.startActivity(intent)
-                        }
-                    })
+                hasOrderPending(object : MyCallback2 {
+                    override fun onCallback(ris: Boolean) {
+                        if (ris) {
+                            val mail = FirebaseAuth.getInstance().currentUser!!.email.toString()
+                            getRiderForUser(mail,object : MyCallback{
+                                override fun onCallback(rider: String) {
+                                    Log.d("click","rider vale $rider mail vale $mail")
+                                    val intent = Intent(view.context, ChatActivity::class.java)
+                                    intent.putExtra("mail", rider )
+                                    view.context.startActivity(intent)
+                                }
+                            })
+                        } else Toast.makeText(view.context, "Non hai ordini attivi", Toast.LENGTH_SHORT).show()
+                    }
+                })
+
             }
             if(id.text=="2"){
                 //Richiama ordine
@@ -61,40 +74,47 @@ class MyOrderActionsAdapter(private val array: ArrayList<Azione>) : RecyclerView
         }
         return ViewHolder(view)
     }
+
+
     fun hasOrderPending(myCallback: MyCallback2) {
                     val db = FirebaseFirestore.getInstance()
                     val email = FirebaseAuth.getInstance().currentUser!!.email.toString()
-                    db.collection("client-rider").document(email).collection("rider").get()
-                        .addOnSuccessListener {
-                            for(d in it){
-//                                    if(d.id==email){
+                    db.collection("orders").document(email).collection("order").get()
+                                .addOnSuccessListener {
+                                    Log.d("richiama",it.isEmpty().toString())
+                                    Log.d("richiama", "ecco it: $it")
+                                    if(it.isEmpty){
+                                        Toast.makeText(view.context, "Non esiste nessun ordine", Toast.LENGTH_SHORT).show()
+                                    }
+                                    for(d in it){
                                         Log.d("order","L'utente ha un ordine con rider ${d.id}")
                                         myCallback.onCallback(true)
-//                                    }
-                            }
+                                    }
                                 }
-                            .addOnFailureListener{e->
-                                e.printStackTrace()
-                            }
+                                .addOnFailureListener{e->
+                                    e.printStackTrace()
+                                }
 //        Toast.makeText(view.context, "Nessun ordine trovato, inizia ad acquistare!!!", Toast.LENGTH_SHORT).show()
     }
+
+
     private fun getRiderForUser(mail: String, myCallback: MyCallback) {
         val db = FirebaseFirestore.getInstance()
         Log.d("chat", mail)
+
         db.collection("client-rider").document(mail).collection("rider").get()
             .addOnSuccessListener {
                 for(rider in it)   {
                     db.collection("delivery").document(rider.id).collection("orders").get()
                             .addOnSuccessListener {
                                 for(d in it){
-                                    if(d.getBoolean("leftMM")==true) myCallback.onCallback(rider.id)
+                                    if(d.getBoolean("leftMM")==false)  Toast.makeText(view.context, "Aspetta che il rider parta con il tuo ordine.", Toast.LENGTH_SHORT).show()
+                                    else if(d.getBoolean("leftMM")==true) myCallback.onCallback(rider.id)
                                 }
                             }
 
                 }
             }
-//                Toast.makeText(view.context, "Nessun ordine trovato, inizia ad acquistare!!!", Toast.LENGTH_SHORT).show()
-
 
     }
 

@@ -14,26 +14,19 @@ import it.uniupo.progetto.R
 import it.uniupo.progetto.recyclerViewAdapter.*
 
 class ShopFragment : Fragment() {
-    private var columnCount = 1
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_shop_list, container, false)
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                ItemFragment.getAllProducts((object : ItemFragment.Companion.MyCallback {
-                    override fun onCallback(value: List<Prodotto>) {
-                        array.sortBy{it.id}
-                        adapter = MyShopRecycleViewAdapter(array)
-                    }
-                }))
+        val recyclerView = view.findViewById<RecyclerView>(R.id.myList)
+        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        ItemFragment.getAllProducts((object : ItemFragment.Companion.MyCallback {
+            override fun onCallback(value: List<Prodotto>) {
+                recyclerView.adapter = MyShopRecycleViewAdapter(value as ArrayList<Prodotto>)
             }
-        }
+        }))
+
         return view
     }
 

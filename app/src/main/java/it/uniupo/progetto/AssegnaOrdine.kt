@@ -47,7 +47,6 @@ class AssegnaOrdine : AppCompatActivity() {
                             val dist = (market.distanceTo(riderpos)/1000).toDouble()
                             val rider = Rider(d.id,d.getString("nome")!!,d.getString("cognome")!!,riderpos.latitude,riderpos.longitude,dist)
                             riders.add(rider)
-//
                         }
 
                     }

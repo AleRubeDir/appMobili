@@ -27,6 +27,7 @@ class AddProduct : AppCompatActivity() {
     lateinit var img : ImageView
     lateinit var imgUri : Uri
     lateinit var codphoto : String
+    var REQUEST_CODE = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_product)
@@ -132,10 +133,11 @@ class AddProduct : AppCompatActivity() {
             ) {
                 val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
                 val permissionCoarse = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-                requestPermissions(permission, 1001) // scelti da me
+                REQUEST_CODE = 1001
+                requestPermissions(permission, REQUEST_CODE) // scelti da me
                 requestPermissions(permissionCoarse, 1002) // scelti da me
-            } else {
+                checkPermissionForImage()
+            } else{
                 choosePhoto()
             }
         }
@@ -143,13 +145,14 @@ class AddProduct : AppCompatActivity() {
     private fun checkPermissionForCamera() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-                    && (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED))
-            {
+                    && (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)) {
                 val permission = arrayOf(Manifest.permission.CAMERA)
                 val permissionCoarse = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                requestPermissions(permission, 1003) // scelti da me
+                REQUEST_CODE = 1003
+                requestPermissions(permission, REQUEST_CODE) // scelti da me
                 requestPermissions(permissionCoarse, 1002) // scelti da me
-            } else {
+                checkPermissionForCamera()
+            }else{
                 takePhoto()
             }
         }

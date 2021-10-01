@@ -52,6 +52,7 @@ class PositionService : Service() {
     override fun onDestroy() {
         Log.d(TAG, "onDestroy")
         stopLocationUpdates()
+
         super.onDestroy()
     }
         // Start location updates
@@ -60,7 +61,7 @@ class PositionService : Service() {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             locationRequest = LocationRequest.create()
             locationRequest.interval = 300000 //ms -> 5min
-            locationRequest.fastestInterval = 300000 //setta max intervallo cpu
+            locationRequest.fastestInterval = 300000//setta max intervallo cpu
             locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY //according to your app
             Log.d("position","Dentro getLocationUpdate")
             val db = FirebaseFirestore.getInstance()

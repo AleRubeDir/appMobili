@@ -24,13 +24,6 @@ class MyMessageListRecyclerViewAdapter(val values: ArrayList<Messaggio>, val rid
         return values[position].inviato
     }
 
-    /*
-    * A - rider
-    * A -> rider inviato = 1
-    * rider <- A inviato = 1 -> inviato = 0
-    * */
-
-
     inner class ViewHolder(view: View) :  RecyclerView.ViewHolder(view){
         var testo : TextView = view.findViewById(R.id.messaggio)
         var ora : TextView = view.findViewById(R.id.ora)

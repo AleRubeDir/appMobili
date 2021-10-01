@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -20,6 +21,7 @@ import kotlin.collections.HashMap
 
 class GestoreMappaRider  : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
+    var zoomLevel = 10.0f
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gestore_mappa_rider)
@@ -36,10 +38,8 @@ class GestoreMappaRider  : AppCompatActivity(), OnMapReadyCallback {
                             .position(rider).title(it.key)
                             .icon(bitMapFromVector(R.drawable.rider))
                     )
-
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(rider, zoomLevel))
                 }
-
-
 
             }
         })
@@ -63,6 +63,7 @@ class GestoreMappaRider  : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap) {
         mMap = p0
         mMap.uiSettings.isMyLocationButtonEnabled = false
+
     }
 
     private fun bitMapFromVector(vectorResID: Int): BitmapDescriptor {
